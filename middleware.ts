@@ -9,10 +9,18 @@ const officeAndIndustrySlugs = ["farina-e-pane", "gorila-fitness", "timo-online"
 const rackSlugs = ["rack-tv-london"]
 const bedroomSlugs = ["cama-matrimonial-nova"]
 const otherSlugs = ["vajillero-new-york", "recibidor-london"]
-const productSlugs = ["estanteria-avila", "maceta-avinon", "porta-vinos", "estanteria-bath", "mesa-cracovia",
-    "mesa-ratona-edimburgo", "maceta-sintra", "estanteria-siena", "llavero-corfu", "leniero", "rack-tv-cordoba",
+const productSlugs = [
+    // "estanteria-avila",
+    "maceta-avinon",
+    //  "porta-vinos",
+    "estanteria-bath", "mesa-cracovia",
+    "mesa-ratona-edimburgo", "maceta-sintra", "estanteria-siena", "llavero-corfu",
+    //  "leniero", 
+    "rack-tv-cordoba",
     "toallero-matera", "toallero-cuenca", "bodega-segovia", "mesa-de-luz-roma", "escritorio-brujas", "perchero-oporto",
-    "recibidor-salamanca", "tabla-asado", "soporte-auricular"]
+    "recibidor-salamanca",
+    // "tabla-asado", "soporte-auricular"
+]
 const projectSlugs = ["all", "kitchen", "closet", "bathroom", "desk", "warehouse", "office-and-industry",
     "rack", "bedroom", "others", "products"]
 

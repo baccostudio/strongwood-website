@@ -55,6 +55,8 @@ export interface TechnicalInfoInterface {
     image: ImgDataInterface,
     title: string,
     description: string[],
+    price_ars?: string,
+    price_card?: string,
     footer?: {
         materials: string[],
         propousal: string[],

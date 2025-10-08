@@ -21,8 +21,11 @@ export default function ProjectsCardComponent({ projectData, index }: { projectD
             </div>
             <div className={styles["container-overlay-image"]} />
             <div className={styles["container-description-card"]}>
-                <p className={styles["title-description"]}>{projectData.title}</p>
-                <p className={styles["subtitle-description"]}>{projectData.subtitle}</p>
+                <div className={styles["gap-description"]}>
+                    <p className={styles["title-description"]}>{projectData.title}</p>
+                    <p className={styles["subtitle-description"]}>{projectData.subtitle}</p>
+                </div>
+                <p className={styles["title-price"]}>{projectData.details.technicalInfo?.price_ars}</p>
             </div>
         </Link>
     )

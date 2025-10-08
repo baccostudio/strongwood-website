@@ -52,6 +52,7 @@
         flex-direction: column;
         gap: 0.25rem;
         padding-top: 1rem;
+        position: relative;
 
         .title-description {
             color: var(--strongwood-black);
@@ -64,6 +65,14 @@
 
         .subtitle-description {
             color: var(--strongwood-gray);
+            font-size: 16px;
+        }
+
+        .title-price {
+            position: absolute;
+            right: 0;
+            bottom: 0;
+            color: var(--strongwood-black);
             font-size: 16px;
         }
     }

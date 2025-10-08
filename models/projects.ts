@@ -1306,61 +1306,61 @@ export const projectsData: ProjectDataInterface = {
         categories: ["all", "closet"],
         urlSlug: "closet"
     },
-    "estanteria-avila": {
-        projectSlug: "estanteria-avila",
-        title: "Estanteria Avila",
-        subtitle: "Mueble industrial",
-        image: {
-            imgSrc: "/assets/img/projectsPage/products/estanteriaAvila/Strong_Wood_IG-80.webp",
-            imgAlt: "Estanteria Avila",
-            objPosition: "0% 65%"
-        },
-        year: "2022",
-        location: "Mueble industrial",
-        details: {
-            portraitImg: {
-                imgSrc: "/assets/img/projectsPage/products/estanteriaAvila/Strong_Wood_IG-80.webp",
-                imgAlt: "Estanteria Avila",
-                objPosition: "20% 65%"
-            },
-            twoSmallImg: [
-                {
-                    imgSrc: "/assets/img/projectsPage/products/estanteriaAvila/Strong_Wood_Set-22.webp",
-                    imgAlt: "Estanteria Avila",
-                    objPosition: "55% 50%"
-                },
-                {
-                    imgSrc: "/assets/img/projectsPage/products/estanteriaAvila/Strong_Wood_IG-78.webp",
-                    imgAlt: "Estanteria Avila",
-                    objPosition: "60% 100%"
-                }
-            ],
-            rectangleImg: {
-                imgSrc: "/assets/img/projectsPage/products/estanteriaAvila/Strong_Wood_IG-81.webp",
-                imgAlt: "Estanteria Avila",
-                objPosition: "70% 100%"
-            },
-            technicalInfo: {
-                image: {
-                    imgSrc: "/assets/img/projectsPage/products/estanteriaAvila/Strong_Wood_IG-77.webp",
-                    imgAlt: "Estanteria Avila",
-                    objPosition: "0% 50%"
-                },
-                title: "Estanteria Avila",
-                description: [
-                    "Lanzamiento de colección de muebles industriales, que fusiona hierro y madera para lucir una expresión unica de rudeza y elegancia.",
-                    "Cada pieza busca crear espacios auténticos y acogedores.",
-                ],
-                footer: {
-                    materials: ["Madera, ", " Hierro, ", "Laca, ", "Goma protectora"],
-                    propousal: ["Mueble industrial"],
-                    year: ["2022"],
-                }
-            }
-        },
-        categories: ["products"],
-        urlSlug: "products"
-    },
+    // "estanteria-avila": {
+    //     projectSlug: "estanteria-avila",
+    //     title: "Estanteria Avila",
+    //     subtitle: "Mueble industrial",
+    //     image: {
+    //         imgSrc: "/assets/img/projectsPage/products/estanteriaAvila/Strong_Wood_IG-80.webp",
+    //         imgAlt: "Estanteria Avila",
+    //         objPosition: "0% 65%"
+    //     },
+    //     year: "2022",
+    //     location: "Mueble industrial",
+    //     details: {
+    //         portraitImg: {
+    //             imgSrc: "/assets/img/projectsPage/products/estanteriaAvila/Strong_Wood_IG-80.webp",
+    //             imgAlt: "Estanteria Avila",
+    //             objPosition: "20% 65%"
+    //         },
+    //         twoSmallImg: [
+    //             {
+    //                 imgSrc: "/assets/img/projectsPage/products/estanteriaAvila/Strong_Wood_Set-22.webp",
+    //                 imgAlt: "Estanteria Avila",
+    //                 objPosition: "55% 50%"
+    //             },
+    //             {
+    //                 imgSrc: "/assets/img/projectsPage/products/estanteriaAvila/Strong_Wood_IG-78.webp",
+    //                 imgAlt: "Estanteria Avila",
+    //                 objPosition: "60% 100%"
+    //             }
+    //         ],
+    //         rectangleImg: {
+    //             imgSrc: "/assets/img/projectsPage/products/estanteriaAvila/Strong_Wood_IG-81.webp",
+    //             imgAlt: "Estanteria Avila",
+    //             objPosition: "70% 100%"
+    //         },
+    //         technicalInfo: {
+    //             image: {
+    //                 imgSrc: "/assets/img/projectsPage/products/estanteriaAvila/Strong_Wood_IG-77.webp",
+    //                 imgAlt: "Estanteria Avila",
+    //                 objPosition: "0% 50%"
+    //             },
+    //             title: "Estanteria Avila",
+    //             description: [
+    //                 "Lanzamiento de colección de muebles industriales, que fusiona hierro y madera para lucir una expresión unica de rudeza y elegancia.",
+    //                 "Cada pieza busca crear espacios auténticos y acogedores.",
+    //             ],
+    //             footer: {
+    //                 materials: ["Madera, ", " Hierro, ", "Laca, ", "Goma protectora"],
+    //                 propousal: ["Mueble industrial"],
+    //                 year: ["2022"],
+    //             }
+    //         }
+    //     },
+    //     categories: ["products"],
+    //     urlSlug: "products"
+    // },
     "maceta-avinon": {
         projectSlug: "maceta-avinon",
         title: "Maceta Aviñon",
@@ -1384,6 +1384,8 @@ export const projectsData: ProjectDataInterface = {
                 objPosition: "75% 72%"
             },
             technicalInfo: {
+                price_ars: "$269.033",
+                price_card: "$423.728",
                 image: {
                     imgSrc: "/assets/img/projectsPage/products/macetaAvinon/Strong_Wood_IG-48.webp",
                     imgAlt: "Maceta Aviñon",
@@ -1404,61 +1406,61 @@ export const projectsData: ProjectDataInterface = {
         categories: ["products"],
         urlSlug: "products"
     },
-    "porta-vinos": {
-        projectSlug: "porta-vinos",
-        title: "Porta Vinos",
-        subtitle: "Mueble industrial",
-        image: {
-            imgSrc: "/assets/img/projectsPage/products/portaVinos/Strong_Wood_IG-2.webp",
-            imgAlt: "Porta Vinos",
-            objPosition: "50% 100%"
-        },
-        year: "2022",
-        location: "Mueble industrial",
-        details: {
-            portraitImg: {
-                imgSrc: "/assets/img/projectsPage/products/portaVinos/Strong_Wood_IG-2.webp",
-                imgAlt: "Porta Vinos",
-                objPosition: "50% 100%"
-            },
-            twoSmallImg: [
-                {
-                    imgSrc: "/assets/img/projectsPage/products/portaVinos/Strong_Wood_IG-3.webp",
-                    imgAlt: "Porta Vinos",
-                    objPosition: "0% 100%"
-                },
-                {
-                    imgSrc: "/assets/img/projectsPage/products/portaVinos/Strong_Wood_IG-1.webp",
-                    imgAlt: "Porta Vinos",
-                    objPosition: "50% 0%"
-                }
-            ],
-            secondRectangleImg: {
-                imgSrc: "/assets/img/projectsPage/products/portaVinos/Strong_Wood_IG-7.webp",
-                imgAlt: "Porta Vinos",
-                objPosition: "30% 100%"
-            },
-            technicalInfo: {
-                image: {
-                    imgSrc: "/assets/img/projectsPage/products/portaVinos/Strong_Wood_IG-6.webp",
-                    imgAlt: "Porta Vinos",
-                    objPosition: "40% 0%"
-                },
-                title: "Porta Vinos",
-                description: [
-                    "Lanzamiento de colección de muebles industriales, que fusiona hierro y madera para lucir una expresión unica de rudeza y elegancia.",
-                    "Cada pieza busca crear espacios auténticos y acogedores.",
-                ],
-                footer: {
-                    materials: ["Madera, ", " Hierro, ", "Laca"],
-                    propousal: ["Mueble industrial"],
-                    year: ["2022"],
-                }
-            }
-        },
-        categories: ["products"],
-        urlSlug: "products"
-    },
+    // "porta-vinos": {
+    //     projectSlug: "porta-vinos",
+    //     title: "Porta Vinos",
+    //     subtitle: "Mueble industrial",
+    //     image: {
+    //         imgSrc: "/assets/img/projectsPage/products/portaVinos/Strong_Wood_IG-2.webp",
+    //         imgAlt: "Porta Vinos",
+    //         objPosition: "50% 100%"
+    //     },
+    //     year: "2022",
+    //     location: "Mueble industrial",
+    //     details: {
+    //         portraitImg: {
+    //             imgSrc: "/assets/img/projectsPage/products/portaVinos/Strong_Wood_IG-2.webp",
+    //             imgAlt: "Porta Vinos",
+    //             objPosition: "50% 100%"
+    //         },
+    //         twoSmallImg: [
+    //             {
+    //                 imgSrc: "/assets/img/projectsPage/products/portaVinos/Strong_Wood_IG-3.webp",
+    //                 imgAlt: "Porta Vinos",
+    //                 objPosition: "0% 100%"
+    //             },
+    //             {
+    //                 imgSrc: "/assets/img/projectsPage/products/portaVinos/Strong_Wood_IG-1.webp",
+    //                 imgAlt: "Porta Vinos",
+    //                 objPosition: "50% 0%"
+    //             }
+    //         ],
+    //         secondRectangleImg: {
+    //             imgSrc: "/assets/img/projectsPage/products/portaVinos/Strong_Wood_IG-7.webp",
+    //             imgAlt: "Porta Vinos",
+    //             objPosition: "30% 100%"
+    //         },
+    //         technicalInfo: {
+    //             image: {
+    //                 imgSrc: "/assets/img/projectsPage/products/portaVinos/Strong_Wood_IG-6.webp",
+    //                 imgAlt: "Porta Vinos",
+    //                 objPosition: "40% 0%"
+    //             },
+    //             title: "Porta Vinos",
+    //             description: [
+    //                 "Lanzamiento de colección de muebles industriales, que fusiona hierro y madera para lucir una expresión unica de rudeza y elegancia.",
+    //                 "Cada pieza busca crear espacios auténticos y acogedores.",
+    //             ],
+    //             footer: {
+    //                 materials: ["Madera, ", " Hierro, ", "Laca"],
+    //                 propousal: ["Mueble industrial"],
+    //                 year: ["2022"],
+    //             }
+    //         }
+    //     },
+    //     categories: ["products"],
+    //     urlSlug: "products"
+    // },
     "estanteria-bath": {
         projectSlug: "estanteria-bath",
         title: "Estanteria Bath",
@@ -1489,6 +1491,8 @@ export const projectsData: ProjectDataInterface = {
                 }
             ],
             technicalInfo: {
+                price_ars: "$212.335",
+                price_card: "$334.428",
                 image: {
                     imgSrc: "/assets/img/projectsPage/products/estanteriaBath/Strong_Wood_IG-74.webp",
                     imgAlt: "Estanteria Bath",
@@ -1532,6 +1536,8 @@ export const projectsData: ProjectDataInterface = {
                 objPosition: "0% 20%",
             },
             technicalInfo: {
+                price_ars: "$1.245.974",
+                price_card: "$1.962.409",
                 image: {
                     imgSrc: "/assets/img/projectsPage/products/mesaCracovia/Strong_Wood_IG-103.webp",
                     imgAlt: "Mesa Cracovia",
@@ -1575,6 +1581,8 @@ export const projectsData: ProjectDataInterface = {
                 objPosition: "0% 50%",
             },
             technicalInfo: {
+                price_ars: "$689.729",
+                price_card: "$1.086.323",
                 image: {
                     imgSrc: "/assets/img/projectsPage/products/mesaRatonaEdimburgo/Strong_Wood_IG-83.webp",
                     imgAlt: "Mesa ratona Edimburgo",
@@ -1618,6 +1626,8 @@ export const projectsData: ProjectDataInterface = {
                 objPosition: "12% 55%"
             },
             technicalInfo: {
+                price_ars: "$202.441",
+                price_card: "$318.845",
                 image: {
                     imgSrc: "/assets/img/projectsPage/products/macetaSintra/Strong_Wood_IG-40.webp",
                     imgAlt: "Maceta Sintra",
@@ -1661,6 +1671,8 @@ export const projectsData: ProjectDataInterface = {
                 objPosition: "45% 10%"
             },
             technicalInfo: {
+                price_ars: "$298.202",
+                price_card: "$469.668",
                 image: {
                     imgSrc: "/assets/img/projectsPage/products/estanteriaSiena/Strong_Wood_IG-98.webp",
                     imgAlt: "Estanteria Siena",
@@ -1704,6 +1716,8 @@ export const projectsData: ProjectDataInterface = {
                 objPosition: "20% 60%"
             },
             technicalInfo: {
+                price_ars: "$155.300",
+                price_card: "$244.598",
                 image: {
                     imgSrc: "/assets/img/projectsPage/products/llaveroCorfu/Strong_Wood_IG-21.webp",
                     imgAlt: "Llavero Corfu",
@@ -1724,44 +1738,44 @@ export const projectsData: ProjectDataInterface = {
         categories: ["products"],
         urlSlug: "products"
     },
-    "leniero": {
-        projectSlug: "leniero",
-        title: "Leñero",
-        subtitle: "Mueble industrial",
-        image: {
-            imgSrc: "/assets/img/projectsPage/products/leniero/Strong_Wood_IG-49.webp",
-            imgAlt: "Leñero",
-            objPosition: "0% 85%"
-        },
-        year: "2022",
-        location: "Mueble industrial",
-        details: {
-            portraitImg: {
-                imgSrc: "/assets/img/projectsPage/products/leniero/Strong_Wood_IG-49.webp",
-                imgAlt: "Leñero",
-                objPosition: "25% 87%"
-            },
-            technicalInfo: {
-                image: {
-                    imgSrc: "/assets/img/projectsPage/products/leniero/Strong_Wood_IG-50.webp",
-                    imgAlt: "Leñero",
-                    objPosition: "5% 100%"
-                },
-                title: "Leñero",
-                description: [
-                    "Lanzamiento de colección de muebles industriales, que fusiona hierro y madera para lucir una expresión unica de rudeza y elegancia.",
-                    "Cada pieza busca crear espacios auténticos y acogedores.",
-                ],
-                footer: {
-                    materials: ["Madera, ", " Hierro, ", "Laca, ", "Goma protectora"],
-                    propousal: ["Mueble industrial"],
-                    year: ["2022"],
-                }
-            }
-        },
-        categories: ["products"],
-        urlSlug: "products"
-    },
+    // "leniero": {
+    //     projectSlug: "leniero",
+    //     title: "Leñero",
+    //     subtitle: "Mueble industrial",
+    //     image: {
+    //         imgSrc: "/assets/img/projectsPage/products/leniero/Strong_Wood_IG-49.webp",
+    //         imgAlt: "Leñero",
+    //         objPosition: "0% 85%"
+    //     },
+    //     year: "2022",
+    //     location: "Mueble industrial",
+    //     details: {
+    //         portraitImg: {
+    //             imgSrc: "/assets/img/projectsPage/products/leniero/Strong_Wood_IG-49.webp",
+    //             imgAlt: "Leñero",
+    //             objPosition: "25% 87%"
+    //         },
+    //         technicalInfo: {
+    //             image: {
+    //                 imgSrc: "/assets/img/projectsPage/products/leniero/Strong_Wood_IG-50.webp",
+    //                 imgAlt: "Leñero",
+    //                 objPosition: "5% 100%"
+    //             },
+    //             title: "Leñero",
+    //             description: [
+    //                 "Lanzamiento de colección de muebles industriales, que fusiona hierro y madera para lucir una expresión unica de rudeza y elegancia.",
+    //                 "Cada pieza busca crear espacios auténticos y acogedores.",
+    //             ],
+    //             footer: {
+    //                 materials: ["Madera, ", " Hierro, ", "Laca, ", "Goma protectora"],
+    //                 propousal: ["Mueble industrial"],
+    //                 year: ["2022"],
+    //             }
+    //         }
+    //     },
+    //     categories: ["products"],
+    //     urlSlug: "products"
+    // },
     "rack-tv-cordoba": {
         projectSlug: "rack-tv-cordoba",
         title: "Rack TV Cordoba",
@@ -1785,6 +1799,8 @@ export const projectsData: ProjectDataInterface = {
                 objPosition: "0% 85%"
             },
             technicalInfo: {
+                price_ars: "$699.011",
+                price_card: "$1.100.942",
                 image: {
                     imgSrc: "/assets/img/projectsPage/products/rackTvCordoba/Strong_Wood_IG-67.webp",
                     imgAlt: "Rack TV Cordoba",
@@ -1828,6 +1844,8 @@ export const projectsData: ProjectDataInterface = {
                 objPosition: "25% 20%"
             },
             technicalInfo: {
+                price_ars: "$110.489",
+                price_card: "$174.020",
                 image: {
                     imgSrc: "/assets/img/projectsPage/products/toalleroMatera/Strong_Wood_IG-35.webp",
                     imgAlt: "Toallero Matera",
@@ -1878,6 +1896,8 @@ export const projectsData: ProjectDataInterface = {
                 }
             ],
             technicalInfo: {
+                price_ars: "$128.667",
+                price_card: "$202.651",
                 image: {
                     imgSrc: "/assets/img/projectsPage/products/toalleroCuenca/Strong_Wood_IG-10.webp",
                     imgAlt: "Toallero Cuenca",
@@ -1928,6 +1948,8 @@ export const projectsData: ProjectDataInterface = {
                 }
             ],
             technicalInfo: {
+                price_ars: "$406.860",
+                price_card: "$640.805",
                 image: {
                     imgSrc: "/assets/img/projectsPage/products/bodegaSegovia/Strong_Wood_IG-61.webp",
                     imgAlt: "Bodega Segovia",
@@ -1971,6 +1993,8 @@ export const projectsData: ProjectDataInterface = {
                 objPosition: "50% 35%",
             },
             technicalInfo: {
+                price_ars: "$410.281",
+                price_card: "$646.193",
                 image: {
 
                     imgSrc: "/assets/img/projectsPage/products/mesaDeLuzRoma/Strong_Wood_IG-28.webp",
@@ -2022,6 +2046,8 @@ export const projectsData: ProjectDataInterface = {
                 }
             ],
             technicalInfo: {
+                price_ars: "$604.902",
+                price_card: "$952.720",
                 image: {
                     imgSrc: "/assets/img/projectsPage/products/escritorioBrujas/Strong_Wood_IG-92.webp",
                     imgAlt: "Escritorio Brujas",
@@ -2065,6 +2091,8 @@ export const projectsData: ProjectDataInterface = {
                 objPosition: "55% 70%"
             },
             technicalInfo: {
+                price_ars: "$147.543",
+                price_card: "$232.381",
                 image: {
                     imgSrc: "/assets/img/projectsPage/products/percheroOporto/Strong_Wood_IG-25.webp",
                     imgAlt: "Perchero Oporto",
@@ -2115,6 +2143,8 @@ export const projectsData: ProjectDataInterface = {
                 }
             ],
             technicalInfo: {
+                price_ars: "$460.326",
+                price_card: "$725.014",
                 image: {
                     imgSrc: "/assets/img/projectsPage/products/recibidorSalamanca/Strong_Wood_IG-55.webp",
                     imgAlt: "Recibidor Salamanca",
@@ -2135,90 +2165,90 @@ export const projectsData: ProjectDataInterface = {
         categories: ["products"],
         urlSlug: "products"
     },
-    "tabla-asado": {
-        projectSlug: "tabla-asado",
-        title: "Tabla Asado",
-        subtitle: "Mueble industrial",
-        image: {
-            imgSrc: "/assets/img/projectsPage/products/tablaAsado/Strongwood_Tabla_parri-4.webp",
-            imgAlt: "Tabla Asado",
-            objPosition: "80% 50%"
-        },
-        year: "2022",
-        location: "Mueble industrial",
-        details: {
-            portraitImg: {
-                imgSrc: "/assets/img/projectsPage/products/tablaAsado/Strongwood_Tabla_parri-4.webp",
-                imgAlt: "Tabla Asado",
-                objPosition: "80% 85%"
-            },
-            rectangleImg: {
-                imgSrc: "/assets/img/projectsPage/products/tablaAsado/Strongwood_Tabla_parri-7.webp",
-                imgAlt: "Tabla Asado",
-                objPosition: "40% 80%"
-            },
-            technicalInfo: {
-                image: {
-                    imgSrc: "/assets/img/projectsPage/products/tablaAsado/Strongwood_Tabla_parri-10.webp",
-                    imgAlt: "Tabla Asado",
-                    objPosition: "60% 0%"
-                },
-                title: "Tabla Asado",
-                description: [
-                    "Lanzamiento de colección de muebles industriales, que fusiona hierro y madera para lucir una expresión unica de rudeza y elegancia.",
-                    "Cada pieza busca crear espacios auténticos y acogedores.",
-                ],
-                footer: {
-                    materials: ["Madera, ", "Laca"],
-                    propousal: ["Mueble industrial"],
-                    year: ["2022"],
-                }
-            }
-        },
-        categories: ["products"],
-        urlSlug: "products"
-    },
-    "soporte-auricular": {
-        projectSlug: "soporte-auricular",
-        title: "Soporte Auricular",
-        subtitle: "Mueble industrial",
-        image: {
-            imgSrc: "/assets/img/projectsPage/products/soporteAuricular/Strong_Wood_IG-93.webp",
-            imgAlt: "Soporte Auricular",
-            objPosition: "90% 0%"
-        },
-        year: "2022",
-        location: "Mueble industrial",
-        details: {
-            portraitImg: {
-                imgSrc: "/assets/img/projectsPage/products/soporteAuricular/Strong_Wood_IG-93.webp",
-                imgAlt: "Soporte Auricular",
-                objPosition: "80% 0%"
-            },
-            rectangleImg: {
-                imgSrc: "/assets/img/projectsPage/products/soporteAuricular/soporteAuricular1.webp",
-                imgAlt: "Soporte Auricular",
-                objPosition: "60% 90%"
-            },
-            technicalInfo: {
-                image: {
-                    imgSrc: "/assets/img/projectsPage/products/soporteAuricular/soporteAuricular3.webp",
-                    imgAlt: "Soporte Auricular",
-                    objPosition: "30% 75%"
-                },
-                title: "Soporte Auricular",
-                description: [
-                    "Lanzamiento de colección de muebles industriales, que fusiona hierro y madera para lucir una expresión unica de rudeza y elegancia.",
-                    "Cada pieza busca crear espacios auténticos y acogedores.",
-                ],
-                footer: {
-                    materials: ["Madera, ", " Hierro, ", "Laca, ", "Goma protectora"],
-                    propousal: ["Mueble industrial"],
-                    year: ["2022"],
-                }
-            }
-        },
-        categories: ["products"],
-        urlSlug: "products"
-    },
+    // "tabla-asado": {
+    //     projectSlug: "tabla-asado",
+    //     title: "Tabla Asado",
+    //     subtitle: "Mueble industrial",
+    //     image: {
+    //         imgSrc: "/assets/img/projectsPage/products/tablaAsado/Strongwood_Tabla_parri-4.webp",
+    //         imgAlt: "Tabla Asado",
+    //         objPosition: "80% 50%"
+    //     },
+    //     year: "2022",
+    //     location: "Mueble industrial",
+    //     details: {
+    //         portraitImg: {
+    //             imgSrc: "/assets/img/projectsPage/products/tablaAsado/Strongwood_Tabla_parri-4.webp",
+    //             imgAlt: "Tabla Asado",
+    //             objPosition: "80% 85%"
+    //         },
+    //         rectangleImg: {
+    //             imgSrc: "/assets/img/projectsPage/products/tablaAsado/Strongwood_Tabla_parri-7.webp",
+    //             imgAlt: "Tabla Asado",
+    //             objPosition: "40% 80%"
+    //         },
+    //         technicalInfo: {
+    //             image: {
+    //                 imgSrc: "/assets/img/projectsPage/products/tablaAsado/Strongwood_Tabla_parri-10.webp",
+    //                 imgAlt: "Tabla Asado",
+    //                 objPosition: "60% 0%"
+    //             },
+    //             title: "Tabla Asado",
+    //             description: [
+    //                 "Lanzamiento de colección de muebles industriales, que fusiona hierro y madera para lucir una expresión unica de rudeza y elegancia.",
+    //                 "Cada pieza busca crear espacios auténticos y acogedores.",
+    //             ],
+    //             footer: {
+    //                 materials: ["Madera, ", "Laca"],
+    //                 propousal: ["Mueble industrial"],
+    //                 year: ["2022"],
+    //             }
+    //         }
+    //     },
+    //     categories: ["products"],
+    //     urlSlug: "products"
+    // },
+    // "soporte-auricular": {
+    //     projectSlug: "soporte-auricular",
+    //     title: "Soporte Auricular",
+    //     subtitle: "Mueble industrial",
+    //     image: {
+    //         imgSrc: "/assets/img/projectsPage/products/soporteAuricular/Strong_Wood_IG-93.webp",
+    //         imgAlt: "Soporte Auricular",
+    //         objPosition: "90% 0%"
+    //     },
+    //     year: "2022",
+    //     location: "Mueble industrial",
+    //     details: {
+    //         portraitImg: {
+    //             imgSrc: "/assets/img/projectsPage/products/soporteAuricular/Strong_Wood_IG-93.webp",
+    //             imgAlt: "Soporte Auricular",
+    //             objPosition: "80% 0%"
+    //         },
+    //         rectangleImg: {
+    //             imgSrc: "/assets/img/projectsPage/products/soporteAuricular/soporteAuricular1.webp",
+    //             imgAlt: "Soporte Auricular",
+    //             objPosition: "60% 90%"
+    //         },
+    //         technicalInfo: {
+    //             image: {
+    //                 imgSrc: "/assets/img/projectsPage/products/soporteAuricular/soporteAuricular3.webp",
+    //                 imgAlt: "Soporte Auricular",
+    //                 objPosition: "30% 75%"
+    //             },
+    //             title: "Soporte Auricular",
+    //             description: [
+    //                 "Lanzamiento de colección de muebles industriales, que fusiona hierro y madera para lucir una expresión unica de rudeza y elegancia.",
+    //                 "Cada pieza busca crear espacios auténticos y acogedores.",
+    //             ],
+    //             footer: {
+    //                 materials: ["Madera, ", " Hierro, ", "Laca, ", "Goma protectora"],
+    //                 propousal: ["Mueble industrial"],
+    //                 year: ["2022"],
+    //             }
+    //         }
+    //     },
+    //     categories: ["products"],
+    //     urlSlug: "products"
+    // },
 }
