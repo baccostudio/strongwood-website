@@ -1,0 +1,65 @@
+﻿import type { FooterConfig, FooterLink, SocialLink } from "./footer";
+import type { HeaderConfig, HeaderLogoVariants } from "./header";
+import type { SiteMetadata } from "./metadata";
+import type { NotFoundContent } from "./not-found";
+import type { SitePreloader } from "./preloader";
+import type {
+  AboutUsHeroContent,
+  AboutUsIntroContent,
+  AboutUsIntroParagraph,
+  AboutUsMosaicContent,
+  AboutUsMosaicImage,
+  ContactFormActionState,
+  AboutUsPageContent,
+  ContactFormField,
+  ContactFormSubmissionStatus,
+  ContactNotificationEmailContent,
+  ContactPageContent,
+  ContactSelectField,
+  ContactTextareaField,
+  PageContent,
+  PagesConfig,
+} from "./pages";
+import type {
+  FacebookPixelConfig,
+  GoogleTagManagerConfig,
+  SiteTrackingConfig,
+} from "./tracking";
+
+export interface SiteConfig {
+  metadata: SiteMetadata;
+  header: HeaderConfig;
+  footer: FooterConfig;
+  preloader: SitePreloader;
+  tracking: SiteTrackingConfig;
+  pages: PagesConfig;
+}
+
+export type {
+  AboutUsHeroContent,
+  AboutUsIntroContent,
+  AboutUsIntroParagraph,
+  AboutUsMosaicContent,
+  AboutUsMosaicImage,
+  AboutUsPageContent,
+  ContactFormActionState,
+  ContactFormField,
+  ContactFormSubmissionStatus,
+  ContactNotificationEmailContent,
+  ContactPageContent,
+  ContactSelectField,
+  ContactTextareaField,
+  FooterConfig,
+  FooterLink,
+  HeaderConfig,
+  HeaderLogoVariants,
+  FacebookPixelConfig,
+  GoogleTagManagerConfig,
+  NotFoundContent,
+  PageContent,
+  PagesConfig,
+  SitePreloader,
+  SiteMetadata,
+  SiteTrackingConfig,
+  SocialLink,
+};

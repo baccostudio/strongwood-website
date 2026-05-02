@@ -1,0 +1,66 @@
+import type { Metadata } from "next";
+import Image from "next/image";
+import { siteConfig } from "@/content/site";
+import { buildMetadata } from "@/lib/seo";
+import { PageHero } from "@/components/shared/PageHero";
+import { ContactForm } from "@/components/shared/ContactForm";
+import { sendContactFormAction } from "./actions";
+
+const pageContent = siteConfig.pages.contact;
+
+export const metadata: Metadata = buildMetadata({
+  title: pageContent.title,
+  description: pageContent.description,
+  canonicalPath: "/contacto",
+  siteName: siteConfig.metadata.siteName,
+  ogImage: pageContent.ogImage,
+});
+
+export default function ContactPage() {
+  return (
+    <main className="w-full">
+      <PageHero
+        title={pageContent.hero.title}
+        subtitleLines={pageContent.hero.subtitleLines}
+        imageSrc={pageContent.hero.imageSrc}
+        imageAlt={pageContent.hero.imageAlt}
+      />
+
+      <section className="bg-(--color-surface) py-[clamp(56px,10vw,96px)]">
+        <div className="mx-auto flex w-full max-w-6xl flex-col gap-8 px-6 ">
+          <p className="max-w-3xl text-[37px] font-medium uppercase leading-9.75 tracking-[-0.03em] text-(--color-foreground)">
+            {pageContent.formIntro}
+          </p>
+          <div className="grid items-stretch gap-8 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)]">
+            <div className="w-full lg:aspect-565/449">
+              <div className="relative h-full w-full overflow-hidden hidden lg:block">
+                <Image
+                  src="/images/contact/form-contacto-mueble-cocina-madera-a-medida.svg"
+                  alt={pageContent.formImageAlt}
+                  fill
+                  loading="eager"
+                  sizes="(min-width: 1024px) 50vw, 100vw"
+                  className="object-cover"
+                />
+              </div>
+            </div>
+            <ContactForm
+              action={sendContactFormAction}
+              formFields={pageContent.formFields}
+              formSelect={pageContent.formSelect}
+              formTextarea={pageContent.formTextarea}
+              submitLabel={pageContent.submitLabel}
+              submitLoadingLabel={pageContent.submitLoadingLabel}
+              validationMessage={pageContent.validationMessage}
+              selectIconSrc={pageContent.selectIconSrc}
+              selectIconAlt={pageContent.selectIconAlt}
+              submitIconSrc={pageContent.submitIconSrc}
+              submitIconHoverSrc={pageContent.submitIconHoverSrc}
+              submitIconAlt={pageContent.submitIconAlt}
+            />
+          </div>
+        </div>
+      </section>
+    </main>
+  );
+}

@@ -1,0 +1,334 @@
+@import "tailwindcss";
+
+@font-face {
+  font-family: "Switzer";
+  src: url("/fonts/switzer/Switzer-Light.woff2") format("woff2");
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Switzer";
+  src: url("/fonts/switzer/Switzer-Variable.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Switzer";
+  src: url("/fonts/switzer/Switzer-Medium.woff2") format("woff2");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Switzer";
+  src: url("/fonts/switzer/Switzer-Semibold.woff2") format("woff2");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Switzer";
+  src: url("/fonts/switzer/Switzer-Bold.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  --color-primary: #526354;
+  --color-secondary: #e7d5ac;
+  --color-paper: #ffffff;
+  --color-brown: #452813;
+  --color-surface: #f0f0f0;
+  --color-black: #000000;
+  --color-foreground: #1a1a1a;
+  --color-step-divider: #424242;
+  --color-step-subtitle: #999999;
+  --color-muted: #7a6b62;
+  --color-blur-dark: #d9d9d966;
+  --color-blur-light: #ffffff4d;
+  --color-sage: #b4c8b6;
+  --color-overlay: #00000080;
+  --color-accent-green: #7bae81;
+  --color-logo-alt: #e4d9c6;
+  --color-btn-grey: #b0a7a1;
+  --color-error: #c24b3a;
+  --color-success-soft-bg: #eef7ef;
+  --color-success-soft-border: #cbdccf;
+  --color-success-soft-text: #5d7c61;
+  --color-info-soft-bg: #edf6ff;
+  --color-info-soft-border: #c7ddf3;
+  --color-info-soft-text: #5d7ea6;
+  --color-home-hero: #d9d9d9;
+  --color-loader-overlay: #000000;
+  --color-loader-line: #ffffff;
+  --color-loader-line-track: rgba(255, 255, 255, 0.1);
+  --color-loader-slogan: rgba(255, 255, 255, 0.3);
+  --gradient-hero-shadow: linear-gradient(180deg,
+      rgba(18, 26, 19, 0.1) 34.13%,
+      #121a13 90.87%);
+  --gradient-card-overlay: linear-gradient(180deg,
+      rgba(0, 0, 0, 0) 27.68%,
+      rgba(0, 0, 0, 0.6) 80.8%);
+  --color-footer-watermark: #e9e9e9;
+  --color-footer-text: #919191;
+  --color-footer-icon: #686868;
+  --color-footer-copy: #9b9b9b;
+  --color-footer-divider: #b2b2b2;
+  --color-menu-active: #000000;
+  --color-menu-inactive: #7a7a7a;
+  --color-menu-arrow-bg: #cccccc;
+  --color-menu-arrow-border: #000000;
+  --hero-title-top: 62%;
+  --hero-subtitle-offset: clamp(70px, 12vh, 140px);
+  --color-card-body: #85795d;
+
+  --breakpoint-3xl: 1920px;
+}
+
+html {
+  position: relative;
+  scrollbar-gutter: stable;
+}
+
+html,
+body {
+  transform: none !important;
+  will-change: auto !important;
+}
+
+body {
+  position: relative;
+  font-family: "Switzer", system-ui, sans-serif;
+  color: var(--color-foreground);
+  background: var(--color-paper);
+}
+
+html[data-preloader-state="pending"] body {
+  overflow: hidden !important;
+}
+
+#initial-black-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-loader-overlay);
+  opacity: 1;
+  visibility: visible;
+  pointer-events: all;
+  transition: opacity 0.45s ease, visibility 0s linear;
+}
+
+html[data-preloader-state="skip"] #initial-black-overlay {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: none;
+}
+
+html[data-preloader-state="finished"] #initial-black-overlay {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.45s ease, visibility 0s linear 0.45s;
+}
+
+.initial-logo {
+  height: 40px;
+  margin-bottom: 24px;
+  filter: brightness(0) invert(1);
+  opacity: 0;
+  animation: initial-loader-fade-in 0.6s ease forwards 0.1s;
+}
+
+.initial-bar-container {
+  position: relative;
+  width: 80px;
+  height: 1px;
+  overflow: hidden;
+  background: var(--color-loader-line-track);
+}
+
+.initial-bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0%;
+  height: 100%;
+  background: var(--color-loader-line);
+  transition: width 0.1s ease-out;
+}
+
+.initial-slogan {
+  position: absolute;
+  bottom: 48px;
+  width: 100%;
+  color: var(--color-loader-slogan);
+  font-size: 10px;
+  letter-spacing: 0.4em;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+@keyframes initial-loader-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (min-width: 768px) {
+  .initial-logo {
+    height: 56px;
+  }
+
+  .initial-bar-container {
+    width: 100px;
+  }
+}
+
+@keyframes home-marquee {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(-25%);
+  }
+}
+
+.home-marquee-track {
+  animation: home-marquee 22s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .home-marquee-track {
+    animation: none;
+    transform: translateX(0);
+  }
+}
+
+@keyframes toast-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes toast-in {
+  from {
+    opacity: 0;
+    transform: translateX(16px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes toast-out {
+  from {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  to {
+    opacity: 0;
+    transform: translateX(16px);
+  }
+}
+
+.project-theme-lavalle {
+  --project-bg: #526354;
+  --project-meta: #7BAE81;
+  --project-next-card: #B4C8B6;
+}
+
+.project-theme-coliqueo {
+  --project-bg: #526354;
+  --project-meta: #7BAE81;
+  --project-next-card: #B4C8B6;
+}
+
+.project-theme-cangallo {
+  --project-bg: #526354;
+  --project-meta: #7BAE81;
+  --project-next-card: #B4C8B6;
+}
+
+.project-theme-remedios {
+  --project-bg: #526354;
+  --project-meta: #7BAE81;
+  --project-next-card: #B4C8B6;
+}
+
+.project-theme-olleros {
+  --project-bg: #526354;
+  --project-meta: #7BAE81;
+  --project-next-card: #B4C8B6;
+}
+
+/* Option 1: Scrollbar never occupies space (hides visual track while keeping scroll functionality) */
+@media (pointer: fine) {
+  html {
+    scrollbar-width: none;
+    /* Firefox */
+  }
+
+  body {
+    -ms-overflow-style: none;
+    /* IE/Edge */
+  }
+
+  ::-webkit-scrollbar {
+    width: 0px;
+    height: 0px;
+    display: none;
+  }
+}
+
+.no-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.footer-contact-link {
+  color: var(--color-footer-text);
+  text-decoration-color: color-mix(in srgb, var(--color-footer-text) 40%, transparent);
+  transition: color 0.2s ease, text-decoration-color 0.2s ease;
+}
+
+.footer-contact-link:hover {
+  color: var(--color-foreground);
+  text-decoration-color: var(--color-foreground);
+}
+
+/* Expansion Animation Safety */
+.expansion-container {
+  aspect-ratio: auto !important;
+}

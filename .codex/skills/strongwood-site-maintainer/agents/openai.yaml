@@ -1,0 +1,4 @@
+interface:
+  display_name: "Strongwood Site"
+  short_description: "Orquesta UI, contenido y hardening del repo"
+  default_prompt: "Use $strongwood-site-maintainer to choose the right Strongwood workflow and implement the requested change safely."
