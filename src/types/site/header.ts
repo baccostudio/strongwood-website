@@ -1,17 +1,10 @@
-﻿import type { FooterLink } from "./footer";
-
-export interface HeaderLogoVariants {
-  darkSrc: string;
-  beigeSrc: string;
-  whiteSrc: string;
-}
+import type { FooterLink } from "./footer";
 
 export interface HeaderConfig {
-  logoAlt: string;
-  logoVariants: HeaderLogoVariants;
+  brandLogoAlt: string;
+  brandLogoHref: string;
   logoButtonLabel: string;
   menuText: string;
   closeLabel: string;
   menuLinks: FooterLink[];
-  defaultVariant: "dark" | "beige" | "white";
 }

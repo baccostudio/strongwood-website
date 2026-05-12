@@ -1,12 +1,12 @@
 import { homeHero } from "@/content/home/hero";
-import type { FloatingImageConfig, HomeHeroContent } from "@/types/home";
+import type { HomeHeroContent } from "@/types/home";
 
 export const HOME_READY_EVENT = "strongwood:home-ready";
 export const HOME_READY_DATASET_KEY = "homeReady";
 export const PRELOADER_HOME_PATH = "/";
 export const PRELOADER_STATE_ATTRIBUTE = "data-preloader-state";
 export const PRELOADER_STORAGE_KEY = "strongwood:home-preloader-signature";
-export const PRELOADER_VERSION = "2026-05-02-home-ready-v4";
+export const PRELOADER_VERSION = "2026-05-12-home-hero-stack-v2";
 export const PRELOADER_FONT_URLS = [
   "/fonts/switzer/Switzer-Variable.woff2",
   "/fonts/switzer/Switzer-Medium.woff2",
@@ -15,18 +15,10 @@ export const PRELOADER_FONT_URLS = [
 
 export type PreloaderState = "pending" | "skip" | "finished";
 
-export function isCriticalHeroImage(img: FloatingImageConfig) {
-  return img.critical === true;
-}
-
-export function getCriticalHeroSources(hero: HomeHeroContent) {
-  return hero.floatingImages
-    .filter((img) => isCriticalHeroImage(img))
-    .map((img) => img.src);
-}
-
 export function getHomeReadyAssetSources(hero: HomeHeroContent) {
-  return [hero.wordImage.src];
+  const firstImage = hero.images[0];
+
+  return firstImage ? [firstImage.desktop.src, firstImage.mobile.src] : [];
 }
 
 function getPreloaderSignatureParts() {

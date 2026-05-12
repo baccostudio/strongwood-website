@@ -4,8 +4,3 @@ export interface HomeHeroImage {
   width: number;
   height: number;
 }
-
-export interface HomeHeroMarqueeItem {
-  text: string;
-  weight: "light" | "medium";
-}

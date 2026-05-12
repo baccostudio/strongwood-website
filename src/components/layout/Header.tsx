@@ -4,26 +4,12 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { HeaderLogo } from "@/components/brand/HeaderLogo";
+import BurgerMenu from "@/components/icons/burger-menu";
+import StrongwoodLogo from "@/components/icons/strongwood-logo";
+import type { HeaderConfig } from "@/types/site";
 import { cn } from "@/lib/utils";
 
-interface HeaderLink {
-  label: string;
-  href: string;
-}
-
-interface HeaderProps {
-  logoAlt: string;
-  logoVariants: {
-    darkSrc: string;
-    beigeSrc: string;
-    whiteSrc: string;
-  };
-  logoButtonLabel: string;
-  menuText: string;
-  closeLabel: string;
-  menuLinks: HeaderLink[];
-  defaultVariant: "dark" | "beige" | "white";
+interface HeaderProps extends HeaderConfig {
   className?: string;
 }
 
@@ -34,13 +20,12 @@ interface ScrollLockState {
 const MENU_CLOSE_DURATION_MS = 300;
 
 export function Header({
-  logoAlt,
-  logoVariants,
+  brandLogoAlt,
+  brandLogoHref,
   logoButtonLabel,
   menuText,
   closeLabel,
   menuLinks,
-  defaultVariant,
   className,
 }: HeaderProps) {
   const [isOpen, setIsOpen] = useState(false);
@@ -55,12 +40,7 @@ export function Header({
   const lastViewportWidthRef = useRef(0);
   const lastViewportHeightRef = useRef(0);
 
-  const isContact = pathname === "/contacto";
-  const isAbout = pathname === "/nosotros";
-  const isProjects = pathname === "/proyectos";
-  const isOverlay = isContact || isAbout;
   const isHome = pathname === "/";
-  const headerVariant = isOverlay ? "white" : isProjects ? "beige" : defaultVariant;
   const menuViewportHeight = "calc(var(--vh, 1vh) * 100)";
 
   const clearCloseTimeout = useCallback(() => {
@@ -357,37 +337,49 @@ export function Header({
   return (
     <header
       className={cn(
-        isHome ? "absolute top-0" : "absolute top-0",
-        "right-0 z-40 pointer-events-none w-32 sm:w-40 lg:w-48",
+        "fixed top-0 z-40 w-full pointer-events-none",
         className,
       )}
-      style={isHome ? { height: "calc(var(--vh, 1vh) * 400)" } : undefined}
+    // style={isHome ? { height: "calc(var(--vh, 1vh) * 400)" } : undefined}
     >
       <div
         className={cn(
-          "flex px-6 pt-6 lg:px-8",
-          "items-start pointer-events-auto",
+          "flex w-full items-start justify-between px-6 pt-6 lg:px-8",
+          "pointer-events-auto",
           isHome && "sticky top-0",
-          isOverlay && "pointer-events-auto",
         )}
         style={isHome ? { height: menuViewportHeight } : undefined}
       >
+        <Link
+          href={brandLogoHref}
+          aria-label={brandLogoAlt}
+          className="pointer-events-auto shrink-0 transition-opacity duration-200 hover:opacity-70"
+        >
+          <StrongwoodLogo
+            width={812}
+            height={155}
+            color={'white'}
+            // color={headerIconColor}
+            aria-hidden="true"
+            className="w-[104px] sm:w-[88px] lg:w-[204px]"
+          />
+        </Link>
+
         <button
           type="button"
           onClick={openMenu}
           aria-label={logoButtonLabel}
           className={cn(
-            "group ml-auto flex h-16 w-16 shrink-0 items-center justify-center pointer-events-auto transition-opacity duration-500 sm:h-20 sm:w-20 lg:h-24 lg:w-24",
+            "group pointer-events-auto transition-opacity duration-500 cursor-pointer",
             isMenuMounted ? "pointer-events-none opacity-0" : "opacity-100",
           )}
         >
-          <HeaderLogo
-            variant={headerVariant}
-            alt={logoAlt}
-            darkSrc={logoVariants.darkSrc}
-            beigeSrc={logoVariants.beigeSrc}
-            whiteSrc={logoVariants.whiteSrc}
-            priority
+          <BurgerMenu
+            width={94}
+            height={63}
+            // color={headerIconColor}
+            color={'white'}
+            aria-hidden="true"
             className={cn(
               "w-16 shrink-0 transition-all duration-200 ease-in-out hover:opacity-70 hover:duration-150 sm:w-20 lg:w-24",
               isMenuMounted && "rotate-90 -mr-[10.5px] hover:opacity-100 lg:-mr-4",
@@ -432,24 +424,22 @@ export function Header({
             type="button"
             onClick={() => closeMenu()}
             aria-label={closeLabel}
-            className="group flex h-16 w-16 shrink-0 items-center justify-center transition-opacity duration-500 sm:h-20 sm:w-20 lg:h-24 lg:w-24"
+            className="group flex h-16 w-16 shrink-0 items-center justify-end transition-opacity duration-500 sm:h-20 sm:w-20 lg:h-24 lg:w-24 cursor-pointer"
           >
-            <HeaderLogo
-              variant="white"
-              alt={closeLabel}
-              darkSrc={logoVariants.darkSrc}
-              beigeSrc={logoVariants.beigeSrc}
-              whiteSrc={logoVariants.whiteSrc}
-              priority
+            <BurgerMenu
+              width={94}
+              height={63}
+              color="var(--color-paper)"
+              aria-hidden="true"
               className="w-16 shrink-0 rotate-90 -mr-[10.5px] transition-all duration-200 ease-out sm:w-20 lg:w-24 lg:-mr-4"
             />
           </button>
 
           <div
             ref={menuScrollAreaRef}
-            className="flex min-h-0 w-full flex-1 justify-end overflow-y-auto overflow-x-hidden overscroll-contain pr-1"
+            className="flex min-h-0 w-full flex-1 justify-end overflow-y-auto overflow-x-hidden overscroll-contain"
           >
-            <nav className="flex max-w-6xl flex-col items-end gap-8 pt-2 text-right sm:gap-10 sm:pt-4 lg:gap-20 lg:pt-10 [@media(min-width:1024px)_and_(max-height:900px)]:gap-12 [@media(min-width:1024px)_and_(max-height:900px)]:pt-6">
+            <nav className="flex max-w-6xl flex-col items-end gap-8 text-right sm:gap-10 sm:pt-4 lg:gap-20 lg:pt-10 [@media(min-width:1024px)_and_(max-height:900px)]:gap-12 [@media(min-width:1024px)_and_(max-height:900px)]:pt-6 h-fit pb-6">
               {menuLinks.map((link) => {
                 const isActive = pathname === link.href;
 

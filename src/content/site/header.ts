@@ -1,12 +1,8 @@
-﻿import type { HeaderConfig } from "@/types/site";
+import type { HeaderConfig } from "@/types/site";
 
 export const siteHeader: HeaderConfig = {
-  logoAlt: "Logo de Strongwood",
-  logoVariants: {
-    darkSrc: "/images/brand/logo-strongwood-header-black.svg",
-    beigeSrc: "/images/brand/logo-strongwood-header-beige.svg",
-    whiteSrc: "/images/brand/logo-strongwood-header-white.svg",
-  },
+  brandLogoAlt: "Logo de la marca Strongwood",
+  brandLogoHref: "/",
   logoButtonLabel: "Abrir menú",
   menuText: "Menú",
   closeLabel: "Cerrar",
@@ -16,5 +12,4 @@ export const siteHeader: HeaderConfig = {
     { label: "Nosotros", href: "/nosotros" },
     { label: "Contacto", href: "/contacto" },
   ],
-  defaultVariant: "dark",
 };

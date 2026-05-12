@@ -2,12 +2,9 @@ import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import { Footer } from "@/components/layout/Footer";
 import { Header } from "@/components/layout/Header";
-import { InitialLoaderOverlay } from "@/components/layout/InitialLoaderOverlay";
-import { InitialLoaderScript } from "@/components/layout/InitialLoaderScript";
 import { JsonLdScript } from "@/components/layout/JsonLdScript";
 import { siteConfig } from "@/content/site";
 import { getSiteUrl } from "@/lib/seo";
-import { Preloader } from "@/components/layout/Preloader";
 import { TrackingHeadScripts } from "@/components/layout/TrackingHeadScripts";
 import { TrackingNoScript } from "@/components/layout/TrackingNoScript";
 
@@ -82,17 +79,18 @@ export default function RootLayout({
     <html
       lang="es-AR"
       className="h-full antialiased"
-      data-preloader-state="pending"
       suppressHydrationWarning
     >
       <head>
-        <InitialLoaderScript />
+        {/* Initial loader script disabled because the site-wide preloader was hurting performance. */}
         <TrackingHeadScripts tracking={siteConfig.tracking} />
       </head>
       <body className="min-h-full flex flex-col">
         <TrackingNoScript tracking={siteConfig.tracking} />
+        {/* Site-wide preloader intentionally disabled because it was hurting performance.
         <InitialLoaderOverlay preloader={siteConfig.preloader} />
         <Preloader />
+        */}
         <Header {...siteConfig.header} />
         <div className="flex-1">{children}</div>
         <Footer {...siteConfig.footer} />

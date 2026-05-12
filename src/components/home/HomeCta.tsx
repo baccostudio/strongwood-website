@@ -15,11 +15,19 @@ import {
 } from "framer-motion";
 import type { HomeCtaContent } from "@/types/home";
 import { HomeCtaMobile } from "./HomeCtaMobile";
+import {
+  CTA_CTA_Y_PROGRESS,
+  CTA_GALLERY_SCALE_PROGRESS,
+  CTA_SEQUENCE_STAGGER_STEP,
+  CTA_SEQUENCE_TRANSIT_DURATION,
+} from "./home-cta-motion";
 import { cn } from "@/lib/utils";
 
 interface HomeCtaProps {
   content: HomeCtaContent;
   isMobile: boolean;
+  sectionHeightVh?: number;
+  animationSpanVh?: number;
 }
 
 const CTA_SCROLL_SPRING = {
@@ -42,6 +50,9 @@ const CTA_REVERSE_EXIT_SPRING = {
   mass: 0.22,
 };
 
+const CTA_SECTION_HEIGHT_VH = 250;
+const CTA_ANIMATION_SPAN_VH = 250;
+
 function GalleryImage({
   src,
   index,
@@ -56,13 +67,8 @@ function GalleryImage({
   className?: string;
 }) {
   const shouldReduceMotion = useReducedMotion();
-
-  // Keep the sequence but give each item a slightly longer settling window.
-  const STAGGER_STEP = 0.06;
-  const TRANSIT_DURATION = 0.32;
-
-  const tStart = index * STAGGER_STEP;
-  const tEnd = tStart + TRANSIT_DURATION;
+  const tStart = index * CTA_SEQUENCE_STAGGER_STEP;
+  const tEnd = tStart + CTA_SEQUENCE_TRANSIT_DURATION;
 
   const movementMap = [
     { axis: "X", sign: -1 },
@@ -110,19 +116,33 @@ function GalleryImage({
   );
 }
 
-export function HomeCta({ content, isMobile }: HomeCtaProps) {
+export function HomeCta({
+  content,
+  isMobile,
+  sectionHeightVh = CTA_SECTION_HEIGHT_VH,
+  animationSpanVh = CTA_ANIMATION_SPAN_VH,
+}: HomeCtaProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const shouldReduceMotion = useReducedMotion();
   const reverseExitLeadTarget = useMotionValue(0);
   const reverseExitLead = useSpring(reverseExitLeadTarget, CTA_REVERSE_EXIT_SPRING);
+  const resolvedSectionHeightVh = Math.max(sectionHeightVh, 1);
+  const resolvedAnimationSpanVh = Math.min(Math.max(animationSpanVh, 1), resolvedSectionHeightVh);
+  const resolvedAnimationEndProgress = resolvedAnimationSpanVh / resolvedSectionHeightVh;
 
   const { scrollYProgress: rawScrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start end", "end end"],
   });
   const previousProgress = useRef(rawScrollYProgress.get());
-  const scrollYProgress = useSpring(rawScrollYProgress, CTA_SCROLL_SPRING);
-  const mobileScrollYProgress = useSpring(rawScrollYProgress, CTA_MOBILE_SCROLL_SPRING);
+  const activeScrollYProgress = useTransform(
+    rawScrollYProgress,
+    [0, resolvedAnimationEndProgress],
+    [0, 1],
+    { clamp: true },
+  );
+  const scrollYProgress = useSpring(activeScrollYProgress, CTA_SCROLL_SPRING);
+  const mobileScrollYProgress = useSpring(activeScrollYProgress, CTA_MOBILE_SCROLL_SPRING);
 
   useMotionValueEvent(rawScrollYProgress, "change", (latest) => {
     const previous = previousProgress.current;
@@ -145,21 +165,22 @@ export function HomeCta({ content, isMobile }: HomeCtaProps) {
     return Math.max(0, Math.min(1, adjusted));
   });
 
-  const galleryScale = useTransform(effectiveScrollYProgress, [0, 0.45, 0.95], [1, 1.03, 1.24], { clamp: true });
-  const progressWidth = useTransform(effectiveScrollYProgress, [0, 1], ["0%", "100%"], { clamp: true });
-  const ctaY = useTransform(effectiveScrollYProgress, [0.08, 0.18, 1], [24, 0, -10], { clamp: true });
-  const barOpacity = useTransform(effectiveScrollYProgress, [0.03, 0.09, 0.94, 1], [0, 1, 1, 0], { clamp: true });
-  const barY = useTransform(effectiveScrollYProgress, [0.03, 0.09, 1], [12, 0, -8], { clamp: true });
+  const galleryScale = useTransform(
+    effectiveScrollYProgress,
+    CTA_GALLERY_SCALE_PROGRESS,
+    [1, 1.03, 1.24],
+    { clamp: true },
+  );
+  const ctaY = useTransform(effectiveScrollYProgress, CTA_CTA_Y_PROGRESS, [24, 0, -10], { clamp: true });
 
   return (
     <section
       ref={containerRef}
-      className="relative w-full z-20 bg-black"
-      style={{ height: "calc(var(--vh, 1vh) * 250)" }}
+      className="relative w-full bg-black"
+      style={{ height: `calc(var(--vh, 1vh) * ${resolvedSectionHeightVh})` }}
     >
       <div
-        className="sticky top-0 w-full overflow-hidden flex items-center justify-center bg-black"
-        style={{ height: "calc(var(--vh, 1vh) * 100)" }}
+        className="sticky top-0 w-full overflow-hidden flex items-center justify-center bg-black h-[calc(var(--vh,1vh)*100)]"
       >
         <div className="absolute -bottom-[10vh] left-0 w-full h-[10.5vh] bg-inherit pointer-events-none" />
 
@@ -168,7 +189,7 @@ export function HomeCta({ content, isMobile }: HomeCtaProps) {
         ) : (
           <motion.div
             style={{ scale: shouldReduceMotion ? 1 : galleryScale }}
-            className="absolute inset-0 z-10 flex items-center justify-center px-6 transform-gpu will-change-transform"
+            className="absolute inset-0 flex items-center justify-center px-6 transform-gpu will-change-transform"
           >
             <div className="w-full max-w-6xl">
               <div className="grid grid-cols-3 gap-4 mb-4">
@@ -213,7 +234,7 @@ export function HomeCta({ content, isMobile }: HomeCtaProps) {
 
         {!isMobile && (
           <motion.div
-            className="absolute inset-x-0 z-200 flex justify-center px-6 isolate"
+            className="absolute inset-x-0 flex justify-center px-6 isolate"
             style={{
               opacity: 1,
               y: shouldReduceMotion ? 0 : ctaY,
@@ -222,28 +243,12 @@ export function HomeCta({ content, isMobile }: HomeCtaProps) {
             <Link
               href={content.href}
               aria-label={content.ariaLabel}
-              className="inline-flex items-center justify-center border border-(--color-paper)/20 bg-black/80 text-center px-14 py-6 text-[clamp(14px,2vw,16px)] font-medium uppercase tracking-[0.3em] text-(--color-paper) transition-all hover:bg-(--color-paper) hover:text-black group"
+              className="inline-flex items-center justify-center border border-paper/20 bg-black/80 text-center px-14 py-6 text-[clamp(14px,2vw,16px)] font-medium uppercase tracking-[0.3em] text-paper transition-all hover:bg-paper hover:text-black group"
             >
               <span className="relative flex items-center gap-4">
                 {content.label.replace(/[()]/g, "")}
               </span>
             </Link>
-          </motion.div>
-        )}
-
-        {!isMobile && (
-          <motion.div
-            className="absolute bottom-12 left-1/2 -translate-x-1/2 z-200"
-            style={{
-              opacity: barOpacity,
-              y: shouldReduceMotion ? 0 : barY,
-            }}
-          >
-            <div className="flex flex-col items-center gap-4">
-              <div className="h-px w-48 bg-(--color-paper)/10 overflow-hidden">
-                <motion.div className="h-full bg-(--color-paper)/60" style={{ width: progressWidth }} />
-              </div>
-            </div>
           </motion.div>
         )}
       </div>

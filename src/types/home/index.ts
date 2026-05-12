@@ -14,13 +14,10 @@ export type { HomeCtaContent } from "./cta";
 export type { HomeCtaGalleryImage } from "./cta";
 export type {
   HomeHeroContent,
-  HomeHeroViewportMode,
-  FloatingImageConfig,
-  FloatingImageLayoutConfig,
-  FloatingImageMotionConfig,
-  FloatingImageMotionValues,
-  FloatingImageZIndexConfig,
+  HomeHeroImageAsset,
+  HomeHeroMarqueeItem,
+  HomeHeroResponsiveImage,
 } from "./hero";
-export type { HomeHeroImage, HomeHeroMarqueeItem } from "./media";
+export type { HomeHeroImage } from "./media";
 export type { HomeMetadata } from "./metadata";
 export type { HomeProjectStatsResponse, HomeProjectsContent } from "./projects";

@@ -1,5 +1,5 @@
-﻿import type { FooterConfig, FooterLink, SocialLink } from "./footer";
-import type { HeaderConfig, HeaderLogoVariants } from "./header";
+import type { FooterConfig, FooterLink, SocialLink } from "./footer";
+import type { HeaderConfig } from "./header";
 import type { SiteMetadata } from "./metadata";
 import type { NotFoundContent } from "./not-found";
 import type { SitePreloader } from "./preloader";
@@ -52,7 +52,6 @@ export type {
   FooterConfig,
   FooterLink,
   HeaderConfig,
-  HeaderLogoVariants,
   FacebookPixelConfig,
   GoogleTagManagerConfig,
   NotFoundContent,

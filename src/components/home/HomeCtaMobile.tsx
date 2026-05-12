@@ -14,6 +14,12 @@ import {
 } from "framer-motion";
 import { cn } from "@/lib/utils";
 import type { HomeCtaContent } from "@/types/home";
+import {
+  CTA_CTA_Y_PROGRESS,
+  CTA_GALLERY_SCALE_PROGRESS,
+  CTA_SEQUENCE_STAGGER_STEP,
+  CTA_SEQUENCE_TRANSIT_DURATION,
+} from "./home-cta-motion";
 
 interface HomeCtaMobileProps {
   content: HomeCtaContent;
@@ -41,12 +47,8 @@ function MobileGalleryItem({
   const shouldReduceMotion = useReducedMotion();
   const isWideTile = index === 0 || index === 9;
   const imageSizes = isWideTile ? "calc(100vw - 5rem)" : "calc(50vw - 2.75rem)";
-
-  const STAGGER_STEP = 0.025;
-  const TRANSIT_DURATION = 0.22;
-
-  const tStart = index * STAGGER_STEP;
-  const tEnd = tStart + TRANSIT_DURATION;
+  const tStart = index * CTA_SEQUENCE_STAGGER_STEP;
+  const tEnd = tStart + CTA_SEQUENCE_TRANSIT_DURATION;
 
   const movementMap = [
     { axis: "Y", sign: -1 },
@@ -122,9 +124,14 @@ export function HomeCtaMobile({ content, scrollYProgress, className }: HomeCtaMo
     return Math.max(0, Math.min(1, adjusted));
   });
 
-  const galleryScale = useTransform(effectiveScrollYProgress, [0, 0.48, 0.95], [1, 1.012, 1.1], { clamp: true });
+  const galleryScale = useTransform(
+    effectiveScrollYProgress,
+    CTA_GALLERY_SCALE_PROGRESS,
+    [1, 1.012, 1.1],
+    { clamp: true },
+  );
   const progressWidth = useTransform(effectiveScrollYProgress, [0, 1], ["0%", "100%"], { clamp: true });
-  const ctaY = useTransform(effectiveScrollYProgress, [0.06, 0.16, 1], [12, 0, -6], { clamp: true });
+  const ctaY = useTransform(effectiveScrollYProgress, CTA_CTA_Y_PROGRESS, [12, 0, -6], { clamp: true });
   const barOpacity = useTransform(effectiveScrollYProgress, [0.03, 0.09, 0.92, 1], [0, 1, 1, 0], { clamp: true });
   const barY = useTransform(effectiveScrollYProgress, [0.03, 0.09, 1], [6, 0, -4], { clamp: true });
 

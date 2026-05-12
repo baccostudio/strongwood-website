@@ -77,9 +77,9 @@
   --gradient-hero-shadow: linear-gradient(180deg,
       rgba(18, 26, 19, 0.1) 34.13%,
       #121a13 90.87%);
-  --gradient-card-overlay: linear-gradient(180deg,
-      rgba(0, 0, 0, 0) 27.68%,
-      rgba(0, 0, 0, 0.6) 80.8%);
+  --gradient-home-hero-image-overlay: linear-gradient(180deg,
+      rgba(0, 0, 0, 0.2) 75%,
+      rgba(0, 0, 0, 1) 100%);
   --color-footer-watermark: #e9e9e9;
   --color-footer-text: #919191;
   --color-footer-icon: #686868;

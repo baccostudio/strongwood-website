@@ -10,6 +10,8 @@ import type { HomeProjectStatsResponse, HomeProjectsContent } from "@/types/home
 
 interface HomeProjectsProps {
   content: HomeProjectsContent;
+  isMobile: boolean;
+  viewportHeight: number;
 }
 
 interface AnimatedWorkCountProps {
@@ -32,6 +34,7 @@ const SLOT_SPIN_STAGGER = 2;
 const DIGIT_TRAVEL = "65%";
 const SLOT_START_DELAY_MS = 300;
 const WORK_COUNT_FETCH_TIMEOUT_MS = 2500;
+const DESKTOP_PROJECT_TRACK_GAP = 150;
 
 const DIGIT_TRANSITION = {
   duration: 0.4,
@@ -192,12 +195,14 @@ function AnimatedWorkCount({
   );
 }
 
-export function HomeProjects({ content }: HomeProjectsProps) {
+export function HomeProjects({ content, isMobile, viewportHeight }: HomeProjectsProps) {
+  const trackRef = useRef<HTMLDivElement>(null);
   const [resolvedWorkCount, setResolvedWorkCount] = useState<{
     value: string;
     ariaLabel: string;
   } | null>(null);
   const [isWorkCountLoading, setIsWorkCountLoading] = useState(true);
+  const [trackHeight, setTrackHeight] = useState(0);
 
   useEffect(() => {
     const controller = new AbortController();
@@ -265,87 +270,131 @@ export function HomeProjects({ content }: HomeProjectsProps) {
     };
   }, [content.workCount, content.workCountAriaLabel]);
 
-  return (
-    <section
-      className="flex items-center bg-(--color-muted) py-[clamp(56px,10vw,96px)] text-(--color-paper)"
-      style={{ minHeight: "calc(var(--vh, 1vh) * 100)" }}
-    >
-      <div className="mx-auto flex w-full max-w-6xl flex-col gap-[clamp(28px,6vw,52px)] px-6 py-0">
-        <div className="flex flex-col items-center gap-[clamp(16px,3vw,24px)] text-center">
-          <div className="inline-grid justify-items-center">
-            <div
-              className="translate-x-[4%] justify-self-end text-[clamp(44px,8vw,124px)] font-semibold leading-none text-(--color-paper)"
-              aria-label={content.badgeAriaLabel}
-            >
-              {content.badgeText}
-            </div>
-            <PageHeroTitle title={content.title} className="text-(--color-paper)" />
-          </div>
-          <div
-            className={cn(
-              "flex flex-col items-center gap-1 text-[clamp(18px,3.2vw,28px)] font-light uppercase leading-[clamp(24px,4.2vw,38px)] tracking-[-0.03em]",
-            )}
-          >
-            {content.subtitleLines.map((line) => (
-              <p key={line}>{line}</p>
-            ))}
-          </div>
-        </div>
+  useEffect(() => {
+    const syncTrackHeight = () => {
+      const nextTrackHeight = trackRef.current?.offsetHeight ?? 0;
+      setTrackHeight((currentHeight) => (currentHeight === nextTrackHeight ? currentHeight : nextTrackHeight));
+    };
 
-        <div className="flex flex-col gap-[clamp(12px,2.5vw,20px)]">
-          <div className="flex flex-col gap-[clamp(14px,3vw,22px)]">
-            <div className="flex flex-row items-end justify-between">
-              <div className="relative inline-grid items-center">
-                {isWorkCountLoading ? (
-                  <>
-                    <span
-                      aria-hidden="true"
-                      className="invisible text-[clamp(44px,10vw,124px)] font-semibold leading-none whitespace-nowrap tabular-nums text-(--color-paper)"
-                    >
-                      {content.workCount}
-                    </span>
-                    <div className="absolute inset-0 flex items-center justify-center">
-                      <LoadingSpinner
-                        ariaLabel={content.workCountLoadingAriaLabel}
-                        className="text-(--color-paper)"
-                        indicatorClassName="h-8 w-8 border-[3px]"
+    syncTrackHeight();
+
+    const resizeObserver = typeof ResizeObserver === "undefined"
+      ? null
+      : new ResizeObserver(() => syncTrackHeight());
+
+    if (trackRef.current) {
+      resizeObserver?.observe(trackRef.current);
+    }
+
+    return () => {
+      resizeObserver?.disconnect();
+    };
+  }, [isMobile, viewportHeight]);
+
+  const projectTrackGap = isMobile ? 0 : DESKTOP_PROJECT_TRACK_GAP;
+  const wrapperHeight = trackHeight + viewportHeight + projectTrackGap;
+
+  return (
+    <div
+      className="relative mt-[calc(var(--vh,1vh)*-100)]"
+      style={{
+        height: wrapperHeight ? `${wrapperHeight}px` : "300vh",
+      }}
+    >
+      <div
+        className="sticky top-0 overflow-hidden min-h-[calc(var(--vh,1vh)*100)]"
+      >
+        <div ref={trackRef} className="relative">
+          <section
+            className="flex items-center bg-muted py-[clamp(56px,10vw,96px)] text-paper min-h-[calc(var(--vh,1vh)*100)]"
+          >
+            <div className="mx-auto flex w-full max-w-6xl flex-col gap-[clamp(28px,6vw,52px)] px-6 py-0">
+              <div className="flex flex-col items-center gap-[clamp(16px,3vw,24px)] text-center">
+                <div className="inline-grid justify-items-center">
+                  <div
+                    className="translate-x-[4%] justify-self-end text-[clamp(44px,8vw,124px)] font-semibold leading-none text-paper"
+                    aria-label={content.badgeAriaLabel}
+                  >
+                    {content.badgeText}
+                  </div>
+                  <PageHeroTitle title={content.title} className="text-paper" />
+                </div>
+                <div
+                  className={cn(
+                    "flex flex-col items-center gap-1 text-[clamp(18px,3.2vw,28px)] font-light uppercase leading-[clamp(24px,4.2vw,38px)] tracking-[-0.03em]",
+                  )}
+                >
+                  {content.subtitleLines.map((line) => (
+                    <p key={line}>{line}</p>
+                  ))}
+                </div>
+              </div>
+
+              <div className="flex flex-col gap-[clamp(12px,2.5vw,20px)]">
+                <div className="flex flex-col gap-[clamp(14px,3vw,22px)]">
+                  <div className="flex flex-row items-end justify-between">
+                    <div className="relative inline-grid items-center">
+                      {isWorkCountLoading ? (
+                        <>
+                          <span
+                            aria-hidden="true"
+                            className="invisible text-[clamp(44px,10vw,124px)] font-semibold leading-none whitespace-nowrap tabular-nums text-paper"
+                          >
+                            {content.workCount}
+                          </span>
+                          <div className="absolute inset-0 flex items-center justify-center">
+                            <LoadingSpinner
+                              ariaLabel={content.workCountLoadingAriaLabel}
+                              className="text-paper"
+                              indicatorClassName="h-8 w-8 border-[3px]"
+                            />
+                          </div>
+                        </>
+                      ) : resolvedWorkCount ? (
+                        <AnimatedWorkCount
+                          key={resolvedWorkCount.value}
+                          value={resolvedWorkCount.value}
+                          ariaLabel={resolvedWorkCount.ariaLabel}
+                          className="text-[clamp(44px,10vw,124px)] font-semibold text-paper"
+                        />
+                      ) : null}
+                    </div>
+                    <div className="shrink-0">
+                      <Image
+                        src={content.tableImage.src}
+                        alt={content.tableImage.alt}
+                        width={content.tableImage.width}
+                        height={content.tableImage.height}
+                        sizes="(min-width: 1024px) 240px, (min-width: 640px) 180px, 140px"
+                        className="h-auto w-[clamp(100px,22vw,240px)]"
                       />
                     </div>
-                  </>
-                ) : resolvedWorkCount ? (
-                  <AnimatedWorkCount
-                    key={resolvedWorkCount.value}
-                    value={resolvedWorkCount.value}
-                    ariaLabel={resolvedWorkCount.ariaLabel}
-                    className="text-[clamp(44px,10vw,124px)] font-semibold text-(--color-paper)"
-                  />
-                ) : null}
-              </div>
-              <div className="shrink-0">
-                <Image
-                  src={content.tableImage.src}
-                  alt={content.tableImage.alt}
-                  width={content.tableImage.width}
-                  height={content.tableImage.height}
-                  sizes="(min-width: 1024px) 240px, (min-width: 640px) 180px, 140px"
-                  className="h-auto w-[clamp(100px,22vw,240px)]"
-                />
+                  </div>
+                  <div className="h-px w-full bg-paper/60" />
+                </div>
+
+                <div className="ml-auto mt-10 max-w-lg">
+                  <p className="space-y-3 text-[clamp(18px,4.8vw,33px)] font-normal leading-none tracking-[-0.03em] text-paper text-justify">
+                    {content.descriptionLines.map((line) => (
+                      <span key={line} className="block">
+                        {line}
+                      </span>
+                    ))}
+                  </p>
+                </div>
               </div>
             </div>
-            <div className="h-px w-full bg-(--color-paper)/60" />
-          </div>
-
-          <div className="ml-auto mt-10 max-w-lg">
-            <p className="space-y-3 text-[clamp(18px,4.8vw,33px)] font-normal leading-none tracking-[-0.03em] text-(--color-paper) text-justify">
-              {content.descriptionLines.map((line) => (
-                <span key={line} className="block">
-                  {line}
-                </span>
-              ))}
-            </p>
-          </div>
+          </section>
+          
+          <div
+            aria-hidden="true"
+            className={cn(
+              "absolute left-0 w-full bg-(--color-muted) pointer-events-none",
+              isMobile ? "-bottom-[20vh] h-[22vh]" : "-bottom-[10vh] h-[10.5vh]",
+            )}
+          />
         </div>
       </div>
-    </section>
+    </div>
   );
 }
