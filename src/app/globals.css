@@ -1,5 +1,18 @@
 @import "tailwindcss";
 
+@theme {
+  --color-primary: #526354;
+  --color-secondary: #e7d5ac;
+  --color-paper: #ffffff;
+  --color-brown: #452813;
+  --color-surface: #f0f0f0;
+  --color-black: #000000;
+  --color-foreground: #1a1a1a;
+  --color-muted: #7a6b62;
+  --color-sage: #b4c8b6;
+  --font-sans: "Switzer", system-ui, sans-serif;
+}
+
 @font-face {
   font-family: "Switzer";
   src: url("/fonts/switzer/Switzer-Light.woff2") format("woff2");
@@ -41,19 +54,10 @@
 }
 
 :root {
-  --color-primary: #526354;
-  --color-secondary: #e7d5ac;
-  --color-paper: #ffffff;
-  --color-brown: #452813;
-  --color-surface: #f0f0f0;
-  --color-black: #000000;
-  --color-foreground: #1a1a1a;
   --color-step-divider: #424242;
   --color-step-subtitle: #999999;
-  --color-muted: #7a6b62;
   --color-blur-dark: #d9d9d966;
   --color-blur-light: #ffffff4d;
-  --color-sage: #b4c8b6;
   --color-overlay: #00000080;
   --color-accent-green: #7bae81;
   --color-logo-alt: #e4d9c6;
@@ -88,8 +92,6 @@
   --hero-title-top: 62%;
   --hero-subtitle-offset: clamp(70px, 12vh, 140px);
   --color-card-body: #85795d;
-
-  --breakpoint-3xl: 1920px;
 }
 
 html {
@@ -105,7 +107,7 @@ body {
 
 body {
   position: relative;
-  font-family: "Switzer", system-ui, sans-serif;
+  font-family: var(--font-sans);
   color: var(--color-foreground);
   background: var(--color-paper);
 }

@@ -45,7 +45,7 @@ interface WideArrowButtonProps {
 }
 
 const baseInputStyles =
-  "w-full bg-(--color-paper) font-[Switzer] text-[18px] font-semibold leading-none tracking-[-0.04em] text-foreground placeholder:text-(--color-footer-text) focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-(--color-primary)";
+  "w-full bg-(--color-paper) font-sans text-[18px] font-semibold leading-none tracking-[-0.04em] text-foreground placeholder:text-(--color-footer-text) focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-(--color-primary)";
 
 export function InputField({
   id,

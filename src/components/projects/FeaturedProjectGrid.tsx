@@ -214,7 +214,7 @@ function ProjectCard({
                 : "translate-y-4 opacity-0"
             )}
           >
-            <div className="bg-(--color-foreground) text-(--color-background) flex items-center gap-3 rounded-full border border-(--color-background/10) px-4 py-2 shadow-2xl">
+            <div className="flex items-center gap-3 rounded-full border border-paper/10 bg-foreground px-4 py-2 text-paper shadow-2xl">
               <motion.div
                 animate={{ y: [0, 4, 0] }}
                 transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
@@ -280,7 +280,7 @@ function ProjectCard({
 
         <div
           className={cn(
-            "pointer-events-none absolute top-0 left-0 right-0 z-40 h-24 bg-linear-to-b from-(--color-bg-primary) via-(--color-bg-primary)/80 to-transparent transition-transform duration-700",
+            "pointer-events-none absolute top-0 left-0 right-0 z-40 h-24 bg-linear-to-b from-foreground via-foreground/80 to-transparent transition-transform duration-700",
             hoveredId === item.href ? "translate-y-0" : "-translate-y-full"
           )}
         />
