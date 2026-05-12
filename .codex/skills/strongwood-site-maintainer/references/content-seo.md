@@ -1,22 +1,29 @@
-# Content/SEO
+# Content and SEO
 
-Use this reference when the request changes copy, navigation labels, metadata, social links, structured footer/header data, project copy, sitemap, robots, or local OG image wiring.
+Use this reference when the request changes copy, metadata, OG images, navigation labels, legal text, project copy, sitemap, robots, or other typed content.
 
-## Content Sources
+## Canonical Content Sources
 
-- Keep all static copy and structured content in `src/content/`.
-- If a component needs new text, add it to the typed content module first and pass it through props.
-- When content shape changes, update the matching type in `src/types/`.
+- `src/content/site/` owns shared site data such as header, footer, metadata, pages, preloader, and tracking.
+- `src/content/home/` owns home copy, home SEO, and the work-count fallback content.
+- `src/content/proyectos/` owns project list metadata, listing UI strings, featured selections, and project detail data.
+- `src/content/legal/` owns legal documents for privacy and terms.
 
-## SEO Rules
+## SEO Flow
 
+- Build page metadata through `buildMetadata()` in `src/lib/seo.ts`.
+- Resolve canonical URLs from `SITE_URL`; fall back to `http://localhost:3000`.
+- Keep OG images local under `public/images/og/` and reference them from typed content whenever possible.
 - Keep page metadata in Spanish (Argentina).
-- Resolve canonicals from `SITE_URL` with `http://localhost:3000` as the local fallback.
-- Keep OG image paths local under `public/images/og/` and reference them from content or metadata code instead of hardcoding ad hoc strings around the app.
-- If a page slug changes, review `src/app/sitemap.ts`, `src/app/robots.ts`, internal links, and any project content that points to the old route.
+
+## Route Checklist
+
+- If a route slug changes, review internal links, metadata, `src/app/sitemap.ts`, and `src/app/robots.ts`.
+- If a project slug or visibility changes, review `src/app/proyectos/[id]/page.tsx`, featured items in `src/content/proyectos/page.ts`, and `src/app/sitemap.ts`.
+- If header or footer data changes, update the typed content module instead of hardcoding values in layout components.
 
 ## Copy Guardrails
 
-- Preserve the brand tone already present in the repo unless the user asks for a rewrite.
-- Keep UI strings concise and readable on mobile, especially hero subtitles and CTA labels.
-- Do not move large content objects into `layout.tsx` or component files.
+- Preserve the existing Strongwood tone unless the user explicitly asks for a rewrite.
+- Keep hero subtitles and CTA labels short enough to survive mobile layouts.
+- Do not move large content objects into route components or `layout.tsx`.
