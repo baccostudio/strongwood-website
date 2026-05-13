@@ -11,7 +11,7 @@ export const homeProjects = {
   workCountAriaLabel: "Más de 170 trabajos realizados",
   workCountLabelSuffix: "trabajos realizados",
   tableImage: {
-    src: "/images/icons/work_table.png",
+    src: "/images/icons/work_table.webp",
     alt: "Mesa de trabajo",
     width: 1604,
     height: 1604,

@@ -369,8 +369,9 @@ export function Header({
           onClick={openMenu}
           aria-label={logoButtonLabel}
           className={cn(
-            "group pointer-events-auto transition-opacity duration-500 cursor-pointer",
-            isMenuMounted ? "pointer-events-none opacity-0" : "opacity-100",
+            "group pointer-events-auto cursor-pointer transition-opacity duration-300",
+            isMenuMounted && "pointer-events-none",
+            isOpen ? "opacity-0" : "opacity-100",
           )}
         >
           <BurgerMenu
@@ -381,7 +382,7 @@ export function Header({
             aria-hidden="true"
             className={cn(
               "w-16 shrink-0 transition-all duration-200 ease-in-out hover:opacity-70 hover:duration-150 sm:w-20 lg:w-24",
-              isMenuMounted && "rotate-90 -mr-[10.5px] hover:opacity-100 lg:-mr-4",
+              isOpen && "rotate-90 -mr-[10.5px] hover:opacity-100 lg:-mr-4",
             )}
           />
           <span className="sr-only">{menuText}</span>
