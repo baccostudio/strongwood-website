@@ -17,7 +17,6 @@ interface HomeHeroStackProps {
   content: HomeHeroContent;
 }
 
-const HERO_OVERLAY_VIEWPORT_HEIGHT = "calc(var(--vh, 1vh) * 91)";
 const HERO_STACK_TAIL_HEIGHT = "calc(var(--vh, 1vh) * 8)";
 
 interface HeroStackItemStyle extends CSSProperties {
@@ -97,13 +96,7 @@ export function HomeHeroStack({ content }: HomeHeroStackProps) {
   return (
     <section className="relative w-full bg-muted">
       <div className="pointer-events-none absolute inset-0 z-20">
-        <div
-          className="sticky top-0 w-full"
-          style={{
-            height: HERO_OVERLAY_VIEWPORT_HEIGHT,
-            maxHeight: HERO_OVERLAY_VIEWPORT_HEIGHT,
-          }}
-        >
+        <div className="sticky top-0 w-full">
           <HomeHeroOverlay
             label={content.label}
             marqueeItems={content.marqueeItems}
