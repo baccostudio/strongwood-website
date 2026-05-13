@@ -14,7 +14,7 @@ import HomeClient from "./page.client";
 export const metadata: Metadata = buildMetadata({
   title: homeContent.metadata.title,
   description: homeContent.metadata.description,
-  canonicalPath: "/",
+  canonicalPath: "/", 
   siteName: siteConfig.metadata.siteName,
   ogImage: homeContent.metadata.ogImage,
 });
