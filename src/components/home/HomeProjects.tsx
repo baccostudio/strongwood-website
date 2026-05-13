@@ -56,7 +56,7 @@ export function HomeProjects({
 
   return (
     <div
-      className="relative mt-[calc(var(--vh,1vh)*-100)]"
+      className="relative mt-[calc(var(--vh,1svh))]"
       style={{
         height: wrapperHeight ? `${wrapperHeight}px` : "300vh",
       }}
