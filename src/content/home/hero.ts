@@ -44,7 +44,7 @@ export const homeHero: HomeHeroContent = {
     {
       alt: "Cocina con isla blanca con combinación de muebles azules y marrones",
       desktop: {
-        src: "/images/hero-new/hero-section.3.webp",
+        src: "/images/hero-new/hero-section-3.webp",
         width: 4096,
         height: 2725,
       },
