@@ -99,6 +99,7 @@ html,
 body {
   transform: none !important;
   will-change: auto !important;
+  overscroll-behavior-y: contain;
 }
 
 body {
