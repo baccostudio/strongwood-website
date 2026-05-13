@@ -57,7 +57,7 @@ export function HomeProjects({
 
   return (
     <div
-      className="relative mt-[calc(var(--vh,1vh)*-100)] bg-muted"
+      className="relative mt-[calc(var(--vh,1vh)*-100+100px)] bg-muted pb-25"
       style={{ height: wrapperHeight }}
     >
       <div className="sticky top-0 overflow-hidden min-h-[calc(var(--vh,1vh)*100)]">
