@@ -14,7 +14,7 @@ interface HomeProjectsProps {
 
 const DESKTOP_PROJECT_TRACK_GAP = 150;
 const BASE_PROJECT_STICKY_SCROLL_VH = 100;
-const MOBILE_HERO_STACK_TAIL_VH = 10;
+const MOBILE_HERO_STACK_TAIL_VH = 32;
 const MOBILE_PROJECT_BLEED_BOTTOM_VH = -20;
 const MOBILE_PROJECT_BLEED_HEIGHT_VH = 22;
 
@@ -54,12 +54,6 @@ export function HomeProjects({
   const wrapperHeight = trackHeight
     ? `calc(${trackHeight}px + ${projectTrackGap}px + (var(--vh, 1vh) * ${projectTrackViewportSpanVh}))`
     : "calc(var(--vh, 1vh) * 300)";
-  const mobileBleedStyle = isMobile
-    ? {
-        bottom: `calc(var(--vh, 1vh) * ${MOBILE_PROJECT_BLEED_BOTTOM_VH})`,
-        height: `calc(var(--vh, 1vh) * ${MOBILE_PROJECT_BLEED_HEIGHT_VH})`,
-      }
-    : undefined;
 
   return (
     <div
@@ -129,14 +123,6 @@ export function HomeProjects({
             </div>
           </section>
 
-          <div
-            aria-hidden="true"
-            className={cn(
-              "absolute left-0 w-full bg-muted pointer-events-none",
-              isMobile ? "" : "-bottom-[10vh] h-[10.5vh]",
-            )}
-            style={mobileBleedStyle}
-          />
         </div>
       </div>
     </div>
