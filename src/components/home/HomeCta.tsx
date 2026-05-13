@@ -37,9 +37,9 @@ const CTA_SCROLL_SPRING = {
 };
 
 const CTA_MOBILE_SCROLL_SPRING = {
-  stiffness: 95,
-  damping: 26,
-  mass: 0.42,
+  stiffness: 150,
+  damping: 28,
+  mass: 0.24,
 };
 
 const CTA_REVERSE_EXIT_LEAD = 0.1;

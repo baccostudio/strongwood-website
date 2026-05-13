@@ -345,7 +345,7 @@ export function Header({
       <div
         className={cn(
           "flex w-full items-start justify-between px-6 pt-6 lg:px-8",
-          "pointer-events-auto",
+          "pointer-events-none",
           isHome && "sticky top-0",
         )}
         style={isHome ? { height: menuViewportHeight } : undefined}
@@ -361,7 +361,7 @@ export function Header({
             color={'white'}
             // color={headerIconColor}
             aria-hidden="true"
-            className="w-[104px] sm:w-[88px] lg:w-[204px]"
+            className="w-41 lg:lg:w-51"
           />
         </Link>
 
@@ -407,7 +407,7 @@ export function Header({
 
         <div
           className={cn(
-            "relative z-20 flex h-full w-full flex-col items-end gap-6 overflow-hidden px-6 text-(--color-paper) transition-transform duration-300 lg:px-8",
+            "relative z-20 flex h-full w-full flex-col items-end gap-6 overflow-hidden px-6 text-paper transition-transform duration-300 lg:px-8",
             "sm:gap-4",
             isOpen ? "translate-y-0" : "translate-y-full",
           )}
@@ -450,11 +450,9 @@ export function Header({
                     onClick={() => handleMenuLinkClick(link.href)}
                     aria-current={isActive ? "page" : undefined}
                     className={cn(
-                      "group flex items-center justify-end gap-4 uppercase tracking-[-0.03em] transition sm:gap-6 lg:gap-10",
+                      "group flex items-center justify-end gap-4 uppercase tracking-[-0.03em] transition sm:gap-6 lg:gap-10 text-paper",
                       "text-[36px] font-semibold leading-[0.6] sm:text-[60px] lg:text-[94px] [@media(min-width:1024px)_and_(max-height:900px)]:text-[72px]",
-                      isActive
-                        ? "text-(--color-paper)"
-                        : "text-(--color-paper) opacity-55 hover:opacity-90",
+                      !isActive && " opacity-55 hover:opacity-90",
                     )}
                   >
                     <span

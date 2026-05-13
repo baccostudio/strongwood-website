@@ -123,7 +123,7 @@ export function HomeProjects({
           <div
             aria-hidden="true"
             className={cn(
-              "absolute left-0 w-full bg-(--color-muted) pointer-events-none",
+              "absolute left-0 w-full bg-muted pointer-events-none",
               isMobile ? "-bottom-[20vh] h-[22vh]" : "-bottom-[10vh] h-[10.5vh]",
             )}
           />

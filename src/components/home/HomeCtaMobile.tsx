@@ -1,14 +1,10 @@
 "use client";
 
-import { useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import {
   motion,
-  useMotionValue,
-  useMotionValueEvent,
   useReducedMotion,
-  useSpring,
   useTransform,
   type MotionValue,
 } from "framer-motion";
@@ -26,14 +22,6 @@ interface HomeCtaMobileProps {
   scrollYProgress: MotionValue<number>;
   className?: string;
 }
-
-const CTA_MOBILE_REVERSE_EXIT_LEAD = 0.08;
-
-const CTA_MOBILE_REVERSE_EXIT_SPRING = {
-  stiffness: 340,
-  damping: 34,
-  mass: 0.22,
-};
 
 function MobileGalleryItem({
   img,
@@ -99,30 +87,7 @@ function MobileGalleryItem({
 export function HomeCtaMobile({ content, scrollYProgress, className }: HomeCtaMobileProps) {
   const cleanLabel = (content.label || "").replace(/[()]/g, "");
   const shouldReduceMotion = useReducedMotion();
-  const previousProgress = useRef(scrollYProgress.get());
-  const reverseExitLeadTarget = useMotionValue(0);
-  const reverseExitLead = useSpring(reverseExitLeadTarget, CTA_MOBILE_REVERSE_EXIT_SPRING);
-
-  useMotionValueEvent(scrollYProgress, "change", (latest) => {
-    const previous = previousProgress.current;
-
-    if (latest < previous - 0.0005) {
-      reverseExitLeadTarget.set(CTA_MOBILE_REVERSE_EXIT_LEAD);
-    } else if (latest > previous + 0.0005) {
-      reverseExitLeadTarget.set(0);
-    }
-
-    previousProgress.current = latest;
-  });
-
-  const effectiveScrollYProgress = useTransform(() => {
-    if (shouldReduceMotion) {
-      return scrollYProgress.get();
-    }
-
-    const adjusted = scrollYProgress.get() - reverseExitLead.get();
-    return Math.max(0, Math.min(1, adjusted));
-  });
+  const effectiveScrollYProgress = scrollYProgress;
 
   const galleryScale = useTransform(
     effectiveScrollYProgress,
@@ -138,7 +103,7 @@ export function HomeCtaMobile({ content, scrollYProgress, className }: HomeCtaMo
   return (
     <div className={cn("relative w-full h-full flex flex-col items-center justify-center p-4 pointer-events-auto", className)}>
       <motion.div
-        className="absolute top-24 left-1/2 -translate-x-1/2 hidden lg:flex flex-col items-center gap-2 z-[200]"
+        className="absolute top-24 left-1/2 -translate-x-1/2 hidden lg:flex flex-col items-center gap-2"
         style={{
           opacity: barOpacity,
           y: shouldReduceMotion ? 0 : barY,
@@ -151,7 +116,7 @@ export function HomeCtaMobile({ content, scrollYProgress, className }: HomeCtaMo
 
       <motion.div
         style={{ scale: shouldReduceMotion ? 1 : galleryScale }}
-        className="relative w-full px-6 grid grid-cols-2 gap-2 z-10 transform-gpu will-change-transform"
+        className="relative w-full px-6 grid grid-cols-2 gap-2 pointer-events-none transform-gpu will-change-transform"
       >
         {content.gallery.slice(0, 10).map((img, i) => (
           <MobileGalleryItem
@@ -164,7 +129,7 @@ export function HomeCtaMobile({ content, scrollYProgress, className }: HomeCtaMo
       </motion.div>
 
       <motion.div
-        className="absolute left-0 right-0 flex justify-center px-8 z-[300] isolate"
+        className="absolute left-0 right-0 flex justify-center px-8 isolate pointer-events-auto"
         style={{
           opacity: 1,
           y: shouldReduceMotion ? 0 : ctaY,
@@ -172,7 +137,8 @@ export function HomeCtaMobile({ content, scrollYProgress, className }: HomeCtaMo
       >
         <Link
           href={content.href}
-          className="w-full max-w-[280px] inline-flex items-center justify-center border border-white/20 bg-black/80 text-center px-6 py-5 text-[13px] font-medium uppercase tracking-[0.2em] text-white active:bg-white active:text-black transition-all"
+          aria-label={content.ariaLabel}
+          className="w-full max-w-70 inline-flex items-center justify-center border border-white/20 bg-black/80 text-center px-6 py-5 text-[13px] font-medium uppercase tracking-[0.2em] text-white active:bg-white active:text-black transition-all"
         >
           {cleanLabel}
         </Link>

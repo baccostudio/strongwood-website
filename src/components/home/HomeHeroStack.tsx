@@ -68,7 +68,7 @@ function ResponsiveHeroImage({
   });
 
   return (
-    <picture className="block w-full aspect-[var(--hero-aspect-mobile)] lg:aspect-[var(--hero-aspect-desktop)]">
+    <picture className="block w-full aspect-(--hero-aspect-mobile) lg:aspect-(--hero-aspect-desktop)">
       <source
         media={HOME_HERO_DESKTOP_MEDIA}
         srcSet={desktopSrcSet}
@@ -107,7 +107,7 @@ export function HomeHeroStack({ content }: HomeHeroStackProps) {
       {content.images.map((image, index) => (
         <div
           key={image.desktop.src}
-          className="sticky top-[var(--hero-top-mobile)] lg:top-[var(--hero-top-desktop)]"
+          className="sticky top-(--hero-top-mobile) lg:top-(--hero-top-desktop)"
           style={getHeroStackItemStyle(image, index)}
         >
           <ResponsiveHeroImage image={image} isPriority={index === 0} />
