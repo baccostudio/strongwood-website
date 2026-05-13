@@ -17,7 +17,7 @@ interface HomeHeroStackProps {
   content: HomeHeroContent;
 }
 
-const HERO_STACK_TAIL_HEIGHT = "calc(var(--vh, 1vh) * 8)";
+const HERO_STACK_TAIL_HEIGHT = "calc(var(--vh, 1vh) * 2)";
 
 interface HeroStackItemStyle extends CSSProperties {
   "--hero-aspect-mobile": string;
