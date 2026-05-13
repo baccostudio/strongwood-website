@@ -1,14 +1,7 @@
 import type { Metadata } from "next";
-import { cookies, headers } from "next/headers";
+import { headers } from "next/headers";
 import { homeContent } from "@/content/home";
 import { siteConfig } from "@/content/site";
-import {
-  PRELOADER_DECISION_HEADER,
-  getPreloaderDecision,
-  getPreloaderCookieName,
-  getPreloaderDevice,
-  isValidPreloaderCookie,
-} from "@/lib/preloader";
 import { buildMetadata } from "@/lib/seo";
 import { checkIsMobile } from "@/lib/user-agent";
 import { getHomeProjectStatsAction } from "./home.actions";
@@ -24,14 +17,7 @@ export const metadata: Metadata = buildMetadata({
 
 export default async function Home() {
   const requestHeaders = await headers();
-  const cookieStore = await cookies();
   const initialIsMobile = checkIsMobile(requestHeaders.get("user-agent") ?? "");
-  const device = getPreloaderDevice(initialIsMobile);
-  const cookieName = getPreloaderCookieName(device);
-  const preloaderDecisionHeader = requestHeaders.get(PRELOADER_DECISION_HEADER);
-  const shouldShowPreloader = preloaderDecisionHeader
-    ? getPreloaderDecision(preloaderDecisionHeader) === "show"
-    : !isValidPreloaderCookie(cookieStore.get(cookieName)?.value, device);
   const projectStats = await getHomeProjectStatsAction();
 
   return (
@@ -39,7 +25,6 @@ export default async function Home() {
       initialIsMobile={initialIsMobile}
       projectsContent={homeContent.projects}
       projectStats={projectStats}
-      shouldShowPreloader={shouldShowPreloader}
     />
   );
 }

@@ -7,7 +7,6 @@ import { cn } from "@/lib/utils";
 interface HomeHeroStackProps {
   content: HomeHeroContent;
   isMobile: boolean;
-  shouldPreload?: boolean;
 }
 
 function getHeroStackItemStyle(
@@ -23,7 +22,6 @@ function getHeroStackItemStyle(
 export function HomeHeroStack({
   content,
   isMobile,
-  shouldPreload = false,
 }: HomeHeroStackProps) {
   const activeImages = content.images.map((image) => ({
     alt: image.alt,
@@ -55,7 +53,7 @@ export function HomeHeroStack({
             width={asset.width}
             height={asset.height}
             sizes="100vw"
-            priority={shouldPreload || index === 0}
+            priority={index === 0}
             className={cn(
               "block h-auto w-full select-none",
               // index !== 0 && "rounded-t-[70px]",
