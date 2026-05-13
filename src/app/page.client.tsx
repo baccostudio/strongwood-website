@@ -79,6 +79,7 @@ export default function HomeClient({
   projectStats,
 }: HomeClientProps) {
   const lastWidth = useRef(0);
+  const stableViewportHeightRef = useRef(0);
   const viewportResolvedRef = useRef(false);
 
   const [isMobile, setIsMobile] = useState(false);
@@ -141,11 +142,17 @@ export default function HomeClient({
       const currentHeight = resolveViewportHeight(window);
       const nextIsMobile = currentWidth < HOME_MOBILE_BREAKPOINT;
       const widthChanged = currentWidth !== lastWidth.current;
+      const nextStableViewportHeight = widthChanged
+        ? currentHeight
+        : Math.max(stableViewportHeightRef.current, currentHeight);
+      const stableHeightChanged = nextStableViewportHeight !== stableViewportHeightRef.current;
 
-      if (forceHeightSync || widthChanged) {
-        const vh = currentHeight * 0.01;
+      stableViewportHeightRef.current = nextStableViewportHeight;
 
-        document.documentElement.style.setProperty("--vh", `${vh}px`);
+      if (forceHeightSync || widthChanged || stableHeightChanged) {
+        const stableVh = nextStableViewportHeight * 0.01;
+
+        document.documentElement.style.setProperty("--vh", `${stableVh}px`);
         lastWidth.current = currentWidth;
       }
 
