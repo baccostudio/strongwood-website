@@ -52,12 +52,12 @@ export function HomeProjects({
   const projectTrackGap = isMobile ? 0 : DESKTOP_PROJECT_TRACK_GAP;
   const projectTrackViewportSpanVh = BASE_PROJECT_STICKY_SCROLL_VH + (isMobile ? MOBILE_HERO_STACK_TAIL_VH : 0);
   const wrapperHeight = trackHeight
-    ? `calc(${trackHeight}px + ${projectTrackGap}px + (var(--vh, 1vh) * ${projectTrackViewportSpanVh}))`
+    ? `calc(${trackHeight}px + ${projectTrackGap}px + 100px + (var(--vh, 1vh) * ${projectTrackViewportSpanVh}))`
     : "calc(var(--vh, 1vh) * 300)";
 
   return (
     <div
-      className="relative mt-[calc(var(--vh,1vh)*-100+100px)] bg-muted pb-25"
+      className="relative mt-[calc(var(--vh,1vh)*-100)] bg-muted"
       style={{ height: wrapperHeight }}
     >
       <div className="sticky top-0 overflow-hidden min-h-[calc(var(--vh,1vh)*100)]">
