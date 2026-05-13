@@ -93,6 +93,7 @@
 html {
   position: relative;
   scrollbar-gutter: stable;
+  overscroll-behavior-y: none;
 }
 
 html,
@@ -106,6 +107,7 @@ body {
   font-family: var(--font-sans);
   color: var(--color-foreground);
   background: var(--color-paper);
+  overscroll-behavior-y: none;
 }
 
 @keyframes home-marquee {

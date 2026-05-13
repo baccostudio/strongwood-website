@@ -9,6 +9,7 @@ import type { HomeProjectStats, HomeProjectsContent } from "@/types/home";
 
 const HOME_CTA_ANIMATION_SPAN_VH = 250;
 const HOME_CTA_EXTRA_SCROLL_VH = 65;
+const HOME_CTA_MOBILE_EXTRA_SCROLL_VH = 16;
 const HOME_CTA_SECTION_HEIGHT_VH = HOME_CTA_ANIMATION_SPAN_VH + HOME_CTA_EXTRA_SCROLL_VH;
 const VIEWPORT_RECOVERY_DELAY_MS = 250;
 
@@ -83,6 +84,8 @@ export default function HomeClient({
   const [isMobile, setIsMobile] = useState(false);
   const [viewportHeight, setViewportHeight] = useState(0);
   const [resolvedProjectStats, setResolvedProjectStats] = useState(projectStats);
+  const homeCtaExtraScrollVh = isMobile ? HOME_CTA_MOBILE_EXTRA_SCROLL_VH : HOME_CTA_EXTRA_SCROLL_VH;
+  const homeCtaSectionHeightVh = HOME_CTA_ANIMATION_SPAN_VH + homeCtaExtraScrollVh;
 
   useLayoutEffect(() => {
     scrollHomeToTop();
@@ -268,7 +271,7 @@ export default function HomeClient({
       <DynamicHomeCta
         content={homeContent.cta}
         isMobile={isMobile}
-        sectionHeightVh={HOME_CTA_SECTION_HEIGHT_VH}
+        sectionHeightVh={homeCtaSectionHeightVh}
         animationSpanVh={HOME_CTA_ANIMATION_SPAN_VH}
       />
     </>
