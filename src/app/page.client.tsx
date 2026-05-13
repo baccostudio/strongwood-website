@@ -58,6 +58,12 @@ function preloadImageAsset(source: string) {
   });
 }
 
+function scrollHomeToTop() {
+  window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+  document.documentElement.scrollTop = 0;
+  document.body.scrollTop = 0;
+}
+
 export default function HomeClient({
   initialIsMobile,
   projectsContent,
@@ -71,9 +77,47 @@ export default function HomeClient({
   const [viewportHeight, setViewportHeight] = useState(0);
 
   useLayoutEffect(() => {
-    window.scrollTo(0, 0);
-    document.documentElement.scrollTop = 0;
-    document.body.scrollTop = 0;
+    scrollHomeToTop();
+  }, []);
+
+  useEffect(() => {
+    const canControlScrollRestoration =
+      typeof window.history.scrollRestoration === "string";
+
+    const previousScrollRestoration = canControlScrollRestoration
+      ? window.history.scrollRestoration
+      : null;
+
+    if (canControlScrollRestoration) {
+      window.history.scrollRestoration = "manual";
+    }
+
+    scrollHomeToTop();
+
+    const firstFrameId = window.requestAnimationFrame(() => {
+      scrollHomeToTop();
+
+      window.requestAnimationFrame(() => {
+        scrollHomeToTop();
+      });
+    });
+
+    const handlePageShow = () => {
+      scrollHomeToTop();
+    };
+
+    window.addEventListener("load", handlePageShow);
+    window.addEventListener("pageshow", handlePageShow);
+
+    return () => {
+      window.cancelAnimationFrame(firstFrameId);
+      window.removeEventListener("load", handlePageShow);
+      window.removeEventListener("pageshow", handlePageShow);
+
+      if (canControlScrollRestoration && previousScrollRestoration) {
+        window.history.scrollRestoration = previousScrollRestoration;
+      }
+    };
   }, []);
 
   useEffect(() => {
