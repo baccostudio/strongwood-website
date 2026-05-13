@@ -11,7 +11,6 @@ import {
 import { cn } from "@/lib/utils";
 import type { HomeCtaContent } from "@/types/home";
 import {
-  CTA_CTA_Y_PROGRESS,
   CTA_GALLERY_SCALE_PROGRESS,
   CTA_SEQUENCE_STAGGER_STEP,
   CTA_SEQUENCE_TRANSIT_DURATION,
@@ -92,16 +91,15 @@ export function HomeCtaMobile({ content, scrollYProgress, className }: HomeCtaMo
   const galleryScale = useTransform(
     effectiveScrollYProgress,
     CTA_GALLERY_SCALE_PROGRESS,
-    [1, 1.012, 1.2],
+    [1, 1.012, 1.08],
     { clamp: true },
   );
   const progressWidth = useTransform(effectiveScrollYProgress, [0, 1], ["0%", "100%"], { clamp: true });
-  const ctaY = useTransform(effectiveScrollYProgress, CTA_CTA_Y_PROGRESS, [12, 0, -6], { clamp: true });
   const barOpacity = useTransform(effectiveScrollYProgress, [0.03, 0.09, 0.92, 1], [0, 1, 1, 0], { clamp: true });
   const barY = useTransform(effectiveScrollYProgress, [0.03, 0.09, 1], [6, 0, -4], { clamp: true });
 
   return (
-    <div className={cn("relative w-full h-full flex flex-col items-center justify-center p-4 pointer-events-auto", className)}>
+    <div className={cn("relative w-full h-full flex flex-col items-center justify-center pointer-events-auto", className)}>
       <motion.div
         className="absolute top-24 left-1/2 -translate-x-1/2 hidden lg:flex flex-col items-center gap-2"
         style={{
@@ -132,13 +130,12 @@ export function HomeCtaMobile({ content, scrollYProgress, className }: HomeCtaMo
         className="absolute left-0 right-0 flex justify-center px-8 isolate pointer-events-auto"
         style={{
           opacity: 1,
-          y: shouldReduceMotion ? 0 : ctaY,
         }}
       >
         <Link
           href={content.href}
           aria-label={content.ariaLabel}
-          className="w-full max-w-70 inline-flex items-center justify-center border border-white/20 bg-black/80 text-center px-6 py-5 text-[13px] font-medium uppercase tracking-[0.2em] text-white active:bg-white active:text-black transition-all"
+          className="w-full max-w-70 inline-flex items-center justify-center border border-white/20 bg-black/80 text-center px-6 py-5 text-[13px] font-medium uppercase tracking-[0.2em] text-white active:bg-white active:text-black transition-colors"
         >
           {cleanLabel}
         </Link>

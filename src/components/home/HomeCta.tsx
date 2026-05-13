@@ -16,7 +16,6 @@ import {
 import type { HomeCtaContent } from "@/types/home";
 import { HomeCtaMobile } from "./HomeCtaMobile";
 import {
-  CTA_CTA_Y_PROGRESS,
   CTA_GALLERY_SCALE_PROGRESS,
   CTA_SEQUENCE_STAGGER_STEP,
   CTA_SEQUENCE_TRANSIT_DURATION,
@@ -171,7 +170,6 @@ export function HomeCta({
     [1, 1.03, 1.24],
     { clamp: true },
   );
-  const ctaY = useTransform(effectiveScrollYProgress, CTA_CTA_Y_PROGRESS, [24, 0, -10], { clamp: true });
 
   return (
     <section
@@ -182,7 +180,7 @@ export function HomeCta({
       <div
         className="sticky top-0 w-full overflow-hidden flex items-center justify-center bg-black h-[calc(var(--vh,1vh)*100)]"
       >
-        <div className="absolute -bottom-[10vh] left-0 w-full h-[10.5vh] bg-inherit pointer-events-none" />
+        {/* <div className="absolute -bottom-[10vh] left-0 w-full h-[10.5vh] bg-inherit pointer-events-none" /> */}
 
         {isMobile ? (
           <HomeCtaMobile content={content} scrollYProgress={mobileScrollYProgress} />
@@ -237,13 +235,12 @@ export function HomeCta({
             className="absolute inset-x-0 flex justify-center px-6 isolate"
             style={{
               opacity: 1,
-              y: shouldReduceMotion ? 0 : ctaY,
             }}
           >
             <Link
               href={content.href}
               aria-label={content.ariaLabel}
-              className="inline-flex items-center justify-center border border-paper/20 bg-black/80 text-center px-14 py-6 text-[clamp(14px,2vw,16px)] font-medium uppercase tracking-[0.3em] text-paper transition-all hover:bg-paper hover:text-black group"
+              className="inline-flex items-center justify-center border border-paper/20 bg-black/80 text-center px-14 py-6 text-[clamp(14px,2vw,16px)] font-medium uppercase tracking-[0.3em] text-paper transition-colors hover:bg-paper hover:text-black group"
             >
               <span className="relative flex items-center gap-4">
                 {content.label.replace(/[()]/g, "")}

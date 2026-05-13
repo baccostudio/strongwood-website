@@ -10,6 +10,7 @@ import type { HomeProjectStats, HomeProjectsContent } from "@/types/home";
 const HOME_CTA_ANIMATION_SPAN_VH = 250;
 const HOME_CTA_EXTRA_SCROLL_VH = 65;
 const HOME_CTA_SECTION_HEIGHT_VH = HOME_CTA_ANIMATION_SPAN_VH + HOME_CTA_EXTRA_SCROLL_VH;
+const VIEWPORT_RECOVERY_DELAY_MS = 250;
 
 function HomeCtaFallback() {
   return (
@@ -50,6 +51,20 @@ function resolveViewportWidth(target: Window): number {
   );
 
   return Math.floor(resolvedWidth ?? HOME_MOBILE_BREAKPOINT);
+}
+
+function resolveViewportHeight(target: Window): number {
+  const heightCandidates = [
+    target.visualViewport?.height,
+    target.document.documentElement.clientHeight,
+    target.innerHeight,
+  ];
+
+  const resolvedHeight = heightCandidates.find(
+    (value): value is number => typeof value === "number" && Number.isFinite(value) && value > 0,
+  );
+
+  return Math.floor(resolvedHeight ?? target.innerHeight);
 }
 
 function scrollHomeToTop() {
@@ -116,31 +131,75 @@ export default function HomeClient({
   useEffect(() => {
     viewportResolvedRef.current = false;
 
-    const syncViewport = () => {
-      const currentWidth = resolveViewportWidth(window);
-      const nextIsMobile = currentWidth < HOME_MOBILE_BREAKPOINT;
+    let recoveryFrameId: number | null = null;
+    let recoveryTimeoutId: number | null = null;
 
-      if (currentWidth !== lastWidth.current) {
-        const innerH = window.innerHeight;
-        const vh = innerH * 0.01;
+    const applyViewportState = (forceHeightSync = false) => {
+      const currentWidth = resolveViewportWidth(window);
+      const currentHeight = resolveViewportHeight(window);
+      const nextIsMobile = currentWidth < HOME_MOBILE_BREAKPOINT;
+      const widthChanged = currentWidth !== lastWidth.current;
+
+      if (forceHeightSync || widthChanged) {
+        const vh = currentHeight * 0.01;
 
         document.documentElement.style.setProperty("--vh", `${vh}px`);
         lastWidth.current = currentWidth;
+      }
+
+      if (forceHeightSync || widthChanged || !viewportResolvedRef.current) {
         setIsMobile(nextIsMobile);
-        setViewportHeight(innerH);
-        viewportResolvedRef.current = true;
-      } else if (!viewportResolvedRef.current) {
-        setIsMobile(nextIsMobile);
-        setViewportHeight(window.innerHeight);
+        setViewportHeight(currentHeight);
         viewportResolvedRef.current = true;
       }
     };
 
-    syncViewport();
+    const syncViewport = () => {
+      applyViewportState(false);
+    };
+
+    const recoverViewportAfterRefresh = () => {
+      if (recoveryFrameId !== null) {
+        window.cancelAnimationFrame(recoveryFrameId);
+      }
+
+      if (recoveryTimeoutId !== null) {
+        window.clearTimeout(recoveryTimeoutId);
+      }
+
+      // Pull-to-refresh can settle the mobile viewport after initial mount.
+      applyViewportState(true);
+
+      recoveryFrameId = window.requestAnimationFrame(() => {
+        applyViewportState(true);
+        recoveryFrameId = null;
+      });
+
+      recoveryTimeoutId = window.setTimeout(() => {
+        applyViewportState(true);
+        recoveryTimeoutId = null;
+      }, VIEWPORT_RECOVERY_DELAY_MS);
+    };
+
+    recoverViewportAfterRefresh();
     window.addEventListener("resize", syncViewport);
+    window.addEventListener("load", recoverViewportAfterRefresh);
+    window.addEventListener("pageshow", recoverViewportAfterRefresh);
+    window.visualViewport?.addEventListener("resize", syncViewport);
 
     return () => {
+      if (recoveryFrameId !== null) {
+        window.cancelAnimationFrame(recoveryFrameId);
+      }
+
+      if (recoveryTimeoutId !== null) {
+        window.clearTimeout(recoveryTimeoutId);
+      }
+
       window.removeEventListener("resize", syncViewport);
+      window.removeEventListener("load", recoverViewportAfterRefresh);
+      window.removeEventListener("pageshow", recoverViewportAfterRefresh);
+      window.visualViewport?.removeEventListener("resize", syncViewport);
     };
   }, []);
 
