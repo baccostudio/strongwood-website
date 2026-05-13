@@ -18,6 +18,7 @@ interface HomeHeroStackProps {
 }
 
 const HERO_OVERLAY_VIEWPORT_HEIGHT = "calc(var(--vh, 1vh) * 91)";
+const HERO_OVERLAY_SAFE_VIEWPORT_HEIGHT = "91svh";
 const HERO_STACK_TAIL_HEIGHT = "calc(var(--vh, 1vh) * 8)";
 
 interface HeroStackItemStyle extends CSSProperties {
@@ -107,6 +108,7 @@ export function HomeHeroStack({ content }: HomeHeroStackProps) {
           <HomeHeroOverlay
             label={content.label}
             marqueeItems={content.marqueeItems}
+            safeViewportHeight={HERO_OVERLAY_SAFE_VIEWPORT_HEIGHT}
           />
         </div>
       </div>

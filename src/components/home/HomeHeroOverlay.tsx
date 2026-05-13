@@ -4,6 +4,7 @@ import { cn } from "@/lib/utils";
 interface HomeHeroOverlayProps {
   label: HomeHeroContent["label"];
   marqueeItems: HomeHeroContent["marqueeItems"];
+  safeViewportHeight?: string;
 }
 
 function MarqueeLine({ items }: { items: HomeHeroContent["marqueeItems"] }) {
@@ -26,13 +27,22 @@ function MarqueeLine({ items }: { items: HomeHeroContent["marqueeItems"] }) {
   );
 }
 
-export function HomeHeroOverlay({ label, marqueeItems }: HomeHeroOverlayProps) {
+export function HomeHeroOverlay({
+  label,
+  marqueeItems,
+  safeViewportHeight = "100%",
+}: HomeHeroOverlayProps) {
   return (
     <div
-      className="pointer-events-none relative flex h-[calc(var(--vh,1vh)*100)] w-full flex-col justify-end overflow-hidden pb-[clamp(24px,4vw,32px)]"
+      className="pointer-events-none relative h-full w-full overflow-hidden"
     >
-{/* rounded-b-[70px] overflow-hidden */}
-      <div className="relative z-10">
+      <div
+        className="relative z-10 flex w-full flex-col justify-end pb-[clamp(24px,4vw,32px)]"
+        style={{
+          height: `min(100%, ${safeViewportHeight})`,
+          maxHeight: `min(100%, ${safeViewportHeight})`,
+        }}
+      >
         <div className="relative ">
           <p className="mb-4 px-6 text-[clamp(12px,2.2vw,16px)] font-medium uppercase tracking-[0.08em] text-paper md:px-16">
             {label}
