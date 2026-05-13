@@ -54,21 +54,15 @@ export function HomeProjects({
   const wrapperHeight = trackHeight
     ? `calc(${trackHeight}px + ${projectTrackGap}px + (var(--vh, 1vh) * ${projectTrackViewportSpanVh}))`
     : "calc(var(--vh, 1vh) * 300)";
-  const mobileBleedStyle = isMobile
-    ? {
-        bottom: `calc(var(--vh, 1vh) * ${MOBILE_PROJECT_BLEED_BOTTOM_VH})`,
-        height: `calc(var(--vh, 1vh) * ${MOBILE_PROJECT_BLEED_HEIGHT_VH})`,
-      }
-    : undefined;
 
   return (
     <div
-      className="relative mt-[calc(var(--vh,1vh)*-100)]"
+      className="relative mt-[calc(var(--vh,1vh)*-100)] bg-muted"
       style={{ height: wrapperHeight }}
     >
       <div className="sticky top-0 overflow-hidden min-h-[calc(var(--vh,1vh)*100)]">
         <div ref={trackRef} className="relative">
-          <section className="flex items-center bg-muted py-[clamp(56px,10vw,96px)] text-paper min-h-[calc(var(--vh,1vh)*100)]">
+          <section className="flex items-center py-[clamp(56px,10vw,96px)] text-paper min-h-[calc(var(--vh,1vh)*100)]">
             <div className="mx-auto flex w-full max-w-6xl flex-col gap-[clamp(28px,6vw,52px)] px-6 py-0">
               <div className="flex flex-col items-center gap-[clamp(16px,3vw,24px)] text-center">
                 <div className="inline-grid justify-items-center">
@@ -128,15 +122,6 @@ export function HomeProjects({
               </div>
             </div>
           </section>
-
-          <div
-            aria-hidden="true"
-            className={cn(
-              "absolute left-0 w-full bg-muted pointer-events-none",
-              isMobile ? "" : "-bottom-[10vh] h-[10.5vh]",
-            )}
-            style={mobileBleedStyle}
-          />
         </div>
       </div>
     </div>
