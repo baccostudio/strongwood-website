@@ -94,24 +94,9 @@ export function HomeCtaMobile({ content, scrollYProgress, className }: HomeCtaMo
     [1, 1.012, 1.08],
     { clamp: true },
   );
-  const progressWidth = useTransform(effectiveScrollYProgress, [0, 1], ["0%", "100%"], { clamp: true });
-  const barOpacity = useTransform(effectiveScrollYProgress, [0.03, 0.09, 0.92, 1], [0, 1, 1, 0], { clamp: true });
-  const barY = useTransform(effectiveScrollYProgress, [0.03, 0.09, 1], [6, 0, -4], { clamp: true });
 
   return (
     <div className={cn("relative w-full h-full flex flex-col items-center justify-center pointer-events-auto", className)}>
-      <motion.div
-        className="absolute top-24 left-1/2 -translate-x-1/2 hidden lg:flex flex-col items-center gap-2"
-        style={{
-          opacity: barOpacity,
-          y: shouldReduceMotion ? 0 : barY,
-        }}
-      >
-        <div className="w-24 h-px bg-white/10 overflow-hidden">
-          <motion.div className="h-full bg-white/60" style={{ width: progressWidth }} />
-        </div>
-      </motion.div>
-
       <motion.div
         style={{ scale: shouldReduceMotion ? 1 : galleryScale }}
         className="relative w-full px-6 grid grid-cols-2 gap-2 pointer-events-none transform-gpu will-change-transform"

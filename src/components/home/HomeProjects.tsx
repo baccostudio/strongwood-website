@@ -14,6 +14,7 @@ interface HomeProjectsProps {
 }
 
 const DESKTOP_PROJECT_TRACK_GAP = 150;
+const MOBILE_HERO_STACK_TAIL_VH = 8;
 
 export function HomeProjects({
   content,
@@ -48,7 +49,10 @@ export function HomeProjects({
   }, [isMobile, viewportHeight]);
 
   const projectTrackGap = isMobile ? 0 : DESKTOP_PROJECT_TRACK_GAP;
-  const wrapperHeight = trackHeight + viewportHeight + projectTrackGap;
+  const heroStackTailOffset = isMobile
+    ? Math.ceil((viewportHeight * MOBILE_HERO_STACK_TAIL_VH) / 100)
+    : 0;
+  const wrapperHeight = trackHeight + viewportHeight + projectTrackGap + heroStackTailOffset;
 
   return (
     <div
