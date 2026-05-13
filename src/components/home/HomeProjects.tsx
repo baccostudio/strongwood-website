@@ -13,10 +13,8 @@ interface HomeProjectsProps {
 }
 
 const DESKTOP_PROJECT_TRACK_GAP = 150;
-const BASE_PROJECT_STICKY_SCROLL_VH = 100;
+const BASE_PROJECT_STICKY_SCROLL_VH = 150;
 const MOBILE_HERO_STACK_TAIL_VH = 8;
-const MOBILE_PROJECT_BLEED_BOTTOM_VH = -20;
-const MOBILE_PROJECT_BLEED_HEIGHT_VH = 22;
 
 export function HomeProjects({
   content,
@@ -49,10 +47,10 @@ export function HomeProjects({
     };
   }, [isMobile]);
 
-  const projectTrackGap = isMobile ? 0 : DESKTOP_PROJECT_TRACK_GAP;
+  const projectTrackGap = isMobile ? 100 : DESKTOP_PROJECT_TRACK_GAP;
   const projectTrackViewportSpanVh = BASE_PROJECT_STICKY_SCROLL_VH + (isMobile ? MOBILE_HERO_STACK_TAIL_VH : 0);
   const wrapperHeight = trackHeight
-    ? `calc(${trackHeight}px + ${projectTrackGap}px + 100px + (var(--vh, 1vh) * ${projectTrackViewportSpanVh}))`
+    ? `calc(${trackHeight}px + ${projectTrackGap}px + (var(--vh, 1vh) * ${projectTrackViewportSpanVh}))`
     : "calc(var(--vh, 1vh) * 300)";
 
   return (
