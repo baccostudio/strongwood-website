@@ -18,6 +18,8 @@ interface HomeHeroStackProps {
 }
 
 interface HeroStackItemStyle extends CSSProperties {
+  "--hero-aspect-mobile": string;
+  "--hero-aspect-desktop": string;
   "--hero-top-mobile": string;
   "--hero-top-desktop": string;
 }
@@ -31,6 +33,8 @@ function getHeroStackItemStyle(
   index: number,
 ): HeroStackItemStyle {
   return {
+    "--hero-aspect-mobile": `${image.mobile.width} / ${image.mobile.height}`,
+    "--hero-aspect-desktop": `${image.desktop.width} / ${image.desktop.height}`,
     "--hero-top-mobile": getHeroTopOffset(image.mobile),
     "--hero-top-desktop": getHeroTopOffset(image.desktop),
     zIndex: index + 1,
@@ -64,7 +68,7 @@ function ResponsiveHeroImage({
   });
 
   return (
-    <picture>
+    <picture className="block w-full aspect-[var(--hero-aspect-mobile)] lg:aspect-[var(--hero-aspect-desktop)]">
       <source
         media={HOME_HERO_DESKTOP_MEDIA}
         srcSet={desktopSrcSet}
@@ -80,7 +84,7 @@ function ResponsiveHeroImage({
         {...mobileImageProps}
         loading={isPriority ? "eager" : "lazy"}
         fetchPriority={isPriority ? "high" : undefined}
-        className="block h-auto w-full select-none"
+        className="block h-full w-full object-cover select-none"
       />
     </picture>
   );

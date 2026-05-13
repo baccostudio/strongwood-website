@@ -6,10 +6,6 @@ import type { HomeProjectStats } from "@/types/home";
 
 const WORK_COUNT_TIMEOUT_MS = 2500;
 
-function normalizeWorkCount(value: string) {
-  return value.startsWith("+") ? value : `+${value}`;
-}
-
 export function buildFallbackHomeProjectStats(): HomeProjectStats {
   return {
     workCount: homeContent.projects.workCount,
@@ -18,12 +14,9 @@ export function buildFallbackHomeProjectStats(): HomeProjectStats {
 }
 
 function buildLiveHomeProjectStats(workCount: string): HomeProjectStats {
-  const normalizedWorkCount = normalizeWorkCount(workCount);
-  const countWithoutPrefix = normalizedWorkCount.replace(/^\+/, "");
-
   return {
-    workCount: normalizedWorkCount,
-    workCountAriaLabel: `Más de ${countWithoutPrefix} ${homeContent.projects.workCountLabelSuffix}`,
+    workCount,
+    workCountAriaLabel: `${workCount} ${homeContent.projects.workCountLabelSuffix}`,
   };
 }
 
