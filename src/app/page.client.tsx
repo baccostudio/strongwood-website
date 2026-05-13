@@ -5,6 +5,7 @@ import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { HomeProjects } from "@/components/home/HomeProjects";
 import { homeContent } from "@/content/home";
 import { HOME_MOBILE_BREAKPOINT } from "@/lib/preloader";
+import { resolveViewportHeight, resolveViewportWidth } from "@/lib/viewport";
 import type { HomeProjectStats, HomeProjectsContent } from "@/types/home";
 
 const HOME_CTA_ANIMATION_SPAN_VH = 250;
@@ -38,34 +39,6 @@ const DynamicHomeCta = dynamic(
 interface HomeClientProps {
   projectsContent: HomeProjectsContent;
   projectStats: HomeProjectStats;
-}
-
-function resolveViewportWidth(target: Window): number {
-  const widthCandidates = [
-    target.visualViewport?.width,
-    target.document.documentElement.clientWidth,
-    target.innerWidth,
-  ];
-
-  const resolvedWidth = widthCandidates.find(
-    (value): value is number => typeof value === "number" && Number.isFinite(value) && value > 0,
-  );
-
-  return Math.floor(resolvedWidth ?? HOME_MOBILE_BREAKPOINT);
-}
-
-function resolveViewportHeight(target: Window): number {
-  const heightCandidates = [
-    target.visualViewport?.height,
-    target.document.documentElement.clientHeight,
-    target.innerHeight,
-  ];
-
-  const resolvedHeight = heightCandidates.find(
-    (value): value is number => typeof value === "number" && Number.isFinite(value) && value > 0,
-  );
-
-  return Math.floor(resolvedHeight ?? target.innerHeight);
 }
 
 function scrollHomeToTop() {
@@ -138,7 +111,7 @@ export default function HomeClient({
     let recoveryTimeoutId: number | null = null;
 
     const applyViewportState = (forceHeightSync = false) => {
-      const currentWidth = resolveViewportWidth(window);
+      const currentWidth = resolveViewportWidth(window, HOME_MOBILE_BREAKPOINT);
       const currentHeight = resolveViewportHeight(window);
       const nextIsMobile = currentWidth < HOME_MOBILE_BREAKPOINT;
       const widthChanged = currentWidth !== lastWidth.current;

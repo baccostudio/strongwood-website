@@ -6,8 +6,9 @@ import { usePathname } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
 import BurgerMenu from "@/components/icons/burger-menu";
 import StrongwoodLogo from "@/components/icons/strongwood-logo";
-import type { HeaderConfig } from "@/types/site";
 import { cn } from "@/lib/utils";
+import { resolveViewportHeight } from "@/lib/viewport";
+import type { HeaderConfig } from "@/types/site";
 
 interface HeaderProps extends HeaderConfig {
   className?: string;
@@ -18,6 +19,29 @@ interface ScrollLockState {
 }
 
 const MENU_CLOSE_DURATION_MS = 300;
+const MENU_SCROLL_KEYS = new Set([
+  "ArrowUp",
+  "ArrowDown",
+  "PageUp",
+  "PageDown",
+  "Home",
+  "End",
+  " ",
+]);
+
+function getMenuViewportStyle(menuViewportHeight: number | null) {
+  if (menuViewportHeight === null) {
+    return undefined;
+  }
+
+  const height = `${menuViewportHeight}px`;
+
+  return {
+    height,
+    minHeight: height,
+    maxHeight: height,
+  };
+}
 
 export function Header({
   brandLogoAlt,
@@ -30,6 +54,7 @@ export function Header({
 }: HeaderProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [isMenuMounted, setIsMenuMounted] = useState(false);
+  const [menuViewportHeight, setMenuViewportHeight] = useState<number | null>(null);
   const pathname = usePathname();
   const closeTimeoutRef = useRef<number | null>(null);
   const closeFrameRef = useRef<number | null>(null);
@@ -37,11 +62,6 @@ export function Header({
   const menuScrollAreaRef = useRef<HTMLDivElement | null>(null);
   const touchStartYRef = useRef<number | null>(null);
   const pendingMenuNavigationRef = useRef(false);
-  const lastViewportWidthRef = useRef(0);
-  const lastViewportHeightRef = useRef(0);
-
-  const isHome = pathname === "/";
-  const menuViewportHeight = "calc(var(--vh, 1vh) * 100)";
 
   const clearCloseTimeout = useCallback(() => {
     if (closeTimeoutRef.current !== null) {
@@ -57,12 +77,12 @@ export function Header({
     }
   }, []);
 
-  const syncViewportHeight = useCallback(() => {
-    const viewportHeight = window.visualViewport?.height ?? window.innerHeight;
+  const syncMenuViewportHeight = useCallback(() => {
+    const nextViewportHeight = resolveViewportHeight(window);
 
-    document.documentElement.style.setProperty("--vh", `${viewportHeight * 0.01}px`);
-    lastViewportWidthRef.current = window.innerWidth;
-    lastViewportHeightRef.current = viewportHeight;
+    setMenuViewportHeight((currentViewportHeight) => (
+      currentViewportHeight === nextViewportHeight ? currentViewportHeight : nextViewportHeight
+    ));
   }, []);
 
   const canScrollMenu = useCallback((target: EventTarget | null, deltaY: number) => {
@@ -157,31 +177,36 @@ export function Header({
     closeTimeoutRef.current = null;
     closeFrameRef.current = window.requestAnimationFrame(() => {
       setIsMenuMounted(false);
+      setMenuViewportHeight(null);
       closeFrameRef.current = null;
     });
   }, [unlockScroll]);
 
-  const openMenu = useCallback(() => {
+  const scheduleMenuClose = useCallback(() => {
     clearCloseTimeout();
     clearCloseFrame();
+    setIsOpen(false);
+    closeTimeoutRef.current = window.setTimeout(finalizeMenuClose, MENU_CLOSE_DURATION_MS);
+  }, [clearCloseFrame, clearCloseTimeout, finalizeMenuClose]);
+
+  const openMenu = useCallback(() => {
     pendingMenuNavigationRef.current = false;
-    syncViewportHeight();
+    clearCloseTimeout();
+    clearCloseFrame();
+    syncMenuViewportHeight();
     lockScroll();
     setIsMenuMounted(true);
     setIsOpen(true);
-  }, [clearCloseFrame, clearCloseTimeout, lockScroll, syncViewportHeight]);
+  }, [clearCloseFrame, clearCloseTimeout, lockScroll, syncMenuViewportHeight]);
 
   const closeMenu = useCallback((options?: { scrollToTop?: boolean }) => {
     if (!isMenuMounted) {
       return;
     }
 
-    clearCloseTimeout();
-    clearCloseFrame();
     pendingMenuNavigationRef.current = options?.scrollToTop ?? false;
-    setIsOpen(false);
-    closeTimeoutRef.current = window.setTimeout(finalizeMenuClose, MENU_CLOSE_DURATION_MS);
-  }, [clearCloseFrame, clearCloseTimeout, finalizeMenuClose, isMenuMounted]);
+    scheduleMenuClose();
+  }, [isMenuMounted, scheduleMenuClose]);
 
   const handleMenuLinkClick = useCallback((href: string) => {
     if (href === pathname) {
@@ -193,35 +218,23 @@ export function Header({
       return;
     }
 
-    clearCloseTimeout();
-    clearCloseFrame();
     pendingMenuNavigationRef.current = true;
-    setIsOpen(false);
-    closeTimeoutRef.current = window.setTimeout(finalizeMenuClose, MENU_CLOSE_DURATION_MS);
-  }, [pathname, clearCloseFrame, clearCloseTimeout, closeMenu, finalizeMenuClose, isMenuMounted]);
+    scheduleMenuClose();
+  }, [pathname, closeMenu, isMenuMounted, scheduleMenuClose]);
 
   useEffect(() => {
-    const handleResize = () => {
-      const viewportHeight = window.visualViewport?.height ?? window.innerHeight;
-      const viewportWidth = window.innerWidth;
-      const widthChanged = viewportWidth !== lastViewportWidthRef.current;
-      const heightChanged = Math.abs(viewportHeight - lastViewportHeightRef.current) > 1;
+    if (!isMenuMounted) {
+      return;
+    }
 
-      if (widthChanged || (isMenuMounted && heightChanged)) {
-        syncViewportHeight();
-      }
-    };
-
-    syncViewportHeight();
-
-    window.addEventListener("resize", handleResize);
-    window.visualViewport?.addEventListener("resize", handleResize);
+    window.addEventListener("resize", syncMenuViewportHeight);
+    window.visualViewport?.addEventListener("resize", syncMenuViewportHeight);
 
     return () => {
-      window.removeEventListener("resize", handleResize);
-      window.visualViewport?.removeEventListener("resize", handleResize);
+      window.removeEventListener("resize", syncMenuViewportHeight);
+      window.visualViewport?.removeEventListener("resize", syncMenuViewportHeight);
     };
-  }, [isMenuMounted, syncViewportHeight]);
+  }, [isMenuMounted, syncMenuViewportHeight]);
 
   useEffect(() => {
     if (!isMenuMounted || !pendingMenuNavigationRef.current) {
@@ -238,16 +251,6 @@ export function Header({
       return;
     }
 
-    const preventScrollKeys = new Set([
-      "ArrowUp",
-      "ArrowDown",
-      "PageUp",
-      "PageDown",
-      "Home",
-      "End",
-      " ",
-    ]);
-
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
         event.preventDefault();
@@ -255,7 +258,7 @@ export function Header({
         return;
       }
 
-      if (preventScrollKeys.has(event.key)) {
+      if (MENU_SCROLL_KEYS.has(event.key)) {
         event.preventDefault();
       }
     };
@@ -334,6 +337,8 @@ export function Header({
     };
   }, []);
 
+  const menuViewportStyle = getMenuViewportStyle(menuViewportHeight);
+
   return (
     <header
       className={cn(
@@ -341,14 +346,7 @@ export function Header({
         className,
       )}
     >
-      <div
-        className={cn(
-          "flex w-full items-start justify-between px-6 pt-6 lg:px-8",
-          "pointer-events-none",
-          isHome && "sticky top-0",
-        )}
-        style={isHome ? { height: menuViewportHeight } : undefined}
-      >
+      <div className="pointer-events-none flex w-full items-start justify-between px-6 pt-6 lg:px-8">
         <Link
           href={brandLogoHref}
           aria-label={brandLogoAlt}
@@ -357,8 +355,7 @@ export function Header({
           <StrongwoodLogo
             width={812}
             height={155}
-            color={'white'}
-            // color={headerIconColor}
+            color="white"
             aria-hidden="true"
             className="w-41 lg:lg:w-51"
           />
@@ -368,6 +365,8 @@ export function Header({
           type="button"
           onClick={openMenu}
           aria-label={logoButtonLabel}
+          aria-expanded={isOpen}
+          aria-controls="site-menu-dialog"
           className={cn(
             "group pointer-events-auto cursor-pointer transition-opacity duration-300",
             isMenuMounted && "pointer-events-none",
@@ -377,8 +376,7 @@ export function Header({
           <BurgerMenu
             width={94}
             height={63}
-            // color={headerIconColor}
-            color={'white'}
+            color="white"
             aria-hidden="true"
             className={cn(
               "w-16 shrink-0 transition-all duration-200 ease-in-out hover:opacity-70 hover:duration-150 sm:w-20 lg:w-24",
@@ -391,9 +389,10 @@ export function Header({
 
       <div
         className={cn(
-          "fixed inset-0 z-50 flex items-stretch overflow-hidden",
+          "fixed inset-x-0 top-0 z-50 flex items-stretch overflow-hidden",
           isMenuMounted ? "pointer-events-auto opacity-100" : "pointer-events-none opacity-0",
         )}
+        style={menuViewportStyle}
         aria-hidden={!isMenuMounted}
       >
         <div className="absolute inset-0 bg-(--color-overlay) backdrop-blur-lg" aria-hidden="true" />
@@ -406,15 +405,14 @@ export function Header({
         />
 
         <div
+          id="site-menu-dialog"
           className={cn(
             "relative z-20 flex h-full w-full flex-col items-end gap-6 overflow-hidden px-6 text-paper transition-transform duration-300 lg:px-8",
             "sm:gap-4",
             isOpen ? "translate-y-0" : "translate-y-full",
           )}
           style={{
-            height: menuViewportHeight,
-            minHeight: menuViewportHeight,
-            maxHeight: menuViewportHeight,
+            ...menuViewportStyle,
             paddingTop: "calc(env(safe-area-inset-top) + 1.5rem)",
           }}
           role="dialog"
@@ -424,7 +422,7 @@ export function Header({
             type="button"
             onClick={() => closeMenu()}
             aria-label={closeLabel}
-            className="group flex h-16 w-16 shrink-0 items-center justify-end transition-opacity duration-500 sm:h-20 sm:w-20 lg:h-24 lg:w-24 cursor-pointer"
+            className="group flex h-16 w-16 shrink-0 cursor-pointer items-center justify-end transition-opacity duration-500 sm:h-20 sm:w-20 lg:h-24 lg:w-24"
           >
             <BurgerMenu
               width={94}
@@ -439,7 +437,7 @@ export function Header({
             ref={menuScrollAreaRef}
             className="flex min-h-0 w-full flex-1 justify-end overflow-y-auto overflow-x-hidden overscroll-contain"
           >
-            <nav className="flex max-w-6xl flex-col items-end gap-8 text-right sm:gap-10 sm:pt-4 lg:gap-20 lg:pt-10 [@media(min-width:1024px)_and_(max-height:900px)]:gap-12 [@media(min-width:1024px)_and_(max-height:900px)]:pt-6 h-fit pb-6">
+            <nav className="flex h-fit max-w-6xl flex-col items-end gap-8 pb-6 text-right sm:gap-10 sm:pt-4 lg:gap-20 lg:pt-10 [@media(min-width:1024px)_and_(max-height:900px)]:gap-12 [@media(min-width:1024px)_and_(max-height:900px)]:pt-6">
               {menuLinks.map((link) => {
                 const isActive = pathname === link.href;
 
@@ -450,9 +448,9 @@ export function Header({
                     onClick={() => handleMenuLinkClick(link.href)}
                     aria-current={isActive ? "page" : undefined}
                     className={cn(
-                      "group flex items-center justify-end gap-4 uppercase tracking-[-0.03em] transition sm:gap-6 lg:gap-10 text-paper",
+                      "group flex items-center justify-end gap-4 uppercase tracking-[-0.03em] text-paper transition sm:gap-6 lg:gap-10",
                       "text-[36px] font-semibold leading-[0.6] sm:text-[60px] lg:text-[94px] [@media(min-width:1024px)_and_(max-height:900px)]:text-[72px]",
-                      !isActive && " opacity-55 hover:opacity-90",
+                      !isActive && "opacity-55 hover:opacity-90",
                     )}
                   >
                     <span
