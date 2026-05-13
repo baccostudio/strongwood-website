@@ -1,4 +1,4 @@
-export const CTA_SEQUENCE_STAGGER_STEP = 0.06;
+export const CTA_SEQUENCE_STAGGER_STEP = 0.04;
 export const CTA_SEQUENCE_TRANSIT_DURATION = 0.32;
 
 export const CTA_GALLERY_SCALE_PROGRESS = [0, 0.45, 0.95];

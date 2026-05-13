@@ -92,7 +92,7 @@ export function HomeCtaMobile({ content, scrollYProgress, className }: HomeCtaMo
   const galleryScale = useTransform(
     effectiveScrollYProgress,
     CTA_GALLERY_SCALE_PROGRESS,
-    [1, 1.012, 1.1],
+    [1, 1.012, 1.2],
     { clamp: true },
   );
   const progressWidth = useTransform(effectiveScrollYProgress, [0, 1], ["0%", "100%"], { clamp: true });
