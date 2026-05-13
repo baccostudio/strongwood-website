@@ -95,14 +95,14 @@ function ResponsiveHeroImage({
 export function HomeHeroStack({ content }: HomeHeroStackProps) {
   return (
     <section className="relative w-full bg-muted">
-      {/* <div className="pointer-events-none absolute inset-0 z-20">
+      <div className="pointer-events-none absolute inset-0 z-20">
         <div className="sticky top-0 w-full">
           <HomeHeroOverlay
             label={content.label}
             marqueeItems={content.marqueeItems}
           />
         </div>
-      </div> */}
+      </div>
 
       {content.images.map((image, index) => (
         <div

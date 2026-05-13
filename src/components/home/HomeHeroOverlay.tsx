@@ -29,7 +29,7 @@ function MarqueeLine({ items }: { items: HomeHeroContent["marqueeItems"] }) {
 export function HomeHeroOverlay({ label, marqueeItems }: HomeHeroOverlayProps) {
   return (
     <div
-      className="pointer-events-none relative flex h-[calc(var(--vh,1vh)*100)] w-full flex-col justify-end overflow-hidden pb-[clamp(24px,4vw,32px)]"
+      className="pointer-events-none relative flex h-svh w-full flex-col justify-end overflow-hidden pb-[clamp(24px,4vw,32px)]"
     >
 {/* rounded-b-[70px] overflow-hidden */}
       <div className="relative z-10">
