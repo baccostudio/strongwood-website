@@ -1,33 +1,92 @@
-import Image from "next/image";
+import { getImageProps } from "next/image";
 import type { CSSProperties } from "react";
-import type { HomeHeroContent, HomeHeroImageAsset } from "@/types/home";
+import {
+  HOME_HERO_DESKTOP_MEDIA,
+  HOME_HERO_IMAGE_SIZES,
+  HOME_HERO_MOBILE_MEDIA,
+} from "@/lib/preloader";
+import type {
+  HomeHeroContent,
+  HomeHeroImageAsset,
+  HomeHeroResponsiveImage,
+} from "@/types/home";
 import { HomeHeroOverlay } from "./HomeHeroOverlay";
 import { cn } from "@/lib/utils";
 
 interface HomeHeroStackProps {
   content: HomeHeroContent;
-  isMobile: boolean;
+}
+
+interface HeroStackItemStyle extends CSSProperties {
+  "--hero-top-mobile": string;
+  "--hero-top-desktop": string;
+}
+
+function getHeroTopOffset(image: HomeHeroImageAsset) {
+  return `min(0px, calc((var(--vh, 1vh) * 100) - (100vw * ${image.height} / ${image.width})))`;
 }
 
 function getHeroStackItemStyle(
-  image: HomeHeroImageAsset,
+  image: HomeHeroResponsiveImage,
   index: number,
-): CSSProperties {
+): HeroStackItemStyle {
   return {
-    top: `min(0px, calc((var(--vh, 1vh) * 100) - (100vw * ${image.height} / ${image.width})))`,
+    "--hero-top-mobile": getHeroTopOffset(image.mobile),
+    "--hero-top-desktop": getHeroTopOffset(image.desktop),
     zIndex: index + 1,
   };
 }
 
-export function HomeHeroStack({
-  content,
-  isMobile,
-}: HomeHeroStackProps) {
-  const activeImages = content.images.map((image) => ({
+function ResponsiveHeroImage({
+  image,
+  isPriority,
+}: {
+  image: HomeHeroResponsiveImage;
+  isPriority: boolean;
+}) {
+  const {
+    props: { srcSet: desktopSrcSet },
+  } = getImageProps({
     alt: image.alt,
-    asset: isMobile ? image.mobile : image.desktop,
-  }));
+    src: image.desktop.src,
+    width: image.desktop.width,
+    height: image.desktop.height,
+    sizes: HOME_HERO_IMAGE_SIZES,
+  });
+  const {
+    props: { srcSet: mobileSrcSet, alt, ...mobileImageProps },
+  } = getImageProps({
+    alt: image.alt,
+    src: image.mobile.src,
+    width: image.mobile.width,
+    height: image.mobile.height,
+    sizes: HOME_HERO_IMAGE_SIZES,
+  });
 
+  return (
+    <picture>
+      <source
+        media={HOME_HERO_DESKTOP_MEDIA}
+        srcSet={desktopSrcSet}
+        sizes={HOME_HERO_IMAGE_SIZES}
+      />
+      <source
+        media={HOME_HERO_MOBILE_MEDIA}
+        srcSet={mobileSrcSet}
+        sizes={HOME_HERO_IMAGE_SIZES}
+      />
+      <img
+        alt={alt}
+        {...mobileImageProps}
+        loading={isPriority ? "eager" : "lazy"}
+        fetchPriority={isPriority ? "high" : undefined}
+        className="block h-auto w-full select-none"
+      />
+    </picture>
+  );
+}
+
+export function HomeHeroStack({ content }: HomeHeroStackProps) {
   return (
     <section className="relative w-full bg-muted">
       <div className="pointer-events-none absolute inset-0 z-20">
@@ -41,26 +100,14 @@ export function HomeHeroStack({
         </div>
       </div>
 
-      {activeImages.map(({ alt, asset }, index) => (
+      {content.images.map((image, index) => (
         <div
-          key={asset.src}
-          className="sticky"
-          style={getHeroStackItemStyle(asset, index)}
+          key={image.desktop.src}
+          className="sticky top-[var(--hero-top-mobile)] lg:top-[var(--hero-top-desktop)]"
+          style={getHeroStackItemStyle(image, index)}
         >
-          <Image
-            src={asset.src}
-            alt={alt}
-            width={asset.width}
-            height={asset.height}
-            sizes="100vw"
-            fetchPriority={index === 0 ? "high" : undefined}
-            loading={index === 0 ? "eager" : undefined}
-            className={cn(
-              "block h-auto w-full select-none",
-              // index !== 0 && "rounded-t-[70px]",
-            )}
-          />
-          {index !== activeImages.length - 1 && (
+          <ResponsiveHeroImage image={image} isPriority={index === 0} />
+          {index !== content.images.length - 1 && (
             <div
               className={cn(
                 "pointer-events-none absolute inset-0 bg-black/20",
@@ -68,7 +115,7 @@ export function HomeHeroStack({
               )}
             />
           )}
-          {index === activeImages.length - 1 && (
+          {index === content.images.length - 1 && (
             <div className="pointer-events-none absolute inset-0 bg-(image:--gradient-home-hero-image-overlay)" />
           )}
         </div>

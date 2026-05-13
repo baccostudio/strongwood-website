@@ -1,18 +1,31 @@
 import type { HomeHeroContent, HomeHeroImageAsset } from "@/types/home";
 
 export const PRELOADER_FONT_URLS = [
-  "/fonts/switzer/Switzer-Variable.woff2",
-  "/fonts/switzer/Switzer-Medium.woff2",
+  "/fonts/switzer/Switzer-Light.woff2",
   "/fonts/switzer/Switzer-Semibold.woff2",
 ] as const;
 
-export type HomeHeroAssetBucket = "desktop" | "mobile";
+export const HOME_MOBILE_BREAKPOINT = 1024;
+export const HOME_HERO_MOBILE_MEDIA = "(max-width: 1023px)";
+export const HOME_HERO_DESKTOP_MEDIA = "(min-width: 1024px)";
+export const HOME_HERO_IMAGE_SIZES = "100vw";
 
-export function getHomeHeroAssets(
+export interface HomeHeroPreloadAsset {
+  asset: HomeHeroImageAsset;
+  media: string;
+}
+
+export function getHomeHeroPreloadAssets(
   hero: HomeHeroContent,
-  bucket: HomeHeroAssetBucket,
-) : HomeHeroImageAsset[] {
-  return hero.images.map((image) =>
-    bucket === "mobile" ? image.mobile : image.desktop,
-  );
+): HomeHeroPreloadAsset[] {
+  return hero.images.flatMap((image) => [
+    {
+      asset: image.mobile,
+      media: HOME_HERO_MOBILE_MEDIA,
+    },
+    {
+      asset: image.desktop,
+      media: HOME_HERO_DESKTOP_MEDIA,
+    },
+  ]);
 }

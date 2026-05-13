@@ -17,6 +17,7 @@ interface HomeProjectsProps {
 interface AnimatedWorkCountProps {
   value: string;
   ariaLabel: string;
+  shouldAnimate: boolean;
   className?: string;
 }
 
@@ -87,17 +88,30 @@ function RollingCharacter({ value, slotIndex, isDigit }: RollingCharacterProps) 
 function AnimatedWorkCount({
   value,
   ariaLabel,
+  shouldAnimate,
   className,
 }: AnimatedWorkCountProps) {
-  const containerRef = useRef<HTMLSpanElement>(null);
   const shouldReduceMotion = useReducedMotion();
-  const isInView = useInView(containerRef, { once: true, amount: 0.55 });
   const hasAnimatedRef = useRef(false);
   const { prefix, digits, suffix } = splitWorkCount(value);
   const [displayedCharacters, setDisplayedCharacters] = useState(() => buildInitialCount(digits));
 
   useEffect(() => {
-    if (!isInView || hasAnimatedRef.current) {
+    if (!hasAnimatedRef.current) {
+      return;
+    }
+
+    const frameId = window.requestAnimationFrame(() => {
+      setDisplayedCharacters(digits ? digits.split("") : []);
+    });
+
+    return () => {
+      window.cancelAnimationFrame(frameId);
+    };
+  }, [digits]);
+
+  useEffect(() => {
+    if (!shouldAnimate || hasAnimatedRef.current) {
       return;
     }
 
@@ -156,11 +170,10 @@ function AnimatedWorkCount({
     return () => {
       timeoutIds.forEach((timeoutId) => window.clearTimeout(timeoutId));
     };
-  }, [digits, isInView, shouldReduceMotion]);
+  }, [digits, shouldAnimate, shouldReduceMotion]);
 
   return (
     <span
-      ref={containerRef}
       aria-label={ariaLabel}
       className={cn("inline-flex shrink-0 items-center whitespace-nowrap leading-none tabular-nums", className)}
     >
@@ -182,7 +195,13 @@ function AnimatedWorkCount({
 
 export function HomeProjects({ content, projectStats, isMobile, viewportHeight }: HomeProjectsProps) {
   const trackRef = useRef<HTMLDivElement>(null);
+  const workCountRowRef = useRef<HTMLDivElement>(null);
   const [trackHeight, setTrackHeight] = useState(0);
+  const shouldAnimateWorkCount = useInView(workCountRowRef, {
+    once: true,
+    amount: 0.75,
+    margin: "0px 0px -20% 0px",
+  });
 
   useEffect(() => {
     const syncTrackHeight = () => {
@@ -246,12 +265,12 @@ export function HomeProjects({ content, projectStats, isMobile, viewportHeight }
 
               <div className="flex flex-col gap-[clamp(12px,2.5vw,20px)]">
                 <div className="flex flex-col gap-[clamp(14px,3vw,22px)]">
-                  <div className="flex flex-row items-end justify-between">
+                  <div ref={workCountRowRef} className="flex flex-row items-end justify-between">
                     <div className="relative inline-grid items-center">
                       <AnimatedWorkCount
-                        key={projectStats.workCount}
                         value={projectStats.workCount}
                         ariaLabel={projectStats.workCountAriaLabel}
+                        shouldAnimate={shouldAnimateWorkCount}
                         className="text-[clamp(44px,10vw,124px)] font-semibold text-paper"
                       />
                     </div>

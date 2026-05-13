@@ -2,12 +2,11 @@
 
 import dynamic from "next/dynamic";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
-import { HomeHeroStack } from "@/components/home/HomeHeroStack";
 import { HomeProjects } from "@/components/home/HomeProjects";
 import { homeContent } from "@/content/home";
+import { HOME_MOBILE_BREAKPOINT } from "@/lib/preloader";
 import type { HomeProjectStats, HomeProjectsContent } from "@/types/home";
 
-const HOME_MOBILE_BREAKPOINT = 1024;
 const HOME_CTA_ANIMATION_SPAN_VH = 250;
 const HOME_CTA_EXTRA_SCROLL_VH = 65;
 const HOME_CTA_SECTION_HEIGHT_VH = HOME_CTA_ANIMATION_SPAN_VH + HOME_CTA_EXTRA_SCROLL_VH;
@@ -35,7 +34,6 @@ const DynamicHomeCta = dynamic(
 );
 
 interface HomeClientProps {
-  initialIsMobile: boolean;
   projectsContent: HomeProjectsContent;
   projectStats: HomeProjectStats;
 }
@@ -61,15 +59,15 @@ function scrollHomeToTop() {
 }
 
 export default function HomeClient({
-  initialIsMobile,
   projectsContent,
   projectStats,
 }: HomeClientProps) {
   const lastWidth = useRef(0);
   const viewportResolvedRef = useRef(false);
 
-  const [isMobile, setIsMobile] = useState(initialIsMobile);
+  const [isMobile, setIsMobile] = useState(false);
   const [viewportHeight, setViewportHeight] = useState(0);
+  const [resolvedProjectStats, setResolvedProjectStats] = useState(projectStats);
 
   useLayoutEffect(() => {
     scrollHomeToTop();
@@ -146,13 +144,64 @@ export default function HomeClient({
     };
   }, []);
 
-  return (
-    <main className="relative">
-      <HomeHeroStack content={homeContent.hero} isMobile={isMobile} />
+  useEffect(() => {
+    const abortController = new AbortController();
 
+    void fetch("/api/project-stats", {
+      cache: "no-store",
+      signal: abortController.signal,
+    })
+      .then(async (response) => {
+        if (!response.ok) {
+          return null;
+        }
+
+        const data = (await response.json()) as Partial<HomeProjectStats>;
+
+        if (
+          typeof data.workCount !== "string" ||
+          typeof data.workCountAriaLabel !== "string"
+        ) {
+          return null;
+        }
+
+        return {
+          workCount: data.workCount,
+          workCountAriaLabel: data.workCountAriaLabel,
+        } satisfies HomeProjectStats;
+      })
+      .then((nextProjectStats) => {
+        if (!nextProjectStats) {
+          return;
+        }
+
+        setResolvedProjectStats((currentProjectStats) => {
+          if (
+            currentProjectStats.workCount === nextProjectStats.workCount &&
+            currentProjectStats.workCountAriaLabel === nextProjectStats.workCountAriaLabel
+          ) {
+            return currentProjectStats;
+          }
+
+          return nextProjectStats;
+        });
+      })
+      .catch((error) => {
+        if (error instanceof DOMException && error.name === "AbortError") {
+          return;
+        }
+      });
+
+    return () => {
+      abortController.abort();
+    };
+  }, []);
+
+  return (
+    <>
       <HomeProjects
         content={projectsContent}
-        projectStats={projectStats}
+        projectStats={resolvedProjectStats}
         isMobile={isMobile}
         viewportHeight={viewportHeight}
       />
@@ -163,6 +212,6 @@ export default function HomeClient({
         sectionHeightVh={HOME_CTA_SECTION_HEIGHT_VH}
         animationSpanVh={HOME_CTA_ANIMATION_SPAN_VH}
       />
-    </main>
+    </>
   );
 }

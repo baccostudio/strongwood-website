@@ -2,7 +2,6 @@ import type { FooterConfig, FooterLink, SocialLink } from "./footer";
 import type { HeaderConfig } from "./header";
 import type { SiteMetadata } from "./metadata";
 import type { NotFoundContent } from "./not-found";
-import type { SitePreloader } from "./preloader";
 import type {
   AboutUsHeroContent,
   AboutUsIntroContent,
@@ -30,7 +29,6 @@ export interface SiteConfig {
   metadata: SiteMetadata;
   header: HeaderConfig;
   footer: FooterConfig;
-  preloader: SitePreloader;
   tracking: SiteTrackingConfig;
   pages: PagesConfig;
 }
@@ -57,7 +55,6 @@ export type {
   NotFoundContent,
   PageContent,
   PagesConfig,
-  SitePreloader,
   SiteMetadata,
   SiteTrackingConfig,
   SocialLink,

@@ -1,13 +1,14 @@
 import type { Metadata } from "next";
 import { getImageProps } from "next/image";
-import { headers } from "next/headers";
 import { preload } from "react-dom";
+import { HomeHeroStack } from "@/components/home/HomeHeroStack";
 import { homeContent } from "@/content/home";
 import { siteConfig } from "@/content/site";
-import { getHomeHeroAssets } from "@/lib/preloader";
+import {
+  getHomeHeroPreloadAssets,
+  HOME_HERO_IMAGE_SIZES,
+} from "@/lib/preloader";
 import { buildMetadata } from "@/lib/seo";
-import { checkIsMobile } from "@/lib/user-agent";
-import { getHomeProjectStatsAction } from "./home.actions";
 import HomeClient from "./page.client";
 
 export const metadata: Metadata = buildMetadata({
@@ -18,36 +19,39 @@ export const metadata: Metadata = buildMetadata({
   ogImage: homeContent.metadata.ogImage,
 });
 
-export default async function Home() {
-  const requestHeaders = await headers();
-  const initialIsMobile = checkIsMobile(requestHeaders.get("user-agent") ?? "");
-  const heroAssetBucket = initialIsMobile ? "mobile" : "desktop";
-  const heroAssets = getHomeHeroAssets(homeContent.hero, heroAssetBucket);
+export default function Home() {
+  const heroAssets = getHomeHeroPreloadAssets(homeContent.hero);
 
-  heroAssets.forEach((asset) => {
+  heroAssets.forEach(({ asset, media }) => {
     const { props } = getImageProps({
       alt: "",
       src: asset.src,
       width: asset.width,
       height: asset.height,
-      sizes: "100vw",
+      sizes: HOME_HERO_IMAGE_SIZES,
     });
 
     preload(props.src, {
       as: "image",
       imageSrcSet: props.srcSet,
-      imageSizes: props.sizes,
+      imageSizes: HOME_HERO_IMAGE_SIZES,
+      media,
       type: "image/webp",
     });
   });
 
-  const projectStats = await getHomeProjectStatsAction();
+  const projectStats = {
+    workCount: homeContent.projects.workCount,
+    workCountAriaLabel: homeContent.projects.workCountAriaLabel,
+  };
 
   return (
-    <HomeClient
-      initialIsMobile={initialIsMobile}
-      projectsContent={homeContent.projects}
-      projectStats={projectStats}
-    />
+    <main className="relative">
+      <HomeHeroStack content={homeContent.hero} />
+      <HomeClient
+        projectsContent={homeContent.projects}
+        projectStats={projectStats}
+      />
+    </main>
   );
 }
