@@ -47,12 +47,17 @@ export function HomeProjects({
     };
   }, [isMobile]);
 
-  const projectTrackGap = DESKTOP_PROJECT_TRACK_GAP;
+  const projectTrackGap = 0 // DESKTOP_PROJECT_TRACK_GAP;
   const projectTrackViewportSpanVh = BASE_PROJECT_STICKY_SCROLL_VH + (isMobile ? MOBILE_HERO_STACK_TAIL_VH : 0);
   const wrapperHeight = trackHeight
     ? `calc(${trackHeight}px + ${projectTrackGap}px + (var(--vh, 1vh) * ${projectTrackViewportSpanVh}))`
     : "calc(var(--vh, 1vh) * 300)";
 
+  console.log({
+    trackHeight,
+    BASE_PROJECT_STICKY_SCROLL_VH,
+    wrapperHeight
+  })
   return (
     <div
       className="relative mt-[calc(var(--vh,1vh)*-100)] bg-muted"
