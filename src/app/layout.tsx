@@ -8,7 +8,9 @@ import { JsonLdScript } from "@/components/layout/JsonLdScript";
 import { Preloader } from "@/components/layout/Preloader";
 import { siteConfig } from "@/content/site";
 import {
+  PRELOADER_DECISION_HEADER,
   PRELOADER_STATE_ATTRIBUTE,
+  getPreloaderDecision,
   getPreloaderCookieName,
   getPreloaderDevice,
   isValidPreloaderCookie,
@@ -80,10 +82,10 @@ export default async function RootLayout({
   const isMobile = checkIsMobile(requestHeaders.get("user-agent") ?? "");
   const device = getPreloaderDevice(isMobile);
   const cookieName = getPreloaderCookieName(device);
-  const shouldShowPreloader = !isValidPreloaderCookie(
-    cookieStore.get(cookieName)?.value,
-    device,
-  );
+  const preloaderDecisionHeader = requestHeaders.get(PRELOADER_DECISION_HEADER);
+  const shouldShowPreloader = preloaderDecisionHeader
+    ? getPreloaderDecision(preloaderDecisionHeader) === "show"
+    : !isValidPreloaderCookie(cookieStore.get(cookieName)?.value, device);
   const logoUrl = new URL(siteConfig.footer.logoSrc.replace(/^\//, ""), siteUrl);
   const sameAsLinks = siteConfig.footer.socialLinks.map((link) => link.href);
 

@@ -3,6 +3,8 @@ import { cookies, headers } from "next/headers";
 import { homeContent } from "@/content/home";
 import { siteConfig } from "@/content/site";
 import {
+  PRELOADER_DECISION_HEADER,
+  getPreloaderDecision,
   getPreloaderCookieName,
   getPreloaderDevice,
   isValidPreloaderCookie,
@@ -26,10 +28,10 @@ export default async function Home() {
   const initialIsMobile = checkIsMobile(requestHeaders.get("user-agent") ?? "");
   const device = getPreloaderDevice(initialIsMobile);
   const cookieName = getPreloaderCookieName(device);
-  const shouldShowPreloader = !isValidPreloaderCookie(
-    cookieStore.get(cookieName)?.value,
-    device,
-  );
+  const preloaderDecisionHeader = requestHeaders.get(PRELOADER_DECISION_HEADER);
+  const shouldShowPreloader = preloaderDecisionHeader
+    ? getPreloaderDecision(preloaderDecisionHeader) === "show"
+    : !isValidPreloaderCookie(cookieStore.get(cookieName)?.value, device);
   const projectStats = await getHomeProjectStatsAction();
 
   return (
