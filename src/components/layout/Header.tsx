@@ -340,7 +340,6 @@ export function Header({
         "fixed top-0 z-40 w-full pointer-events-none",
         className,
       )}
-    // style={isHome ? { height: "calc(var(--vh, 1vh) * 400)" } : undefined}
     >
       <div
         className={cn(
