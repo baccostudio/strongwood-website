@@ -7,14 +7,12 @@ export interface HomeProjectsContent {
   badgeAriaLabel: string;
   workCount: string;
   workCountAriaLabel: string;
-  workCountLoadingAriaLabel: string;
   workCountLabelSuffix: string;
   tableImage: HomeHeroImage;
   descriptionLines: string[];
 }
 
-export interface HomeProjectStatsResponse {
+export interface HomeProjectStats {
   workCount: string;
   workCountAriaLabel: string;
-  isFallback: boolean;
 }

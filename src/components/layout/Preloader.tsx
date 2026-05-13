@@ -3,12 +3,11 @@
 import { useEffect } from "react";
 import { usePathname } from "next/navigation";
 import {
+  HOME_PRELOADER_START_EVENT,
   HOME_READY_DATASET_KEY,
   HOME_READY_EVENT,
   PRELOADER_HOME_PATH,
   getDocumentPreloaderState,
-  hasResolvedPreloaderSignature,
-  persistResolvedPreloaderSignature,
   setDocumentPreloaderState,
 } from "@/lib/preloader";
 
@@ -26,24 +25,15 @@ export function Preloader({
   useEffect(() => {
     const barFill = document.getElementById("initial-bar-fill");
     const root = document.documentElement;
-    const isHome = pathname === PRELOADER_HOME_PATH;
-    const initialPreloaderState = getDocumentPreloaderState(root);
+    let cleanupCurrentRun: (() => void) | null = null;
 
-    const hasResolvedSignature = () => {
-      try {
-        return hasResolvedPreloaderSignature(window.localStorage);
-      } catch {
-        return false;
-      }
-    };
-
-    const markSignatureResolved = () => {
-      try {
-        persistResolvedPreloaderSignature(window.localStorage);
-      } catch {}
+    const stopCurrentRun = () => {
+      cleanupCurrentRun?.();
+      cleanupCurrentRun = null;
     };
 
     const skipLoading = () => {
+      stopCurrentRun();
       setDocumentPreloaderState(root, "skip");
       document.body.style.overflow = "";
     };
@@ -66,79 +56,100 @@ export function Preloader({
 
       setDocumentPreloaderState(root, "finished");
       document.body.style.overflow = "";
-      markSignatureResolved();
     };
 
-    if (!isHome) {
-      skipLoading();
-      return;
-    }
-
-    if (initialPreloaderState !== "pending" && hasResolvedSignature()) {
-      skipLoading();
-      return;
-    }
-
-    if (getDocumentPreloaderState(root) !== "pending") {
-      setDocumentPreloaderState(root, "pending");
-    }
-
-    resetProgressBar();
-    document.body.style.overflow = "hidden";
-
-    let progress = 0;
-    let minElapsed = false;
-    let canFinish = root.dataset[HOME_READY_DATASET_KEY] === "true";
-    let isFinished = false;
-
-    const tryFinish = () => {
-      if (!minElapsed || !canFinish || isFinished) {
+    const startLoading = () => {
+      if (
+        pathname !== PRELOADER_HOME_PATH ||
+        cleanupCurrentRun ||
+        getDocumentPreloaderState(root) !== "pending"
+      ) {
         return;
       }
 
-      isFinished = true;
-      window.clearInterval(progressInterval);
-      window.clearTimeout(minTimer);
-      window.clearTimeout(fallbackTimer);
-      window.removeEventListener(HOME_READY_EVENT, handleHomeReady);
-      finishLoading();
+      resetProgressBar();
+      document.body.style.overflow = "hidden";
+
+      let progress = 0;
+      let minElapsed = false;
+      let canFinish = root.dataset[HOME_READY_DATASET_KEY] === "true";
+      let isFinished = false;
+      let isCleanedUp = false;
+
+      const cleanupRun = () => {
+        if (isCleanedUp) {
+          return;
+        }
+
+        isCleanedUp = true;
+        window.clearInterval(progressInterval);
+        window.clearTimeout(minTimer);
+        window.clearTimeout(fallbackTimer);
+        window.removeEventListener(HOME_READY_EVENT, handleHomeReady);
+        document.body.style.overflow = "";
+      };
+
+      const tryFinish = () => {
+        if (!minElapsed || !canFinish || isFinished) {
+          return;
+        }
+
+        isFinished = true;
+        finishLoading();
+        cleanupRun();
+        cleanupCurrentRun = null;
+      };
+
+      const handleHomeReady = () => {
+        canFinish = true;
+        tryFinish();
+      };
+
+      if (!canFinish) {
+        window.addEventListener(HOME_READY_EVENT, handleHomeReady);
+      }
+
+      const progressInterval = window.setInterval(() => {
+        const maxProgress = canFinish ? 96 : 88;
+        const remaining = Math.max(maxProgress - progress, 0);
+        progress += Math.max(remaining * 0.18, 1.6);
+        progress = Math.min(progress, maxProgress);
+
+        if (barFill) {
+          barFill.style.width = `${progress}%`;
+        }
+      }, 50);
+
+      const minTimer = window.setTimeout(() => {
+        minElapsed = true;
+        tryFinish();
+      }, minDuration);
+
+      const fallbackTimer = window.setTimeout(() => {
+        canFinish = true;
+        tryFinish();
+      }, homeFallbackDuration);
+
+      cleanupCurrentRun = cleanupRun;
     };
 
-    const handleHomeReady = () => {
-      canFinish = true;
-      tryFinish();
+    const handleStart = () => {
+      startLoading();
     };
 
-    if (!canFinish) {
-      window.addEventListener(HOME_READY_EVENT, handleHomeReady);
+    window.addEventListener(HOME_PRELOADER_START_EVENT, handleStart);
+
+    if (pathname !== PRELOADER_HOME_PATH) {
+      skipLoading();
+    } else if (getDocumentPreloaderState(root) === "pending") {
+      startLoading();
+    } else {
+      skipLoading();
     }
 
-    const progressInterval = window.setInterval(() => {
-      const maxProgress = canFinish ? 96 : 88;
-      const remaining = Math.max(maxProgress - progress, 0);
-      progress += Math.max(remaining * 0.18, 1.6);
-      progress = Math.min(progress, maxProgress);
-
-      if (barFill) {
-        barFill.style.width = `${progress}%`;
-      }
-    }, 50);
-
-    const minTimer = window.setTimeout(() => {
-      minElapsed = true;
-      tryFinish();
-    }, minDuration);
-
-    const fallbackTimer = window.setTimeout(() => {
-      canFinish = true;
-      tryFinish();
-    }, homeFallbackDuration);
-
     return () => {
-      window.clearInterval(progressInterval);
-      window.clearTimeout(minTimer);
-      window.clearTimeout(fallbackTimer);
-      window.removeEventListener(HOME_READY_EVENT, handleHomeReady);
+      window.removeEventListener(HOME_PRELOADER_START_EVENT, handleStart);
+      stopCurrentRun();
       document.body.style.overflow = "";
     };
   }, [pathname, minDuration, homeFallbackDuration]);

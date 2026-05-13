@@ -9,7 +9,6 @@ export const homeProjects = {
   badgeAriaLabel: "Marca registrada",
   workCount: "+170",
   workCountAriaLabel: "Más de 170 trabajos realizados",
-  workCountLoadingAriaLabel: "Cargando cantidad de trabajos realizados",
   workCountLabelSuffix: "trabajos realizados",
   tableImage: {
     src: "/images/icons/work_table.png",

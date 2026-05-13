@@ -1,10 +1,20 @@
 import type { Metadata, Viewport } from "next";
+import { cookies, headers } from "next/headers";
 import "./globals.css";
 import { Footer } from "@/components/layout/Footer";
 import { Header } from "@/components/layout/Header";
+import { InitialLoaderOverlay } from "@/components/layout/InitialLoaderOverlay";
 import { JsonLdScript } from "@/components/layout/JsonLdScript";
+import { Preloader } from "@/components/layout/Preloader";
 import { siteConfig } from "@/content/site";
+import {
+  PRELOADER_STATE_ATTRIBUTE,
+  getPreloaderCookieName,
+  getPreloaderDevice,
+  isValidPreloaderCookie,
+} from "@/lib/preloader";
 import { getSiteUrl } from "@/lib/seo";
+import { checkIsMobile } from "@/lib/user-agent";
 import { TrackingHeadScripts } from "@/components/layout/TrackingHeadScripts";
 import { TrackingNoScript } from "@/components/layout/TrackingNoScript";
 
@@ -38,19 +48,42 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: '#ffffff',
-  width: 'device-width',
+  themeColor: "#ffffff",
+  width: "device-width",
   initialScale: 1,
   maximumScale: 1,
   userScalable: true,
-  colorScheme: 'light',
-}
+  colorScheme: "light",
+};
 
-export default function RootLayout({
+const preloaderNoScriptStyles = `
+  html[${PRELOADER_STATE_ATTRIBUTE}="pending"] body {
+    overflow: auto !important;
+  }
+
+  html[${PRELOADER_STATE_ATTRIBUTE}="pending"] #initial-black-overlay {
+    opacity: 0 !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+    transform: translateY(-100%) !important;
+    transition: none !important;
+  }
+`;
+
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const requestHeaders = await headers();
+  const cookieStore = await cookies();
+  const isMobile = checkIsMobile(requestHeaders.get("user-agent") ?? "");
+  const device = getPreloaderDevice(isMobile);
+  const cookieName = getPreloaderCookieName(device);
+  const shouldShowPreloader = !isValidPreloaderCookie(
+    cookieStore.get(cookieName)?.value,
+    device,
+  );
   const logoUrl = new URL(siteConfig.footer.logoSrc.replace(/^\//, ""), siteUrl);
   const sameAsLinks = siteConfig.footer.socialLinks.map((link) => link.href);
 
@@ -79,18 +112,19 @@ export default function RootLayout({
     <html
       lang="es-AR"
       className="h-full antialiased"
+      data-preloader-state={shouldShowPreloader ? "pending" : "skip"}
       suppressHydrationWarning
     >
       <head>
-        {/* Initial loader script disabled because the site-wide preloader was hurting performance. */}
         <TrackingHeadScripts tracking={siteConfig.tracking} />
+        <noscript>
+          <style>{preloaderNoScriptStyles}</style>
+        </noscript>
       </head>
       <body className="min-h-full flex flex-col">
         <TrackingNoScript tracking={siteConfig.tracking} />
-        {/* Site-wide preloader intentionally disabled because it was hurting performance.
         <InitialLoaderOverlay preloader={siteConfig.preloader} />
         <Preloader />
-        */}
         <Header {...siteConfig.header} />
         <div className="flex-1">{children}</div>
         <Footer {...siteConfig.footer} />

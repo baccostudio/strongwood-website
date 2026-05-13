@@ -20,4 +20,4 @@ export type {
 } from "./hero";
 export type { HomeHeroImage } from "./media";
 export type { HomeMetadata } from "./metadata";
-export type { HomeProjectStatsResponse, HomeProjectsContent } from "./projects";
+export type { HomeProjectStats, HomeProjectsContent } from "./projects";

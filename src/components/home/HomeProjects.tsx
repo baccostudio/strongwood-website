@@ -3,13 +3,13 @@
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { AnimatePresence, motion, useInView, useReducedMotion } from "framer-motion";
-import { LoadingSpinner } from "@/components/shared/LoadingSpinner";
 import { PageHeroTitle } from "@/components/shared/PageHeroTitle";
 import { cn } from "@/lib/utils";
-import type { HomeProjectStatsResponse, HomeProjectsContent } from "@/types/home";
+import type { HomeProjectStats, HomeProjectsContent } from "@/types/home";
 
 interface HomeProjectsProps {
   content: HomeProjectsContent;
+  projectStats: HomeProjectStats;
   isMobile: boolean;
   viewportHeight: number;
 }
@@ -33,7 +33,6 @@ const SLOT_BASE_SPINS = 5;
 const SLOT_SPIN_STAGGER = 2;
 const DIGIT_TRAVEL = "65%";
 const SLOT_START_DELAY_MS = 300;
-const WORK_COUNT_FETCH_TIMEOUT_MS = 2500;
 const DESKTOP_PROJECT_TRACK_GAP = 150;
 
 const DIGIT_TRANSITION = {
@@ -61,20 +60,6 @@ const splitWorkCount = (value: string) => {
     suffix: match[3] ?? "",
   };
 };
-
-function isHomeProjectStatsResponse(value: unknown): value is HomeProjectStatsResponse {
-  if (!value || typeof value !== "object") {
-    return false;
-  }
-
-  const candidate = value as Partial<HomeProjectStatsResponse>;
-
-  return (
-    typeof candidate.workCount === "string" &&
-    typeof candidate.workCountAriaLabel === "string" &&
-    typeof candidate.isFallback === "boolean"
-  );
-}
 
 function RollingCharacter({ value, slotIndex, isDigit }: RollingCharacterProps) {
   if (!isDigit) {
@@ -195,80 +180,9 @@ function AnimatedWorkCount({
   );
 }
 
-export function HomeProjects({ content, isMobile, viewportHeight }: HomeProjectsProps) {
+export function HomeProjects({ content, projectStats, isMobile, viewportHeight }: HomeProjectsProps) {
   const trackRef = useRef<HTMLDivElement>(null);
-  const [resolvedWorkCount, setResolvedWorkCount] = useState<{
-    value: string;
-    ariaLabel: string;
-  } | null>(null);
-  const [isWorkCountLoading, setIsWorkCountLoading] = useState(true);
   const [trackHeight, setTrackHeight] = useState(0);
-
-  useEffect(() => {
-    const controller = new AbortController();
-    const timeoutId = window.setTimeout(() => controller.abort(), WORK_COUNT_FETCH_TIMEOUT_MS);
-    let isCancelled = false;
-
-    const resolveFallback = () => {
-      if (isCancelled) {
-        return;
-      }
-
-      setResolvedWorkCount({
-        value: content.workCount,
-        ariaLabel: content.workCountAriaLabel,
-      });
-      setIsWorkCountLoading(false);
-    };
-
-    const fetchProjectStats = async () => {
-      try {
-        const response = await fetch("/api/project-stats", {
-          cache: "no-store",
-          signal: controller.signal,
-        });
-
-        if (!response.ok) {
-          throw new Error(`Unexpected response status: ${response.status}`);
-        }
-
-        const payload: unknown = await response.json();
-
-        if (!isHomeProjectStatsResponse(payload)) {
-          throw new Error("Invalid project stats payload.");
-        }
-
-        if (isCancelled) {
-          return;
-        }
-
-        setResolvedWorkCount({
-          value: payload.workCount,
-          ariaLabel: payload.workCountAriaLabel,
-        });
-        setIsWorkCountLoading(false);
-      } catch (error) {
-        if (error instanceof DOMException && error.name === "AbortError") {
-          resolveFallback();
-          return;
-        }
-
-        resolveFallback();
-      } finally {
-        if (!isCancelled) {
-          window.clearTimeout(timeoutId);
-        }
-      }
-    };
-
-    void fetchProjectStats();
-
-    return () => {
-      isCancelled = true;
-      window.clearTimeout(timeoutId);
-      controller.abort();
-    };
-  }, [content.workCount, content.workCountAriaLabel]);
 
   useEffect(() => {
     const syncTrackHeight = () => {
@@ -334,30 +248,12 @@ export function HomeProjects({ content, isMobile, viewportHeight }: HomeProjects
                 <div className="flex flex-col gap-[clamp(14px,3vw,22px)]">
                   <div className="flex flex-row items-end justify-between">
                     <div className="relative inline-grid items-center">
-                      {isWorkCountLoading ? (
-                        <>
-                          <span
-                            aria-hidden="true"
-                            className="invisible text-[clamp(44px,10vw,124px)] font-semibold leading-none whitespace-nowrap tabular-nums text-paper"
-                          >
-                            {content.workCount}
-                          </span>
-                          <div className="absolute inset-0 flex items-center justify-center">
-                            <LoadingSpinner
-                              ariaLabel={content.workCountLoadingAriaLabel}
-                              className="text-paper"
-                              indicatorClassName="h-8 w-8 border-[3px]"
-                            />
-                          </div>
-                        </>
-                      ) : resolvedWorkCount ? (
-                        <AnimatedWorkCount
-                          key={resolvedWorkCount.value}
-                          value={resolvedWorkCount.value}
-                          ariaLabel={resolvedWorkCount.ariaLabel}
-                          className="text-[clamp(44px,10vw,124px)] font-semibold text-paper"
-                        />
-                      ) : null}
+                      <AnimatedWorkCount
+                        key={projectStats.workCount}
+                        value={projectStats.workCount}
+                        ariaLabel={projectStats.workCountAriaLabel}
+                        className="text-[clamp(44px,10vw,124px)] font-semibold text-paper"
+                      />
                     </div>
                     <div className="shrink-0">
                       <Image

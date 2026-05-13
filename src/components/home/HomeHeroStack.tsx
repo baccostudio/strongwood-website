@@ -6,6 +6,8 @@ import { cn } from "@/lib/utils";
 
 interface HomeHeroStackProps {
   content: HomeHeroContent;
+  isMobile: boolean;
+  shouldPreload?: boolean;
 }
 
 function getHeroStackItemStyle(
@@ -18,7 +20,16 @@ function getHeroStackItemStyle(
   };
 }
 
-export function HomeHeroStack({ content }: HomeHeroStackProps) {
+export function HomeHeroStack({
+  content,
+  isMobile,
+  shouldPreload = false,
+}: HomeHeroStackProps) {
+  const activeImages = content.images.map((image) => ({
+    alt: image.alt,
+    asset: isMobile ? image.mobile : image.desktop,
+  }));
+
   return (
     <section className="relative w-full bg-muted">
       <div className="pointer-events-none absolute inset-0 z-20">
@@ -32,57 +43,37 @@ export function HomeHeroStack({ content }: HomeHeroStackProps) {
         </div>
       </div>
 
-      <div className="sm:hidden">
-        {content.images.map((image, index) => (
-          <div
-            key={image.mobile.src}
-            className="sticky"
-            style={getHeroStackItemStyle(image.mobile, index)}
-          >
-            <Image
-              src={image.mobile.src}
-              alt={image.alt}
-              width={image.mobile.width}
-              height={image.mobile.height}
-              sizes="100vw"
-              priority={index === 0}
-              className={cn("block h-auto w-full select-none",
-                // index !== 0 && "rounded-t-[70px]",
+      {activeImages.map(({ alt, asset }, index) => (
+        <div
+          key={asset.src}
+          className="sticky"
+          style={getHeroStackItemStyle(asset, index)}
+        >
+          <Image
+            src={asset.src}
+            alt={alt}
+            width={asset.width}
+            height={asset.height}
+            sizes="100vw"
+            priority={shouldPreload || index === 0}
+            className={cn(
+              "block h-auto w-full select-none",
+              // index !== 0 && "rounded-t-[70px]",
+            )}
+          />
+          {index !== activeImages.length - 1 && (
+            <div
+              className={cn(
+                "pointer-events-none absolute inset-0 bg-black/20",
+                // index !== 0 && "rounded-t-[70px]"
               )}
             />
-            {index !== content.images.length - 1 && <div className={cn("pointer-events-none absolute inset-0 bg-black/20",
-              // index !== 0 && "rounded-t-[70px]"
-            )}/>}
-            {index === content.images.length - 1 && <div className=" pointer-events-none absolute inset-0 bg-(image:--gradient-home-hero-image-overlay)" />}
-          </div>
-        ))}
-      </div>
-
-      <div className="hidden sm:block">
-        {content.images.map((image, index) => (
-          <div
-            key={image.desktop.src}
-            className="sticky"
-            style={getHeroStackItemStyle(image.desktop, index)}
-          >
-            <Image
-              src={image.desktop.src}
-              alt={image.alt}
-              width={image.desktop.width}
-              height={image.desktop.height}
-              sizes="100vw"
-              priority={index === 0}
-              className={cn("block h-auto w-full select-none",
-                // index !== 0 && "rounded-t-[70px]",
-              )}
-            />
-            {index !== content.images.length - 1 && <div className={cn("pointer-events-none absolute inset-0 bg-black/20",
-              // index !== 0 && "rounded-t-[70px]"
-              )} />}
-            {index === content.images.length - 1 && <div className="pointer-events-none absolute inset-0 bg-(image:--gradient-home-hero-image-overlay)" />}
-          </div>
-        ))}
-      </div>
+          )}
+          {index === activeImages.length - 1 && (
+            <div className="pointer-events-none absolute inset-0 bg-(image:--gradient-home-hero-image-overlay)" />
+          )}
+        </div>
+      ))}
       <div className="absolute top-full left-0 z-10 h-[8vh] w-full rounded-b-[20px] bg-black shadow-[0_20px_40px_rgba(0,0,0,0.4)]" />
     </section>
   );

@@ -2,11 +2,17 @@ import { homeHero } from "@/content/home/hero";
 import type { HomeHeroContent } from "@/types/home";
 
 export const HOME_READY_EVENT = "strongwood:home-ready";
+export const HOME_PRELOADER_START_EVENT = "strongwood:home-preloader-start";
 export const HOME_READY_DATASET_KEY = "homeReady";
 export const PRELOADER_HOME_PATH = "/";
 export const PRELOADER_STATE_ATTRIBUTE = "data-preloader-state";
-export const PRELOADER_STORAGE_KEY = "strongwood:home-preloader-signature";
-export const PRELOADER_VERSION = "2026-05-12-home-hero-stack-v2";
+export const PRELOADER_DECISION_HEADER = "x-strongwood-preloader";
+export const PRELOADER_DEVICE_HEADER = "x-strongwood-device";
+export const PRELOADER_DESKTOP_COOKIE = "st-pre-desk";
+export const PRELOADER_MOBILE_COOKIE = "st-pre-mob";
+export const PRELOADER_COOKIE_MAX_AGE_SECONDS = 60 * 60 * 24 * 7;
+export const PRELOADER_COOKIE_DOMAIN = "strongwood.com.ar";
+export const HOME_HERO_PRELOADER_VERSION = "2026-05-13-home-hero-v1";
 export const PRELOADER_FONT_URLS = [
   "/fonts/switzer/Switzer-Variable.woff2",
   "/fonts/switzer/Switzer-Medium.woff2",
@@ -14,41 +20,57 @@ export const PRELOADER_FONT_URLS = [
 ] as const;
 
 export type PreloaderState = "pending" | "skip" | "finished";
+export type PreloaderDecision = "show" | "skip";
+export type PreloaderDevice = "desktop" | "mobile";
 
-export function getHomeReadyAssetSources(hero: HomeHeroContent) {
-  const firstImage = hero.images[0];
-
-  return firstImage ? [firstImage.desktop.src, firstImage.mobile.src] : [];
+export function getPreloaderDevice(isMobile: boolean): PreloaderDevice {
+  return isMobile ? "mobile" : "desktop";
 }
 
-function getPreloaderSignatureParts() {
+export function getPreloaderCookieName(device: PreloaderDevice) {
+  return device === "mobile" ? PRELOADER_MOBILE_COOKIE : PRELOADER_DESKTOP_COOKIE;
+}
+
+export function getPreloaderCookieDomain(hostname: string) {
+  if (
+    hostname === PRELOADER_COOKIE_DOMAIN ||
+    hostname.endsWith(`.${PRELOADER_COOKIE_DOMAIN}`)
+  ) {
+    return PRELOADER_COOKIE_DOMAIN;
+  }
+
+  return null;
+}
+
+export function getHomeReadyAssetSources(hero: HomeHeroContent, isMobile: boolean) {
+  return hero.images.map((image) => (isMobile ? image.mobile.src : image.desktop.src));
+}
+
+function getPreloaderSignatureParts(device: PreloaderDevice) {
+  const isMobile = device === "mobile";
+
   return Array.from(
     new Set([
-      PRELOADER_VERSION,
-      ...PRELOADER_FONT_URLS,
-      ...getHomeReadyAssetSources(homeHero),
+      HOME_HERO_PRELOADER_VERSION,
+      device,
+      ...getHomeReadyAssetSources(homeHero, isMobile),
     ]),
   );
 }
 
-export const PRELOADER_SIGNATURE = getPreloaderSignatureParts().join("|");
-
-export function getPersistedPreloaderSignature(storage: Pick<Storage, "getItem">) {
-  return storage.getItem(PRELOADER_STORAGE_KEY);
+export function getPreloaderSignature(device: PreloaderDevice) {
+  return getPreloaderSignatureParts(device).join("|");
 }
 
-export function hasResolvedPreloaderSignature(
-  storage: Pick<Storage, "getItem">,
-  signature = PRELOADER_SIGNATURE,
-) {
-  return getPersistedPreloaderSignature(storage) === signature;
+export function getPreloaderDecision(value: string | null): PreloaderDecision {
+  return value === "show" ? "show" : "skip";
 }
 
-export function persistResolvedPreloaderSignature(
-  storage: Pick<Storage, "setItem">,
-  signature = PRELOADER_SIGNATURE,
+export function isValidPreloaderCookie(
+  value: string | undefined,
+  device: PreloaderDevice,
 ) {
-  storage.setItem(PRELOADER_STORAGE_KEY, signature);
+  return value === getPreloaderSignature(device);
 }
 
 export function getDocumentPreloaderState(root: HTMLElement): PreloaderState | null {
