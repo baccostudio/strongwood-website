@@ -13,8 +13,10 @@ interface HomeProjectsProps {
 }
 
 const DESKTOP_PROJECT_TRACK_GAP = 150;
-const BASE_PROJECT_STICKY_SCROLL_VH = 150;
-const MOBILE_HERO_STACK_TAIL_VH = 8;
+const BASE_PROJECT_STICKY_SCROLL_VH = 100;
+const MOBILE_HERO_STACK_TAIL_VH = 10;
+const MOBILE_PROJECT_BLEED_BOTTOM_VH = -20;
+const MOBILE_PROJECT_BLEED_HEIGHT_VH = 22;
 
 export function HomeProjects({
   content,
@@ -47,20 +49,26 @@ export function HomeProjects({
     };
   }, [isMobile]);
 
-  const projectTrackGap = isMobile ? 0 : DESKTOP_PROJECT_TRACK_GAP;
-  const projectTrackViewportSpanVh = BASE_PROJECT_STICKY_SCROLL_VH + (isMobile ? MOBILE_HERO_STACK_TAIL_VH : 0);
+  const projectTrackGap = DESKTOP_PROJECT_TRACK_GAP;
+  const projectTrackViewportSpanVh = BASE_PROJECT_STICKY_SCROLL_VH + MOBILE_HERO_STACK_TAIL_VH;
   const wrapperHeight = trackHeight
     ? `calc(${trackHeight}px + ${projectTrackGap}px + (var(--vh, 1vh) * ${projectTrackViewportSpanVh}))`
     : "calc(var(--vh, 1vh) * 300)";
+  const mobileBleedStyle = isMobile
+    ? {
+        bottom: `calc(var(--vh, 1vh) * ${MOBILE_PROJECT_BLEED_BOTTOM_VH})`,
+        height: `calc(var(--vh, 1vh) * ${MOBILE_PROJECT_BLEED_HEIGHT_VH})`,
+      }
+    : undefined;
 
   return (
     <div
       className="relative mt-[calc(var(--vh,1vh)*-100)] bg-muted"
       style={{ height: wrapperHeight }}
     >
-      <div className="sticky top-0 overflow-hidden min-h-[calc(var(--vh,1vh)*100)]">
+      <div className="sticky top-0 overflow-hidden min-h-[calc(var(--vh,1vh)*100)] bg-muted">
         <div ref={trackRef} className="relative">
-          <section className="flex items-center py-[clamp(56px,10vw,96px)] text-paper min-h-[calc(var(--vh,1vh)*100)]">
+          <section className="flex items-center bg-muted py-[clamp(56px,10vw,96px)] text-paper min-h-[calc(var(--vh,1vh)*100)]">
             <div className="mx-auto flex w-full max-w-6xl flex-col gap-[clamp(28px,6vw,52px)] px-6 py-0">
               <div className="flex flex-col items-center gap-[clamp(16px,3vw,24px)] text-center">
                 <div className="inline-grid justify-items-center">
@@ -120,6 +128,15 @@ export function HomeProjects({
               </div>
             </div>
           </section>
+
+          <div
+            aria-hidden="true"
+            className={cn(
+              "absolute left-0 w-full bg-muted pointer-events-none",
+              isMobile ? "" : "-bottom-[10vh] h-[10.5vh]",
+            )}
+            style={mobileBleedStyle}
+          />
         </div>
       </div>
     </div>
