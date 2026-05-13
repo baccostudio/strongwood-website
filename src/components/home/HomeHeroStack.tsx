@@ -53,7 +53,8 @@ export function HomeHeroStack({
             width={asset.width}
             height={asset.height}
             sizes="100vw"
-            priority={index === 0}
+            fetchPriority={index === 0 ? "high" : undefined}
+            loading={index === 0 ? "eager" : undefined}
             className={cn(
               "block h-auto w-full select-none",
               // index !== 0 && "rounded-t-[70px]",

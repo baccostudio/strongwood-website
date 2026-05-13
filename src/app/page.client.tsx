@@ -1,17 +1,38 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
-import { HomeCta } from "@/components/home/HomeCta";
 import { HomeHeroStack } from "@/components/home/HomeHeroStack";
 import { HomeProjects } from "@/components/home/HomeProjects";
 import { homeContent } from "@/content/home";
-import { getHomeReadyAssetSources } from "@/lib/preloader";
 import type { HomeProjectStats, HomeProjectsContent } from "@/types/home";
 
 const HOME_MOBILE_BREAKPOINT = 1024;
 const HOME_CTA_ANIMATION_SPAN_VH = 250;
 const HOME_CTA_EXTRA_SCROLL_VH = 65;
 const HOME_CTA_SECTION_HEIGHT_VH = HOME_CTA_ANIMATION_SPAN_VH + HOME_CTA_EXTRA_SCROLL_VH;
+
+function HomeCtaFallback() {
+  return (
+    <section
+      className="relative w-full bg-black"
+      style={{ height: `calc(var(--vh, 1vh) * ${HOME_CTA_SECTION_HEIGHT_VH})` }}
+      aria-hidden="true"
+    >
+      <div className="sticky top-0 flex h-[calc(var(--vh,1vh)*100)] w-full items-center justify-center overflow-hidden bg-black">
+        <div className="absolute -bottom-[10vh] left-0 h-[10.5vh] w-full bg-inherit pointer-events-none" />
+      </div>
+    </section>
+  );
+}
+
+const DynamicHomeCta = dynamic(
+  () => import("@/components/home/HomeCta").then((module) => module.HomeCta),
+  {
+    loading: () => <HomeCtaFallback />,
+    ssr: false,
+  },
+);
 
 interface HomeClientProps {
   initialIsMobile: boolean;
@@ -33,31 +54,6 @@ function resolveViewportWidth(target: Window): number {
   return Math.floor(resolvedWidth ?? HOME_MOBILE_BREAKPOINT);
 }
 
-function preloadImageAsset(source: string) {
-  return new Promise<void>((resolve) => {
-    const image = new window.Image();
-
-    image.decoding = "async";
-
-    const finalize = () => {
-      if (typeof image.decode === "function") {
-        image.decode().catch(() => undefined).finally(resolve);
-        return;
-      }
-
-      resolve();
-    };
-
-    image.onload = finalize;
-    image.onerror = () => resolve();
-    image.src = source;
-
-    if (image.complete) {
-      finalize();
-    }
-  });
-}
-
 function scrollHomeToTop() {
   window.scrollTo({ top: 0, left: 0, behavior: "auto" });
   document.documentElement.scrollTop = 0;
@@ -70,7 +66,6 @@ export default function HomeClient({
   projectStats,
 }: HomeClientProps) {
   const lastWidth = useRef(0);
-  const preloadedBucketsRef = useRef<Set<"desktop" | "mobile">>(new Set());
   const viewportResolvedRef = useRef(false);
 
   const [isMobile, setIsMobile] = useState(initialIsMobile);
@@ -151,19 +146,6 @@ export default function HomeClient({
     };
   }, []);
 
-  useEffect(() => {
-    const bucket = isMobile ? "mobile" : "desktop";
-
-    if (preloadedBucketsRef.current.has(bucket)) {
-      return;
-    }
-
-    preloadedBucketsRef.current.add(bucket);
-    const assetSources = getHomeReadyAssetSources(homeContent.hero, isMobile);
-
-    void Promise.all(assetSources.map((source) => preloadImageAsset(source)));
-  }, [isMobile]);
-
   return (
     <main className="relative">
       <HomeHeroStack content={homeContent.hero} isMobile={isMobile} />
@@ -175,7 +157,7 @@ export default function HomeClient({
         viewportHeight={viewportHeight}
       />
 
-      <HomeCta
+      <DynamicHomeCta
         content={homeContent.cta}
         isMobile={isMobile}
         sectionHeightVh={HOME_CTA_SECTION_HEIGHT_VH}
