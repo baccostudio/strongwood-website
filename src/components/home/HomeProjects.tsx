@@ -10,17 +10,18 @@ interface HomeProjectsProps {
   content: HomeProjectsContent;
   projectStats: HomeProjectStats;
   isMobile: boolean;
-  viewportHeight: number;
 }
 
 const DESKTOP_PROJECT_TRACK_GAP = 150;
+const BASE_PROJECT_STICKY_SCROLL_VH = 100;
 const MOBILE_HERO_STACK_TAIL_VH = 8;
+const MOBILE_PROJECT_BLEED_BOTTOM_VH = -20;
+const MOBILE_PROJECT_BLEED_HEIGHT_VH = 22;
 
 export function HomeProjects({
   content,
   projectStats,
   isMobile,
-  viewportHeight,
 }: HomeProjectsProps) {
   const trackRef = useRef<HTMLDivElement>(null);
   const [trackHeight, setTrackHeight] = useState(0);
@@ -46,20 +47,24 @@ export function HomeProjects({
     return () => {
       resizeObserver?.disconnect();
     };
-  }, [isMobile, viewportHeight]);
+  }, [isMobile]);
 
   const projectTrackGap = isMobile ? 0 : DESKTOP_PROJECT_TRACK_GAP;
-  const heroStackTailOffset = isMobile
-    ? Math.ceil((viewportHeight * MOBILE_HERO_STACK_TAIL_VH) / 100)
-    : 0;
-  const wrapperHeight = trackHeight + viewportHeight + projectTrackGap + heroStackTailOffset;
+  const projectTrackViewportSpanVh = BASE_PROJECT_STICKY_SCROLL_VH + (isMobile ? MOBILE_HERO_STACK_TAIL_VH : 0);
+  const wrapperHeight = trackHeight
+    ? `calc(${trackHeight}px + ${projectTrackGap}px + (var(--vh, 1vh) * ${projectTrackViewportSpanVh}))`
+    : "calc(var(--vh, 1vh) * 300)";
+  const mobileBleedStyle = isMobile
+    ? {
+        bottom: `calc(var(--vh, 1vh) * ${MOBILE_PROJECT_BLEED_BOTTOM_VH})`,
+        height: `calc(var(--vh, 1vh) * ${MOBILE_PROJECT_BLEED_HEIGHT_VH})`,
+      }
+    : undefined;
 
   return (
     <div
       className="relative mt-[calc(var(--vh,1vh)*-100)]"
-      style={{
-        height: wrapperHeight ? `${wrapperHeight}px` : "300vh",
-      }}
+      style={{ height: wrapperHeight }}
     >
       <div className="sticky top-0 overflow-hidden min-h-[calc(var(--vh,1vh)*100)]">
         <div ref={trackRef} className="relative">
@@ -128,8 +133,9 @@ export function HomeProjects({
             aria-hidden="true"
             className={cn(
               "absolute left-0 w-full bg-muted pointer-events-none",
-              isMobile ? "-bottom-[20vh] h-[22vh]" : "-bottom-[10vh] h-[10.5vh]",
+              isMobile ? "" : "-bottom-[10vh] h-[10.5vh]",
             )}
+            style={mobileBleedStyle}
           />
         </div>
       </div>

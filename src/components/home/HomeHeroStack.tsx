@@ -17,6 +17,9 @@ interface HomeHeroStackProps {
   content: HomeHeroContent;
 }
 
+const HERO_OVERLAY_VIEWPORT_HEIGHT = "calc(var(--vh, 1vh) * 91)";
+const HERO_STACK_TAIL_HEIGHT = "calc(var(--vh, 1vh) * 8)";
+
 interface HeroStackItemStyle extends CSSProperties {
   "--hero-aspect-mobile": string;
   "--hero-aspect-desktop": string;
@@ -95,7 +98,11 @@ export function HomeHeroStack({ content }: HomeHeroStackProps) {
     <section className="relative w-full bg-muted">
       <div className="pointer-events-none absolute inset-0 z-20">
         <div
-          className="sticky top-0 w-full max-h-[calc(var(--vh,1vh)*100-9vh)] h-[calc(var(--vh,1vh)*100-9vh)]"
+          className="sticky top-0 w-full"
+          style={{
+            height: HERO_OVERLAY_VIEWPORT_HEIGHT,
+            maxHeight: HERO_OVERLAY_VIEWPORT_HEIGHT,
+          }}
         >
           <HomeHeroOverlay
             label={content.label}
@@ -124,7 +131,10 @@ export function HomeHeroStack({ content }: HomeHeroStackProps) {
           )}
         </div>
       ))}
-      <div className="absolute top-full left-0 z-10 h-[8vh] w-full rounded-b-[20px] bg-black shadow-[0_20px_40px_rgba(0,0,0,0.4)]" />
+      <div
+        className="absolute top-full left-0 z-10 w-full rounded-b-[20px] bg-black shadow-[0_20px_40px_rgba(0,0,0,0.4)]"
+        style={{ height: HERO_STACK_TAIL_HEIGHT }}
+      />
     </section>
   );
 }

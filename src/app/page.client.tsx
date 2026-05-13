@@ -82,7 +82,6 @@ export default function HomeClient({
   const viewportResolvedRef = useRef(false);
 
   const [isMobile, setIsMobile] = useState(false);
-  const [viewportHeight, setViewportHeight] = useState(0);
   const [resolvedProjectStats, setResolvedProjectStats] = useState(projectStats);
   const homeCtaExtraScrollVh = isMobile ? HOME_CTA_MOBILE_EXTRA_SCROLL_VH : HOME_CTA_EXTRA_SCROLL_VH;
   const homeCtaSectionHeightVh = HOME_CTA_ANIMATION_SPAN_VH + homeCtaExtraScrollVh;
@@ -152,7 +151,6 @@ export default function HomeClient({
 
       if (forceHeightSync || widthChanged || !viewportResolvedRef.current) {
         setIsMobile(nextIsMobile);
-        setViewportHeight(currentHeight);
         viewportResolvedRef.current = true;
       }
     };
@@ -265,7 +263,6 @@ export default function HomeClient({
         content={projectsContent}
         projectStats={resolvedProjectStats}
         isMobile={isMobile}
-        viewportHeight={viewportHeight}
       />
 
       <DynamicHomeCta
