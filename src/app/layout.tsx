@@ -1,4 +1,6 @@
 import type { Metadata, Viewport } from "next";
+import { Analytics } from "@vercel/analytics/next";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import "./globals.css";
 import { Footer } from "@/components/layout/Footer";
 import { Header } from "@/components/layout/Header";
@@ -92,6 +94,8 @@ export default function RootLayout({
         <Footer {...siteConfig.footer} />
         <JsonLdScript data={organizationJsonLd} />
         <JsonLdScript data={localBusinessJsonLd} />
+        <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   );
