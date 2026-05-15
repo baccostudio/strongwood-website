@@ -80,12 +80,12 @@ export async function sendContactFormAction(
   if (!didSend) {
     return {
       status: "error",
-      message: contactContent.errorMessage,
+      message: contactContent.feedbackDialog.error.description,
     };
   }
 
   return {
     status: "success",
-    message: contactContent.successMessage,
+    message: contactContent.feedbackDialog.success.description,
   };
 }

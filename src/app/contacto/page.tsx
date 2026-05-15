@@ -30,9 +30,14 @@ export default function ContactPage() {
 
       <section className="bg-surface py-[clamp(56px,10vw,96px)]">
         <div className="mx-auto flex w-full max-w-6xl flex-col gap-8 px-6 ">
-          <p className="max-w-3xl text-[37px] font-medium uppercase leading-9.75 tracking-[-0.03em] text-foreground">
+          <p className="max-w-3xl text-[32px] font-medium uppercase leading-[0.95] tracking-[-0.03em] text-foreground sm:text-[34px] lg:text-[35px]">
             {pageContent.formIntro}
           </p>
+          <div className="lg:hidden">
+            <span className="inline-flex border border-(--color-contact-dialog-close-border) bg-paper px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.24em] text-foreground shadow-sm">
+              {pageContent.formIncentive.label}
+            </span>
+          </div>
           <div className="grid items-stretch gap-8 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)]">
             <div className="w-full lg:aspect-565/449">
               <div className="relative h-full w-full overflow-hidden hidden lg:block">
@@ -44,6 +49,11 @@ export default function ContactPage() {
                   sizes="(min-width: 1024px) 50vw, 100vw"
                   className="object-cover"
                 />
+                <div className="absolute left-6 top-6 hidden lg:flex">
+                  <span className="border border-(--color-contact-dialog-close-border) bg-paper px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.24em] text-foreground shadow-sm">
+                    {pageContent.formIncentive.label}
+                  </span>
+                </div>
               </div>
             </div>
             <ContactForm
@@ -54,6 +64,7 @@ export default function ContactPage() {
               submitLabel={pageContent.submitLabel}
               submitLoadingLabel={pageContent.submitLoadingLabel}
               validationMessage={pageContent.validationMessage}
+              feedbackDialog={pageContent.feedbackDialog}
               selectIconSrc={pageContent.selectIconSrc}
               selectIconAlt={pageContent.selectIconAlt}
               submitIconSrc={pageContent.submitIconSrc}

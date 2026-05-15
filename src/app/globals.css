@@ -59,6 +59,7 @@
   --color-blur-dark: #d9d9d966;
   --color-blur-light: #ffffff4d;
   --color-overlay: #00000080;
+  --color-dialog-overlay: #11111152;
   --color-accent-green: #7bae81;
   --color-logo-alt: #e4d9c6;
   --color-btn-grey: #b0a7a1;
@@ -69,6 +70,13 @@
   --color-info-soft-bg: #edf6ff;
   --color-info-soft-border: #c7ddf3;
   --color-info-soft-text: #5d7ea6;
+  --color-contact-incentive-label: #736752;
+  --color-contact-invalid-bg: #fbf1ee;
+  --color-contact-invalid-border: #ddb3aa;
+  --color-contact-invalid-ring: #ecd2cb;
+  --color-contact-invalid-text: #8a584f;
+  --color-contact-dialog-border: #d6d0c5;
+  --color-contact-dialog-close-border: #d8d2c7;
   --color-review-star: #eab308;
   --color-home-hero: #d9d9d9;
   --gradient-hero-shadow: linear-gradient(180deg,
@@ -159,39 +167,47 @@ body {
   }
 }
 
-@keyframes toast-in {
+@keyframes dialog-overlay-in {
   from {
     opacity: 0;
-    transform: translateY(8px);
   }
 
   to {
     opacity: 1;
-    transform: translateY(0);
   }
 }
 
-@keyframes toast-in {
+@keyframes dialog-overlay-out {
   from {
-    opacity: 0;
-    transform: translateX(16px);
+    opacity: 1;
   }
 
   to {
-    opacity: 1;
-    transform: translateX(0);
+    opacity: 0;
   }
 }
 
-@keyframes toast-out {
+@keyframes dialog-content-in {
+  from {
+    opacity: 0;
+    transform: translateY(18px) scale(0.98);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes dialog-content-out {
   from {
     opacity: 1;
-    transform: translateX(0);
+    transform: translateY(0) scale(1);
   }
 
   to {
     opacity: 0;
-    transform: translateX(16px);
+    transform: translateY(12px) scale(0.99);
   }
 }
 

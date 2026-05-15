@@ -51,6 +51,21 @@ export interface ContactNotificationEmailContent {
   emptyPhoneValue: string;
 }
 
+export interface ContactFormIncentiveContent {
+  label: string;
+}
+
+export interface ContactFeedbackDialogVariantContent {
+  title: string;
+  description: string;
+}
+
+export interface ContactFeedbackDialogContent {
+  closeLabel: string;
+  success: ContactFeedbackDialogVariantContent;
+  error: ContactFeedbackDialogVariantContent;
+}
+
 export type ContactFormSubmissionStatus =
   | "idle"
   | "success"
@@ -66,14 +81,14 @@ export interface ContactPageContent extends PageContent {
   hero: ContactHeroContent;
   formIntro: string;
   formImageAlt: string;
+  formIncentive: ContactFormIncentiveContent;
   formFields: ContactFormField[];
   formSelect: ContactSelectField;
   formTextarea: ContactTextareaField;
   submitLabel: string;
   submitLoadingLabel: string;
-  successMessage: string;
-  errorMessage: string;
   validationMessage: string;
+  feedbackDialog: ContactFeedbackDialogContent;
   notificationEmail: ContactNotificationEmailContent;
   selectIconSrc: string;
   selectIconAlt: string;

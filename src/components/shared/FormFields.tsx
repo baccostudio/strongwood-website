@@ -42,10 +42,11 @@ interface WideArrowButtonProps {
   iconAlt: string;
   className?: string;
   disabled?: boolean;
+  isLoading?: boolean;
 }
 
 const baseInputStyles =
-  "w-full bg-(--color-paper) font-sans text-[18px] font-semibold leading-none tracking-[-0.04em] text-foreground placeholder:text-(--color-footer-text) focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-(--color-primary)";
+  "w-full border border-transparent bg-(--color-paper) font-sans text-[18px] font-semibold leading-none tracking-[-0.04em] text-foreground placeholder:text-(--color-footer-text) transition-[background-color,border-color,box-shadow,color] duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-(--color-primary) disabled:opacity-70";
 
 export function InputField({
   id,
@@ -57,6 +58,8 @@ export function InputField({
   onChange,
   disabled,
   required,
+  ariaInvalid,
+  errorId,
   maxLength,
 }: InputFieldProps) {
   return (
@@ -66,6 +69,8 @@ export function InputField({
       type={type}
       placeholder={placeholder}
       aria-label={placeholder}
+      aria-invalid={ariaInvalid || undefined}
+      aria-describedby={errorId}
       value={value}
       onChange={(event) => onChange?.(event.target.value)}
       disabled={disabled}
@@ -88,6 +93,8 @@ export function SelectField({
   onChange,
   disabled,
   required,
+  ariaInvalid,
+  errorId,
 }: SelectFieldProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [internalValue, setInternalValue] = useState<string | null>(null);
@@ -145,9 +152,13 @@ export function SelectField({
         id={id}
         ref={buttonRef}
         type="button"
+        role="combobox"
+        aria-label={placeholder}
         aria-haspopup="listbox"
         aria-expanded={isOpen}
         aria-controls={listboxId}
+        aria-invalid={ariaInvalid || undefined}
+        aria-describedby={errorId}
         disabled={disabled}
         onClick={() => {
           if (!disabled) {
@@ -182,7 +193,7 @@ export function SelectField({
           id={listboxId}
           ref={listRef}
           role="listbox"
-          className="absolute z-10 mt-2 w-full border border-(--color-footer-divider) bg-(--color-paper)"
+          className="absolute z-10 mt-2 w-full border border-(--color-footer-divider) bg-paper"
         >
           {options.map((option) => (
             <li
@@ -191,8 +202,8 @@ export function SelectField({
               aria-selected={resolvedValue === option}
               onClick={() => handleSelect(option)}
               className={cn(
-                "flex h-12 cursor-pointer items-center px-5 text-[18px] font-semibold tracking-[-0.04em] text-foreground transition hover:bg-(--color-surface)",
-                resolvedValue === option && "bg-(--color-surface)"
+                "flex h-12 cursor-pointer items-center px-5 text-[18px] font-semibold tracking-[-0.04em] text-foreground transition hover:bg-surface",
+                resolvedValue === option && "bg-surface"
               )}
             >
               {option}
@@ -214,6 +225,8 @@ export function TextareaField({
   onChange,
   disabled,
   required,
+  ariaInvalid,
+  errorId,
   maxLength,
 }: TextareaFieldProps) {
   return (
@@ -223,6 +236,8 @@ export function TextareaField({
       rows={rows}
       placeholder={placeholder}
       aria-label={placeholder}
+      aria-invalid={ariaInvalid || undefined}
+      aria-describedby={errorId}
       value={value}
       onChange={(event) => onChange?.(event.target.value)}
       disabled={disabled}
@@ -244,14 +259,22 @@ export function WideArrowButton({
   iconAlt,
   className,
   disabled,
+  isLoading = false,
 }: WideArrowButtonProps) {
+  const showHoverVisual = Boolean(hoverIconSrc) && isLoading;
+
   return (
     <button
       type="submit"
       aria-label={iconAlt}
+      aria-busy={isLoading || undefined}
       disabled={disabled}
       className={cn(
-        "group flex h-15 w-full items-center justify-between bg-(--color-paper) px-5 text-[18px] font-semibold uppercase tracking-[-0.02em] text-foreground transition-colors cursor-pointer hover:bg-(--color-foreground) hover:text-(--color-paper) disabled:cursor-not-allowed disabled:opacity-70",
+        "group flex h-15 w-full items-center justify-between px-5 text-[18px] font-semibold uppercase tracking-[-0.02em] transition-colors",
+        isLoading
+          ? "cursor-wait bg-foreground text-paper"
+          : "cursor-pointer bg-paper text-foreground hover:bg-foreground hover:text-paper",
+        disabled && !isLoading && "cursor-not-allowed opacity-70",
         className
       )}
     >
@@ -264,7 +287,11 @@ export function WideArrowButton({
           height={18}
           className={cn(
             "transition-opacity duration-200",
-            hoverIconSrc ? "opacity-100 group-hover:opacity-0" : "opacity-100"
+            hoverIconSrc
+              ? showHoverVisual
+                ? "opacity-0"
+                : "opacity-100 group-hover:opacity-0"
+              : "opacity-100"
           )}
         />
         {hoverIconSrc ? (
@@ -274,7 +301,10 @@ export function WideArrowButton({
             aria-hidden="true"
             width={18}
             height={18}
-            className="absolute inset-0 opacity-0 transition-opacity duration-200 group-hover:opacity-100"
+            className={cn(
+              "absolute inset-0 transition-opacity duration-200",
+              showHoverVisual ? "opacity-100" : "opacity-0 group-hover:opacity-100"
+            )}
           />
         ) : null}
       </span>

@@ -10,18 +10,19 @@ import {
   useState,
 } from "react";
 import type {
+  ContactFeedbackDialogContent,
   ContactFormActionState,
   ContactFormField,
   ContactSelectField,
   ContactTextareaField,
 } from "@/types/site";
+import { ContactFeedbackDialog } from "@/components/shared/ContactFeedbackDialog";
 import {
   InputField,
   SelectField,
   TextareaField,
   WideArrowButton,
 } from "@/components/shared/FormFields";
-import { Toast } from "@/components/shared/Toast";
 import { cn } from "@/lib/utils";
 
 interface ContactFormProps {
@@ -35,6 +36,7 @@ interface ContactFormProps {
   submitLabel: string;
   submitLoadingLabel: string;
   validationMessage: string;
+  feedbackDialog: ContactFeedbackDialogContent;
   selectIconSrc: string;
   selectIconAlt: string;
   submitIconSrc: string;
@@ -46,12 +48,18 @@ type FormValues = Record<string, string>;
 
 type FieldErrors = Record<string, string>;
 
+type DialogVariant = "success" | "error";
+
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const DIALOG_EXIT_ANIMATION_MS = 220;
 
 const initialActionState: ContactFormActionState = {
   status: "idle",
   message: null,
 };
+
+const invalidFieldClassName =
+  "border-(--color-contact-invalid-border) bg-(--color-contact-invalid-bg) ring-1 ring-(--color-contact-invalid-ring)";
 
 const getInitialValues = (
   formFields: ContactFormField[],
@@ -59,11 +67,14 @@ const getInitialValues = (
   formTextarea: ContactTextareaField
 ): FormValues => {
   const baseValues: FormValues = {};
+
   formFields.forEach((field) => {
     baseValues[field.id] = "";
   });
+
   baseValues[formSelect.id] = "";
   baseValues[formTextarea.id] = "";
+
   return baseValues;
 };
 
@@ -73,11 +84,14 @@ const buildFieldErrorMap = (
   formTextarea: ContactTextareaField
 ) => {
   const map: Record<string, string> = {};
+
   formFields.forEach((field) => {
     map[field.id] = field.errorMessage;
   });
+
   map[formSelect.id] = formSelect.errorMessage;
   map[formTextarea.id] = formTextarea.errorMessage;
+
   return map;
 };
 
@@ -94,6 +108,7 @@ export function ContactForm({
   submitLabel,
   submitLoadingLabel,
   validationMessage,
+  feedbackDialog,
   selectIconSrc,
   selectIconAlt,
   submitIconSrc,
@@ -110,22 +125,23 @@ export function ContactForm({
   );
   const fieldMetaMap = useMemo(() => {
     const map: Record<string, ContactFormField> = {};
+
     formFields.forEach((field) => {
       map[field.id] = field;
     });
+
     return map;
   }, [formFields]);
   const formRef = useRef<HTMLFormElement | null>(null);
+  const dialogCloseTimeoutRef = useRef<number | null>(null);
   const [actionState, dispatchFormAction, isPending] = useActionState(
     action,
     initialActionState
   );
   const [values, setValues] = useState<FormValues>(initialValues);
   const [fieldErrors, setFieldErrors] = useState<FieldErrors>({});
-  const [toast, setToast] = useState<{
-    message: string;
-    variant: "success" | "error";
-  } | null>(null);
+  const [dialogVariant, setDialogVariant] = useState<DialogVariant | null>(null);
+  const [isDialogClosing, setIsDialogClosing] = useState(false);
   const [hasSubmitted, setHasSubmitted] = useState(false);
 
   const isLoading = isPending;
@@ -137,12 +153,45 @@ export function ContactForm({
     formRef.current?.reset();
   });
 
+  const focusFirstInvalidField = () => {
+    const firstInvalidField =
+      formRef.current?.querySelector<HTMLElement>("[aria-invalid='true']");
+
+    if (!firstInvalidField) {
+      return;
+    }
+
+    firstInvalidField.focus({ preventScroll: true });
+  };
+
+  const handleDialogClose = () => {
+    if (!dialogVariant || isDialogClosing) {
+      return;
+    }
+
+    if (dialogCloseTimeoutRef.current !== null) {
+      window.clearTimeout(dialogCloseTimeoutRef.current);
+      dialogCloseTimeoutRef.current = null;
+    }
+
+    setIsDialogClosing(true);
+
+    dialogCloseTimeoutRef.current = window.setTimeout(() => {
+      setDialogVariant(null);
+      setIsDialogClosing(false);
+      dialogCloseTimeoutRef.current = null;
+    }, DIALOG_EXIT_ANIMATION_MS);
+  };
+
   const fieldMaxLengths = useMemo(() => {
     const map: Record<string, number> = {};
+
     formFields.forEach((field) => {
       map[field.id] = field.maxLength;
     });
+
     map[formTextarea.id] = formTextarea.maxLength;
+
     return map;
   }, [formFields, formTextarea]);
 
@@ -163,13 +212,17 @@ export function ContactForm({
       if (meta.isRequired && !value) {
         return fieldErrorMap[key] ?? validationMessage;
       }
+
       if (meta.type === "email" && value && !EMAIL_REGEX.test(value)) {
         return fieldErrorMap[key] ?? validationMessage;
       }
+
       const maxLength = fieldMaxLengths[key];
+
       if (maxLength && value.length > maxLength) {
         return fieldErrorMap[key] ?? validationMessage;
       }
+
       return "";
     }
 
@@ -177,6 +230,7 @@ export function ContactForm({
       if (formSelect.isRequired && !value) {
         return fieldErrorMap[key] ?? validationMessage;
       }
+
       return "";
     }
 
@@ -184,10 +238,13 @@ export function ContactForm({
       if (formTextarea.isRequired && !value) {
         return fieldErrorMap[key] ?? validationMessage;
       }
+
       const maxLength = fieldMaxLengths[key];
+
       if (maxLength && value.length > maxLength) {
         return fieldErrorMap[key] ?? validationMessage;
       }
+
       return "";
     }
 
@@ -197,6 +254,7 @@ export function ContactForm({
   const handleChange = (key: string, nextValue: string) => {
     const maxLength = fieldMaxLengths[key];
     const safeValue = maxLength ? nextValue.slice(0, maxLength) : nextValue;
+
     setValues((prev) => ({ ...prev, [key]: safeValue }));
 
     if (!hasSubmitted) {
@@ -204,13 +262,15 @@ export function ContactForm({
     }
 
     setFieldErrors((prev) => {
-      const nextError = validateFieldValue(key, safeValue);
-      if (!nextError) {
-        const next = { ...prev };
-        delete next[key];
-        return next;
+      if (!prev[key]) {
+        return prev;
       }
-      return { ...prev, [key]: nextError };
+
+      const next = { ...prev };
+
+      delete next[key];
+
+      return next;
     });
   };
 
@@ -229,6 +289,7 @@ export function ContactForm({
 
     Object.keys(submittedValues).forEach((key) => {
       const error = validateFieldValue(key, submittedValues[key] ?? "");
+
       if (error) {
         nextErrors[key] = error;
       }
@@ -241,16 +302,16 @@ export function ContactForm({
     });
 
     setFieldErrors(nextErrors);
+
     return Object.keys(nextErrors).length === 0;
   };
 
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    setToast(null);
+    setDialogVariant(null);
     setHasSubmitted(true);
 
     if (!formRef.current) {
-      setToast({ message: validationMessage, variant: "error" });
       return;
     }
 
@@ -260,6 +321,9 @@ export function ContactForm({
     setValues(submittedValues);
 
     if (!validateSubmittedValues(submittedValues)) {
+      window.requestAnimationFrame(() => {
+        focusFirstInvalidField();
+      });
       return;
     }
 
@@ -268,32 +332,64 @@ export function ContactForm({
     });
   };
 
-  useEffect(() => {
-    const actionMessage = actionState.message;
+  const handleServerValidation = useEffectEvent(() => {
+    setHasSubmitted(true);
 
-    if (actionState.status === "idle" || !actionMessage) {
+    const isValid = validateSubmittedValues(values);
+
+    if (isValid) {
       return;
     }
 
+    window.requestAnimationFrame(() => {
+      focusFirstInvalidField();
+    });
+  });
+
+  const openFeedbackDialog = useEffectEvent((variant: DialogVariant) => {
+    if (dialogCloseTimeoutRef.current !== null) {
+      window.clearTimeout(dialogCloseTimeoutRef.current);
+      dialogCloseTimeoutRef.current = null;
+    }
+
+    if (variant === "success" || variant === "error") {
+      resetFormState();
+    }
+
+    setIsDialogClosing(false);
+    setDialogVariant(variant);
+  });
+
+  useEffect(() => {
+    return () => {
+      if (dialogCloseTimeoutRef.current !== null) {
+        window.clearTimeout(dialogCloseTimeoutRef.current);
+      }
+    };
+  }, []);
+
+  useEffect(() => {
+    if (actionState.status === "idle") {
+      return undefined;
+    }
+
     const timeoutId = window.setTimeout(() => {
-      if (actionState.status === "success") {
-        resetFormState();
-        setToast({ message: actionMessage, variant: "success" });
+      if (actionState.status === "validation") {
+        handleServerValidation();
         return;
       }
 
-      if (actionState.status === "error") {
-        resetFormState();
+      if (actionState.status === "success" || actionState.status === "error") {
+        openFeedbackDialog(actionState.status);
       }
-
-      setToast({ message: actionMessage, variant: "error" });
     }, 0);
 
     return () => window.clearTimeout(timeoutId);
-  }, [actionState, initialValues]);
+  }, [actionState]);
 
   const renderCornerError = (fieldId: string) => {
     const error = fieldErrors[fieldId];
+
     if (!error || !hasSubmitted) {
       return null;
     }
@@ -302,8 +398,8 @@ export function ContactForm({
       <div
         id={`${fieldId}-error`}
         className={cn(
-          "pointer-events-none absolute -right-5 -top-0.5 -translate-y-1/2 rounded-full border border-(--color-info-soft-border) bg-(--color-info-soft-bg) px-3 py-1 text-[11px] font-semibold uppercase tracking-[-0.02em] text-(--color-info-soft-text)",
-          "shadow-sm",
+          "pointer-events-none absolute -right-5 -top-0.5 -translate-y-1/2 rounded-full border border-(--color-contact-invalid-border) bg-(--color-contact-invalid-bg) px-3 py-1 text-[11px] font-semibold uppercase tracking-[-0.02em] text-(--color-contact-invalid-text)",
+          "shadow-sm"
         )}
       >
         {error}
@@ -312,7 +408,7 @@ export function ContactForm({
   };
 
   return (
-    <div className="relative ">
+    <div className="relative">
       <form
         ref={formRef}
         className="flex w-full flex-col gap-4"
@@ -321,6 +417,7 @@ export function ContactForm({
       >
         {formFields.map((field) => {
           const hasError = Boolean(fieldErrors[field.id]) && hasSubmitted;
+
           return (
             <div key={field.id} className={cn("relative", "pb-2")}>
               <InputField
@@ -334,14 +431,13 @@ export function ContactForm({
                 maxLength={field.maxLength}
                 ariaInvalid={hasError}
                 errorId={hasError ? `${field.id}-error` : undefined}
-                className={cn(
-                  hasError && "ring-1 ring-(--color-muted)"
-                )}
+                className={cn(hasError && invalidFieldClassName)}
               />
               {renderCornerError(field.id)}
             </div>
           );
         })}
+
         <div className="relative pb-2">
           <SelectField
             id={formSelect.id}
@@ -360,12 +456,12 @@ export function ContactForm({
                 : undefined
             }
             className={cn(
-              fieldErrors[formSelect.id] && hasSubmitted &&
-                "ring-1 ring-(--color-muted)"
+              fieldErrors[formSelect.id] && hasSubmitted && invalidFieldClassName
             )}
           />
           {renderCornerError(formSelect.id)}
         </div>
+
         <div className="relative pb-2">
           <TextareaField
             id={formTextarea.id}
@@ -383,26 +479,28 @@ export function ContactForm({
                 : undefined
             }
             className={cn(
-              fieldErrors[formTextarea.id] && hasSubmitted &&
-                "ring-1 ring-(--color-muted)"
+              fieldErrors[formTextarea.id] && hasSubmitted && invalidFieldClassName
             )}
           />
           {renderCornerError(formTextarea.id)}
         </div>
+
         <WideArrowButton
           label={isLoading ? submitLoadingLabel : submitLabel}
           iconSrc={submitIconSrc}
           hoverIconSrc={submitIconHoverSrc}
           iconAlt={submitIconAlt}
           disabled={isLoading}
+          isLoading={isLoading}
         />
       </form>
 
-      <Toast
-        message={toast?.message ?? ""}
-        variant={toast?.variant ?? "success"}
-        isOpen={Boolean(toast)}
-        onClose={() => setToast(null)}
+      <ContactFeedbackDialog
+        isOpen={Boolean(dialogVariant)}
+        isClosing={isDialogClosing}
+        variant={dialogVariant ?? "success"}
+        content={feedbackDialog}
+        onClose={handleDialogClose}
       />
     </div>
   );

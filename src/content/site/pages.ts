@@ -85,8 +85,11 @@ export const sitePages: PagesConfig = {
       imageSrc: "/images/hero/hero-contacto-mesada-cocina-madera-artesanal.jpg",
       imageAlt: "Cocina con muebles de madera y barra blanca",
     },
-    formIntro: "Un diseño a medida empieza con una buena conversación.",
+    formIntro: "Un diseño a medida empieza con una buena conversación",
     formImageAlt: "Cocina moderna con muebles a medida",
+    formIncentive: {
+      label: "ASESORÍA GRATIS SI COMPLETÁS EL FORMULARIO",
+    },
     formFields: [
       {
         id: "fullName",
@@ -130,10 +133,22 @@ export const sitePages: PagesConfig = {
     },
     submitLabel: "Enviar consulta",
     submitLoadingLabel: "Enviando...",
-    successMessage: "Mensaje enviado. Te respondemos pronto.",
-    errorMessage:
-      "No pudimos confirmar el envío. Si tu consulta ingresó correctamente, te estaremos contactando.",
     validationMessage: "Completá todos los campos para enviar la consulta.",
+    feedbackDialog: {
+      closeLabel: "Cerrar mensaje",
+      success: {
+        title: "Recibimos tu consulta",
+        description:
+          "Gracias por escribirnos. En breve te respondemos para seguir con la asesoría gratis de tu espacio.",
+        // buttonLabel: "Cerrar",
+      },
+      error: {
+        title: "No pudimos confirmar el envío",
+        description:
+          "Gracias por escribirnos. Si tu consulta ingresó correctamente, en breve te respondemos para seguir con la asesoría gratis de tu espacio.",
+        // buttonLabel: "Volver al formulario",
+      },
+    },
     notificationEmail: {
       subject: "Nueva consulta desde la web",
       intro: "Recibiste una nueva consulta desde el formulario de contacto.",
