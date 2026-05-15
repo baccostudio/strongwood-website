@@ -2,6 +2,7 @@ import type { FooterConfig, FooterLink, SocialLink } from "./footer";
 import type { HeaderConfig } from "./header";
 import type { SiteMetadata } from "./metadata";
 import type { NotFoundContent } from "./not-found";
+import type { ContactReviewsContent, GoogleReviewItem } from "./contact-reviews";
 import type {
   AboutUsHeroContent,
   AboutUsIntroContent,
@@ -43,12 +44,14 @@ export type {
   ContactFormActionState,
   ContactFormField,
   ContactFormSubmissionStatus,
+  ContactReviewsContent,
   ContactNotificationEmailContent,
   ContactPageContent,
   ContactSelectField,
   ContactTextareaField,
   FooterConfig,
   FooterLink,
+  GoogleReviewItem,
   HeaderConfig,
   FacebookPixelConfig,
   GoogleTagManagerConfig,

@@ -69,6 +69,7 @@
   --color-info-soft-bg: #edf6ff;
   --color-info-soft-border: #c7ddf3;
   --color-info-soft-text: #5d7ea6;
+  --color-review-star: #eab308;
   --color-home-hero: #d9d9d9;
   --gradient-hero-shadow: linear-gradient(180deg,
       rgba(18, 26, 19, 0.1) 34.13%,
@@ -123,8 +124,36 @@ body {
   animation: home-marquee 22s linear infinite;
 }
 
+@keyframes contact-reviews-marquee {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.contact-reviews-track {
+  animation: contact-reviews-marquee var(--contact-reviews-duration, 36s) linear infinite;
+  will-change: transform;
+}
+
+/* .contact-reviews-marquee:is(:hover, :focus-within) .contact-reviews-track {
+  animation-play-state: paused;
+} */
+
 @media (prefers-reduced-motion: reduce) {
   .home-marquee-track {
+    animation: none;
+    transform: translateX(0);
+  }
+
+  .contact-reviews-marquee {
+    overflow-x: auto;
+  }
+
+  .contact-reviews-track {
     animation: none;
     transform: translateX(0);
   }

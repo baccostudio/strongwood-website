@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import Image from "next/image";
+import { contactReviewsContent } from "@/content/contact";
 import { siteConfig } from "@/content/site";
+import { ContactReviewsMarquee } from "@/components/shared/ContactReviewsMarquee";
 import { buildMetadata } from "@/lib/seo";
 import { PageHero } from "@/components/shared/PageHero";
 import { ContactForm } from "@/components/shared/ContactForm";
@@ -26,9 +28,9 @@ export default function ContactPage() {
         imageAlt={pageContent.hero.imageAlt}
       />
 
-      <section className="bg-(--color-surface) py-[clamp(56px,10vw,96px)]">
+      <section className="bg-surface py-[clamp(56px,10vw,96px)]">
         <div className="mx-auto flex w-full max-w-6xl flex-col gap-8 px-6 ">
-          <p className="max-w-3xl text-[37px] font-medium uppercase leading-9.75 tracking-[-0.03em] text-(--color-foreground)">
+          <p className="max-w-3xl text-[37px] font-medium uppercase leading-9.75 tracking-[-0.03em] text-foreground">
             {pageContent.formIntro}
           </p>
           <div className="grid items-stretch gap-8 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)]">
@@ -61,6 +63,16 @@ export default function ContactPage() {
           </div>
         </div>
       </section>
+
+      <ContactReviewsMarquee
+        title={contactReviewsContent.title}
+        description={contactReviewsContent.description}
+        sectionAriaLabel={contactReviewsContent.sectionAriaLabel}
+        ratingAriaLabelSuffix={contactReviewsContent.ratingAriaLabelSuffix}
+        reviewsLinkLabel={contactReviewsContent.reviewsLinkLabel}
+        reviewsLinkHref={contactReviewsContent.reviewsLinkHref}
+        reviews={contactReviewsContent.reviews}
+      />
     </main>
   );
 }

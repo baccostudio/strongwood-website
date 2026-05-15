@@ -1,0 +1,58 @@
+[
+  {
+    "id": "review-example-1",
+    "authorName": "Melina Rodriguez",
+    "rating": 5,
+    "publishedAt": "2026-04-01",
+    "text": "Muy buena atención al momento de encargar el trabajo, como así también en la instalación de los muebles. La Calidad y Estética, excelente. Experiencia positiva. Los recomiendo!"
+  },
+  {
+    "id": "review-example-2",
+    "authorName": "Luciano Cucinotta",
+    "rating": 5,
+    "publishedAt": "2025-09-01",
+    "text": "Excelente sus trabajos, quedamos super conformes con el mueble y los tiempos de entrega. Recomiendo 100%"
+  },
+  {
+    "id": "review-example-3",
+    "authorName": "Santiago Ojeda",
+    "rating": 5,
+    "publishedAt": "2025-09-01",
+    "text": "Muy buena Atención , cumplen con los plazos definidos ,excelente calidad de materiales 👍👍👍…"
+  },
+  {
+    "id": "review-example-4",
+    "authorName": "Sahir Guerra",
+    "rating": 5,
+    "publishedAt": "2026-04-01",
+    "text": "Entendieron el proyecto a ejecutar, muy profesionales."
+  },
+  {
+    "id": "review-example-5",
+    "authorName": "Tomas Di Bacco",
+    "rating": 5,
+    "publishedAt": "2025-09-01",
+    "text": "Buenismo el diseño y calidad de los muebles. Compre un placar y escritorio a medida y quedo espectacular, cumplieron con el tiempo de entrega y terminaciones que esperaba. Muy atentos los chicos que vinieron a instalar"
+  },
+  {
+    "id": "review-example-6",
+    "authorName": "Leandro Lewin",
+    "rating": 5,
+    "publishedAt": "2026-04-01",
+    "text": "Me encantó el trabajo, quedo super prolijo y queda barbaro para la pieza. Muchas gracias por su buena atencion!"
+  },
+  {
+    "id": "review-example-7",
+    "authorName": "Mateo Gonzalez",
+    "rating": 5,
+    "publishedAt": "2026-04-01",
+    "text": "Un lujo como trabajan. Prolijo, en tiempo y forma. Recontra recomendados"
+  },
+  {
+    "id": "review-example-8",
+    "authorName": "Nazareno Zabala",
+    "rating": 5,
+    "publishedAt": "2026-04-01",
+    "text": "Buena atención, recomiendo!!"
+  }
+]
