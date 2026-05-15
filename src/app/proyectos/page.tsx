@@ -5,7 +5,7 @@ import { buildMetadata } from "@/lib/seo";
 import { PageHero } from "@/components/shared/PageHero";
 import { PageIntro } from "@/components/shared/PageIntro";
 import { WorkSteps } from "@/components/shared/WorkSteps";
-import { FeaturedProjectGrid } from "@/components/projects/FeaturedProjectGrid";
+// import { FeaturedProjectGrid } from "@/components/projects/FeaturedProjectGrid";
 import { MobileFeaturedProjects } from "@/components/projects/MobileFeaturedProjects";
 
 export const metadata: Metadata = buildMetadata({
@@ -17,27 +17,14 @@ export const metadata: Metadata = buildMetadata({
 });
 
 export default function ProyectosPage() {
-  const featuredItems = proyectosContent.featured.items
-    .map((item) => {
-      const project = projects.find((entry) => entry.id === item.id);
-      if (!project) return null;
-      return {
-        href: `/proyectos/${project.slug}`,
-        image: project.heroImage,
-        carouselImages: project.carouselImages,
-        ariaLabel: item.ariaLabel,
-        title: project.title,
-      };
-    })
-    .filter(
-      (item): item is {
-        href: string;
-        image: typeof projects[number]["heroImage"];
-        carouselImages: typeof projects[number]["carouselImages"];
-        ariaLabel: string;
-        title: string;
-      } => Boolean(item)
-    );
+  const projectItems = projects
+    .filter((project) => project.listVariant !== "comingSoon")
+    .map((project) => ({
+      href: `/proyectos/${project.slug}`,
+      image: project.heroImage,
+      ariaLabel: `${proyectosContent.projectList.ariaLabelPrefix} proyecto ${project.title}`,
+      title: project.title,
+    }));
 
   return (
     <main className="flex min-h-screen flex-col">
@@ -55,22 +42,23 @@ export default function ProyectosPage() {
         location={proyectosContent.intro.location}
         paragraphs={proyectosContent.intro.paragraphs}
         cta={proyectosContent.intro.cta}
-        className="bg-(--color-secondary)"
+        className="bg-secondary"
         highlightClassName="font-semibold"
         ctaClassName="border-[var(--color-black)] text-[var(--color-secondary)]"
       />
       <WorkSteps title={proyectosContent.steps.title} steps={proyectosContent.steps.items}>
-        <FeaturedProjectGrid
+        {/* <FeaturedProjectGrid
           title={proyectosContent.featured.title}
-          items={featuredItems.slice(0, 3)}
+          items={projectItems}
           scrollHint={proyectosContent.featured.scrollHint}
           ctaLabel={proyectosContent.featured.ctaLabel}
           layout="embedded"
           className="hidden lg:block"
-        />
+        /> */}
         <MobileFeaturedProjects
-          items={featuredItems}
-          className="lg:hidden"
+          items={projectItems}
+          ctaLabel={proyectosContent.projectList.ctaLabel}
+          className="mt-12 lg:mt-14"
         />
       </WorkSteps>
     </main>
