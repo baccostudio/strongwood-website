@@ -1,5 +1,3 @@
-"use client";
-
 import Image from "next/image";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
@@ -30,7 +28,7 @@ export function MobileFeaturedProjects({
         className
       )}
     >
-      {items.map((item, idx) => (
+      {items.map((item) => (
         <article key={item.href} className="relative block w-full">
           <Link
             href={item.href}
@@ -43,8 +41,7 @@ export function MobileFeaturedProjects({
                 alt={item.image.alt}
                 fill
                 className="object-cover"
-                sizes="(min-width: 1280px) 25vw, (min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
-                priority={idx === 0}
+                sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
               />
             </div>
 

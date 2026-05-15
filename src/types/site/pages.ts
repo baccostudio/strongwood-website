@@ -38,6 +38,11 @@ export interface ContactHeroContent {
   subtitleLines: string[];
   imageSrc: string;
   imageAlt: string;
+  imageWidth: number;
+  imageHeight: number;
+  mobileImageSrc: string;
+  mobileImageWidth: number;
+  mobileImageHeight: number;
 }
 
 export interface ContactNotificationEmailContent {
@@ -102,6 +107,11 @@ export interface AboutUsHeroContent {
   subtitleLines: string[];
   imageSrc: string;
   imageAlt: string;
+  imageWidth: number;
+  imageHeight: number;
+  mobileImageSrc: string;
+  mobileImageWidth: number;
+  mobileImageHeight: number;
 }
 
 export interface AboutUsIntroParagraph {

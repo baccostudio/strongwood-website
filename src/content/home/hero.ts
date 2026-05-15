@@ -5,12 +5,12 @@ export const homeHero: HomeHeroContent = {
     {
       alt: "Cocina en L con muebles oscuros e iluminación lineal",
       desktop: {
-        src: "/images/hero-new/hero-section-1.webp",
+        src: "/images/home/hero/hero-section-1.webp",
         width: 4096,
         height: 2725,
       },
       mobile: {
-        src: "/images/hero-new/hero-section-1-mob.webp",
+        src: "/images/home/hero/hero-section-1-mob.webp",
         width: 795,
         height: 1445,
       },
@@ -18,12 +18,12 @@ export const homeHero: HomeHeroContent = {
     {
       alt: "Cocina con techo de madera, mesadas de madera y ventana central",
       desktop: {
-        src: "/images/hero-new/hero-section-2.webp",
+        src: "/images/home/hero/hero-section-2.webp",
         width: 4096,
         height: 2725,
       },
       mobile: {
-        src: "/images/hero-new/hero-section-2-mob.webp",
+        src: "/images/home/hero/hero-section-2-mob.webp",
         width: 795,
         height: 1445,
       },
@@ -31,12 +31,12 @@ export const homeHero: HomeHeroContent = {
     {
       alt: "Cocina en L, mesadas de madera y ventana central",
       desktop: {
-        src: "/images/hero-new/hero-section-4.webp",
+        src: "/images/home/hero/hero-section-4.webp",
         width: 4096,
         height: 2725,
       },
       mobile: {
-        src: "/images/hero-new/hero-section-4-mob.webp",
+        src: "/images/home/hero/hero-section-4-mob.webp",
         width: 795,
         height: 1445,
       },
@@ -44,12 +44,12 @@ export const homeHero: HomeHeroContent = {
     {
       alt: "Cocina con isla blanca con combinación de muebles azules y marrones",
       desktop: {
-        src: "/images/hero-new/hero-section-3.webp",
+        src: "/images/home/hero/hero-section-3.webp",
         width: 4096,
         height: 2725,
       },
       mobile: {
-        src: "/images/hero-new/hero-section-3-mob.webp",
+        src: "/images/home/hero/hero-section-3-mob.webp",
         width: 795,
         height: 1445,
       },

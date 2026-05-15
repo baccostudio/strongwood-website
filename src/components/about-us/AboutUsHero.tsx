@@ -5,6 +5,11 @@ interface AboutUsHeroProps {
   subtitleLines: string[];
   imageSrc: string;
   imageAlt: string;
+  imageWidth: number;
+  imageHeight: number;
+  mobileImageSrc?: string;
+  mobileImageWidth?: number;
+  mobileImageHeight?: number;
   subtitleClassName?: string;
 }
 
@@ -13,6 +18,11 @@ export function AboutUsHero({
   subtitleLines,
   imageSrc,
   imageAlt,
+  imageWidth,
+  imageHeight,
+  mobileImageSrc,
+  mobileImageWidth,
+  mobileImageHeight,
   subtitleClassName,
 }: AboutUsHeroProps) {
   return (
@@ -21,6 +31,11 @@ export function AboutUsHero({
       subtitleLines={subtitleLines}
       imageSrc={imageSrc}
       imageAlt={imageAlt}
+      imageWidth={imageWidth}
+      imageHeight={imageHeight}
+      mobileImageSrc={mobileImageSrc}
+      mobileImageWidth={mobileImageWidth}
+      mobileImageHeight={mobileImageHeight}
       subtitleClassName={subtitleClassName}
     />
   );

@@ -23,6 +23,11 @@ export default function NosotrosPage() {
         subtitleLines={pageContent.hero.subtitleLines}
         imageSrc={pageContent.hero.imageSrc}
         imageAlt={pageContent.hero.imageAlt}
+        imageWidth={pageContent.hero.imageWidth}
+        imageHeight={pageContent.hero.imageHeight}
+        mobileImageSrc={pageContent.hero.mobileImageSrc}
+        mobileImageWidth={pageContent.hero.mobileImageWidth}
+        mobileImageHeight={pageContent.hero.mobileImageHeight}
         subtitleClassName="text-[clamp(16px,2.8vw,28px)] leading-[clamp(24px,4.2vw,38px)] sm:text-[clamp(18px,3.1vw,31px)] sm:leading-[clamp(26.7px,4.5vw,43px)]"
       />
       <AboutUsIntro

@@ -219,7 +219,7 @@ export function ContactReviewsMarquee({
       <div className="mx-auto flex w-full flex-col items-center">
         <div className="max-w-6xl w-full px-6">
           <div className="flex max-w-3xl flex-col gap-2">
-            <h2 className="max-w-3xl text-[37px] font-medium uppercase leading-9.75 tracking-[-0.03em] text-foreground">
+            <h2 className="max-w-3xl uppercasetext-foreground uppercase sm:text-[34px] lg:text-[35px] text-[clamp(22px,3vw,30px)] font-semibold leading-none tracking-[-0.04em]">
               {title}
             </h2>
             <p className="text-(--color-step-subtitle) text-[clamp(18px,2.4vw,22px)] font-normal leading-5 tracking-[-0.03em]">

@@ -21,7 +21,7 @@ export default function ProyectosPage() {
     .filter((project) => project.listVariant !== "comingSoon")
     .map((project) => ({
       href: `/proyectos/${project.slug}`,
-      image: project.heroImage,
+      image: project.listingImage,
       ariaLabel: `${proyectosContent.projectList.ariaLabelPrefix} proyecto ${project.title}`,
       title: project.title,
     }));
@@ -33,6 +33,11 @@ export default function ProyectosPage() {
         subtitleLines={proyectosContent.hero.subtitleLines}
         imageSrc={proyectosContent.hero.imageSrc}
         imageAlt={proyectosContent.hero.imageAlt}
+        imageWidth={proyectosContent.hero.imageWidth}
+        imageHeight={proyectosContent.hero.imageHeight}
+        mobileImageSrc={proyectosContent.hero.mobileImageSrc}
+        mobileImageWidth={proyectosContent.hero.mobileImageWidth}
+        mobileImageHeight={proyectosContent.hero.mobileImageHeight}
         badgeText={proyectosContent.hero.badgeText}
         badgeAriaLabel={proyectosContent.hero.badgeAriaLabel}
         subtitleClassName="text-[clamp(16px,2.8vw,28px)] leading-[clamp(24px,4.2vw,38px)] sm:text-[clamp(18px,3.1vw,31px)] sm:leading-[clamp(26.7px,4.5vw,43px)]"
@@ -58,7 +63,7 @@ export default function ProyectosPage() {
         <MobileFeaturedProjects
           items={projectItems}
           ctaLabel={proyectosContent.projectList.ctaLabel}
-          className="mt-12 lg:mt-14"
+          className="my-12 lg:my-14"
         />
       </WorkSteps>
     </main>

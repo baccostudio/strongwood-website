@@ -12,6 +12,12 @@ export const projects: Project[] = [
     yearValue: "2025",
     typeLabel: "Tipo de proyecto",
     typeValue: "Cocina completa · Rack TV · Vanitory · Placard · Lavadero",
+    listingImage: {
+      src: "/images/project-listing/lavalle-st-39.webp",
+      alt: "Patio con puertas y ventanas de madera y ventanal",
+      width: 768,
+      height: 1024,
+    },
     heroImage: {
       src: "/images/project-details/lavalle-st-39/lavalle-39-patio-con-puertas-ventanas-madera-con-ventanal.jpg",
       alt: "Patio con puertas y ventanas de madera y ventanal",
@@ -129,6 +135,12 @@ export const projects: Project[] = [
     typeLabel: "Tipo de proyecto",
     typeValue:
       "Cocina completa · Rack TV · Estación de café · Vanitory · Placard · Vestidor · Lavadero · Bajo escalera · Cerramiento de escalera · Divisor de ambientes · Puerta granero · Maquillador",
+    listingImage: {
+      src: "/images/project-listing/coliqueo-st-53.webp",
+      alt: "Dormitorio con paredes revestidas en láminas de madera",
+      width: 768,
+      height: 1024,
+    },
     heroImage: {
       src: "/images/project-details/coliqueo-st-53/coliqueo-53-dormitorio-laminas-madera.webp",
       alt: "Dormitorio con paredes revestidas en láminas de madera",
@@ -272,6 +284,12 @@ export const projects: Project[] = [
     yearValue: "2025",
     typeLabel: "Tipo de proyecto",
     typeValue: "Cocina completa · Rack TV · Estación de café · Vanitory · Placard · Vestidor · Escritorio",
+    listingImage: {
+      src: "/images/project-listing/cangallo-2636-st-93.webp",
+      alt: "Estantería de madera clara con iluminación integrada",
+      width: 768,
+      height: 1024,
+    },
     heroImage: {
       src: "/images/project-details/cangallo-2636-st-93/cangallo-93-estanteria-blanca-madera.webp",
       alt: "Estantería de madera clara con iluminación integrada",
@@ -376,6 +394,12 @@ export const projects: Project[] = [
     yearValue: "2025",
     typeLabel: "Tipo de proyecto",
     typeValue: "Cocina completa · Placares · Vestidor · Vanitorys",
+    listingImage: {
+      src: "/images/project-listing/olleros-st-92.webp",
+      alt: "Cocina con iluminación cálida y muebles de melamina",
+      width: 768,
+      height: 1024,
+    },
     heroImage: {
       src: "/images/project-details/olleros-st-92/olleros-92-cocina-completa.jpeg",
       alt: "Cocina con iluminación cálida y muebles de melamina",
@@ -473,96 +497,6 @@ export const projects: Project[] = [
       },
     ],
     themeClass: "project-theme-olleros",
-    nextCardLabel: "Siguiente proyecto",
-  },
-  // OCULTO
-  {
-    id: "remedios-escalada-st-13",
-    slug: "remedios-escalada-st-13",
-    title: "REMEDIOS DE ESCALADA / ST-13",
-    subtitle: "proyecto",
-    listVariant: "comingSoon",
-    listBadgeLabel: "Próximamente",
-    listCtaLabel: "Próximamente",
-    locationLabel: "Localidad",
-    locationValue: "Villa del Parque, CABA",
-    yearLabel: "Año",
-    yearValue: "2023",
-    typeLabel: "Tipo de proyecto",
-    typeValue: "Cocina completa",
-    heroImage: {
-      src: "/images/project-details/remedios-escalada-st-13/remedios-escalada-13-test.jpg",
-      alt: "Comedor con mesa de madera y ventanales",
-      width: 1200,
-      height: 720,
-    },
-    carouselImages: [
-      {
-        src: "/images/project-details/olleros-st-92/olleros-92-cocina-gris-minimalista.jpeg",
-        alt: "Cocina con muebles gris minimalista y mesada clara",
-        width: 560,
-        height: 700,
-      },
-      {
-        src: "/images/project-details/lavalle-39-barra-desayunadora-madera-artesanal.svg",
-        alt: "Barra desayunadora con terminación en madera",
-        width: 560,
-        height: 700,
-      },
-      {
-        src: "/images/project-details/lavalle-39-amoblamiento-cocina-alacena-madera.svg",
-        alt: "Alacenas con herrajes ocultos",
-        width: 560,
-        height: 700,
-      },
-    ],
-    materialsCard: {
-      title: "Materiales y terminaciones",
-      text: "Se utilizaron laqueados semi mate, laqueados lisos, melaminas y procesos de mecanizado CNC para el diseño de puertas.",
-      image: {
-        src: "/images/project-details/lavalle-39-mueble-cocina-gris.svg",
-        alt: "Detalle de frente laqueado",
-        width: 560,
-        height: 560,
-      },
-    },
-    processCard: {
-      title: "Proceso",
-      text: "El proyecto se desarrolló desde la cotización inicial, toma de medidas en obra, definición técnica, fabricación y entrega con instalación.",
-      image: {
-        src: "/images/project-details/remedios-escalada-st-13/lavalle 3436-44.jpg",
-        alt: "Comedor con mesa de madera y ventanales",
-        width: 560,
-        height: 560,
-      },
-    },
-    sections: [
-      {
-        title: "Cliente",
-        parts: [
-          {
-            text: "Ramiro, arquitecto, contactó a Strong Wood para una refacción integral de un departamento antiguo. El desafío fue actualizar el espacio respetando su carácter, incorporando soluciones funcionales y contemporáneas.",
-          },
-        ],
-      },
-      {
-        title: "Concepto del proyecto",
-        parts: [
-          {
-            text: "Diseñar una cocina que combine funcionalidad, durabilidad y una estética cuidada, adaptada a un departamento existente.",
-          },
-        ],
-      },
-      {
-        title: "Diseño y planificación",
-        parts: [
-          {
-            text: "El diseño se pensó de forma integral, considerando el uso diario, la distribución y la optimización del espacio disponible.",
-          },
-        ],
-      },
-    ],
-    themeClass: "project-theme-remedios",
     nextCardLabel: "Siguiente proyecto",
   },
 ];

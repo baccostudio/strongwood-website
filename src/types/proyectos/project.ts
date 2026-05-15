@@ -16,6 +16,7 @@ export type Project = {
   yearValue: string;
   typeLabel: string;
   typeValue: string;
+  listingImage: ProjectImage;
   heroImage: ProjectImage;
   carouselImages: ProjectImage[];
   materialsCard: ProjectCard;
