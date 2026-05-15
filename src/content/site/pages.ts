@@ -56,19 +56,19 @@ export const sitePages: PagesConfig = {
     mosaic: {
       images: [
         {
-          src: "/images/about-us/placas-melamina-egger-strongwood.svg",
+          src: "/images/about-us/placas-melamina-egger-strongwood.webp",
           alt: "Muestras de melamina ordenadas en una caja",
         },
         {
-          src: "/images/about-us/diseno-muebles-madera-planos.svg",
+          src: "/images/about-us/diseno-muebles-madera-planos.webp",
           alt: "Planos de muebles sobre una mesa de trabajo",
         },
         {
-          src: "/images/about-us/deposito-fabrica-muebles-artesanales.svg",
+          src: "/images/about-us/deposito-fabrica-muebles-artesanales.webp",
           alt: "Operario revisando planos en el taller",
         },
         {
-          src: "/images/about-us/boceto-mueble-madera-a-mano.svg",
+          src: "/images/about-us/boceto-mueble-madera-a-mano.webp",
           alt: "Mano dibujando un boceto de mueble",
         },
       ],

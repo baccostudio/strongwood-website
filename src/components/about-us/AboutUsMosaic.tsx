@@ -1,5 +1,8 @@
-﻿import Image from "next/image";
+import Image from "next/image";
 import { cn } from "@/lib/utils";
+
+const ABOUT_US_MOSAIC_IMAGE_WIDTH = 1350;
+const ABOUT_US_MOSAIC_IMAGE_HEIGHT = 1688;
 
 interface AboutUsMosaicImage {
   src: string;
@@ -12,25 +15,23 @@ interface AboutUsMosaicProps {
 
 export function AboutUsMosaic({ images }: AboutUsMosaicProps) {
   return (
-    <section className={cn("bg-(--color-surface)")}>
-      <div className="grid w-full grid-cols-2 mx-0 gap-0 py-0 lg:mx-auto">
+    <section className={cn("bg-surface")}>
+      <div className="mx-0 grid w-full grid-cols-2 gap-0 py-0 lg:mx-auto">
         {images.map((image, index) => (
           <div
             key={image.src}
             className={cn(
-              "relative aspect-719/745 w-full overflow-hidden",
-              // 👇 Mobile vs Desktop
-              index < 2
-                ? "col-span-2 sm:col-span-1"
-                : "col-span-1"
+              "w-full overflow-hidden",
+              index < 2 ? "col-span-2 sm:col-span-1" : "col-span-1"
             )}
           >
             <Image
               src={image.src}
               alt={image.alt}
-              fill
+              width={ABOUT_US_MOSAIC_IMAGE_WIDTH}
+              height={ABOUT_US_MOSAIC_IMAGE_HEIGHT}
               sizes="(min-width: 640px) 50vw, 100vw"
-              className="object-cover"
+              className="h-auto w-full"
             />
           </div>
         ))}
@@ -38,4 +39,3 @@ export function AboutUsMosaic({ images }: AboutUsMosaicProps) {
     </section>
   );
 }
-

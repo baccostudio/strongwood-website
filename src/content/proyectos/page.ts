@@ -110,26 +110,4 @@ export const proyectosContent = {
       },
     ],
   },
-  gallery: {
-    images: [
-      {
-        src: "/images/proyectos/mueble-cocina-moderno-gris-grafito.svg",
-        alt: "Cocina con muebles gris grafito y mesada clara",
-        width: 447,
-        height: 703,
-      },
-      {
-        src: "/images/proyectos/amoblamiento-cocina-blanco-madera-clara.svg",
-        alt: "Cocina con isla blanca y madera clara",
-        width: 447,
-        height: 703,
-      },
-      {
-        src: "/images/proyectos/estanteria-madera-hierro-estilo-industrial.svg",
-        alt: "Mueble con estantería de madera y hierro en estilo industrial",
-        width: 446,
-        height: 703,
-      },
-    ],
-  },
 };

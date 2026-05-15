@@ -6,11 +6,8 @@ terminos y condicioines, politica y privacidad
 header de colores
 imagenes home
 imagenes proyect details + carrusel arreglo
+page hero bg linear 60 100 100 -  rgba(0,0,0,11) a rgba(0,0,0,100) E6EEE7 fff
 
-caprpeta public 
-icons
-home/gallery
-contact
-brand
-about us
-proyectos
+caprpeta public
+
+project details

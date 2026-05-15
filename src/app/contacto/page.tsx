@@ -42,7 +42,7 @@ export default function ContactPage() {
             <div className="w-full">
               <div className="relative aspect-565/449 h-full w-full overflow-hidden">
                 <Image
-                  src="/images/contact/form-contacto-mueble-cocina-madera-a-medida.svg"
+                  src="/images/contact/form-contacto-mueble-cocina-madera-a-medida.webp"
                   alt={pageContent.formImageAlt}
                   fill
                   sizes="(min-width: 1024px) 50vw, 100vw"
