@@ -7,39 +7,26 @@ import {
 } from "@/lib/preloader";
 import type {
   HomeHeroContent,
-  HomeHeroImageAsset,
   HomeHeroResponsiveImage,
 } from "@/types/home";
+import StrongwoodLogo from "../icons/strongwood-logo";
 import { HomeHeroOverlay } from "./HomeHeroOverlay";
-import { cn } from "@/lib/utils";
 
 interface HomeHeroStackProps {
   content: HomeHeroContent;
 }
 
-const HERO_STACK_TAIL_HEIGHT = "calc(var(--vh, 1vh) * 2)";
-
 interface HeroStackItemStyle extends CSSProperties {
   "--hero-aspect-mobile": string;
   "--hero-aspect-desktop": string;
-  "--hero-top-mobile": string;
-  "--hero-top-desktop": string;
-}
-
-function getHeroTopOffset(image: HomeHeroImageAsset) {
-  return `min(0px, calc((var(--vh, 1vh) * 100) - (100vw * ${image.height} / ${image.width})))`;
 }
 
 function getHeroStackItemStyle(
   image: HomeHeroResponsiveImage,
-  index: number,
 ): HeroStackItemStyle {
   return {
     "--hero-aspect-mobile": `${image.mobile.width} / ${image.mobile.height}`,
     "--hero-aspect-desktop": `${image.desktop.width} / ${image.desktop.height}`,
-    "--hero-top-mobile": getHeroTopOffset(image.mobile),
-    "--hero-top-desktop": getHeroTopOffset(image.desktop),
-    zIndex: index + 1,
   };
 }
 
@@ -94,40 +81,52 @@ function ResponsiveHeroImage({
 
 export function HomeHeroStack({ content }: HomeHeroStackProps) {
   return (
-    <section className="relative w-full bg-muted">
+    <section className="relative z-20 w-full bg-muted">
       <div className="pointer-events-none absolute inset-0 z-20">
-        <div className="sticky top-0 w-full">
-          <HomeHeroOverlay
-            label={content.label}
-            marqueeItems={content.marqueeItems}
-          />
+        <div className="sticky top-0 h-[calc(var(--vh,1vh)*100)] w-full">
+          <div className="relative h-full w-full overflow-hidden rounded-b-[70px]">
+            <HomeHeroOverlay
+              label={content.label}
+              marqueeItems={content.marqueeItems}
+            />
+          </div>
         </div>
       </div>
 
       {content.images.map((image, index) => (
         <div
           key={image.desktop.src}
-          className="sticky top-(--hero-top-mobile) lg:top-(--hero-top-desktop)"
-          style={getHeroStackItemStyle(image, index)}
+          className="relative rounded-b-[70px] overflow-hidden"
+          style={getHeroStackItemStyle(image)}
         >
           <ResponsiveHeroImage image={image} isPriority={index === 0} />
-          {index !== content.images.length - 1 && (
+          {/* {index !== content.images.length - 1 && (
             <div
               className={cn(
                 "pointer-events-none absolute inset-0 bg-black/20",
                 // index !== 0 && "rounded-t-[70px]"
               )}
             />
-          )}
-          {index === content.images.length - 1 && (
+          )} */}
+          {/* {index === content.images.length - 1 && (
             <div className="pointer-events-none absolute inset-0 bg-(image:--gradient-home-hero-image-overlay)" />
-          )}
+          )} */}
+          <div className="absolute inset-0 bg-black/30" />
+          <div className="pointer-events-none absolute inset-0 z-10 flex items-center justify-center h-svh">
+            <StrongwoodLogo
+              width={812}
+              height={155}
+              color="white"
+              aria-hidden="true"
+              className="w-70 lg:lg:w-100"
+            />
+          </div>
         </div>
       ))}
-      <div
+      {/* <div
         className="absolute top-full left-0 z-10 w-full rounded-b-[20px] bg-black shadow-[0_20px_40px_rgba(0,0,0,0.4)]"
         style={{ height: HERO_STACK_TAIL_HEIGHT }}
-      />
+      /> */}
     </section>
   );
 }

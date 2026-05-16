@@ -56,7 +56,7 @@ export function HomeProjects({
 
   return (
     <div
-      className="relative mt-[calc(var(--vh,1vh)*-100)] bg-muted"
+      className="relative z-10 mt-[calc(var(--vh,1vh)*-100)] bg-muted"
       style={{ height: wrapperHeight }}
     >
       <div

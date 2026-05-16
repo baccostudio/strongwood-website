@@ -11,3 +11,4 @@ page hero bg linear 60 100 100 -  rgba(0,0,0,11) a rgba(0,0,0,100) E6EEE7 fff
 caprpeta public
 
 project details
+og

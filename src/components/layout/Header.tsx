@@ -346,8 +346,8 @@ export function Header({
         className,
       )}
     >
-      <div className="pointer-events-none flex w-full items-start justify-between px-6 pt-6 lg:px-8">
-        <Link
+      <div className="pointer-events-none flex w-full items-start justify-end px-6 pt-6 lg:px-8">
+        {/* <Link
           href={brandLogoHref}
           aria-label={brandLogoAlt}
           className="pointer-events-auto shrink-0 transition-opacity duration-200 hover:opacity-70"
@@ -359,7 +359,7 @@ export function Header({
             aria-hidden="true"
             className="w-41 lg:lg:w-51"
           />
-        </Link>
+        </Link> */}
 
         <button
           type="button"

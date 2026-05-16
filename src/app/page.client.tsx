@@ -1,7 +1,7 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { HomeProjects } from "@/components/home/HomeProjects";
 import { homeContent } from "@/content/home";
 import { HOME_MOBILE_BREAKPOINT } from "@/lib/preloader";
@@ -41,12 +41,6 @@ interface HomeClientProps {
   projectStats: HomeProjectStats;
 }
 
-function scrollHomeToTop() {
-  window.scrollTo({ top: 0, left: 0, behavior: "auto" });
-  document.documentElement.scrollTop = 0;
-  document.body.scrollTop = 0;
-}
-
 export default function HomeClient({
   projectsContent,
   projectStats,
@@ -59,50 +53,6 @@ export default function HomeClient({
   const [resolvedProjectStats, setResolvedProjectStats] = useState(projectStats);
   const homeCtaExtraScrollVh = isMobile ? HOME_CTA_MOBILE_EXTRA_SCROLL_VH : HOME_CTA_EXTRA_SCROLL_VH;
   const homeCtaSectionHeightVh = HOME_CTA_ANIMATION_SPAN_VH + homeCtaExtraScrollVh;
-
-  useLayoutEffect(() => {
-    scrollHomeToTop();
-  }, []);
-
-  useEffect(() => {
-    const canControlScrollRestoration =
-      typeof window.history.scrollRestoration === "string";
-
-    const previousScrollRestoration = canControlScrollRestoration
-      ? window.history.scrollRestoration
-      : null;
-
-    if (canControlScrollRestoration) {
-      window.history.scrollRestoration = "manual";
-    }
-
-    scrollHomeToTop();
-
-    const firstFrameId = window.requestAnimationFrame(() => {
-      scrollHomeToTop();
-
-      window.requestAnimationFrame(() => {
-        scrollHomeToTop();
-      });
-    });
-
-    const handlePageShow = () => {
-      scrollHomeToTop();
-    };
-
-    window.addEventListener("load", handlePageShow);
-    window.addEventListener("pageshow", handlePageShow);
-
-    return () => {
-      window.cancelAnimationFrame(firstFrameId);
-      window.removeEventListener("load", handlePageShow);
-      window.removeEventListener("pageshow", handlePageShow);
-
-      if (canControlScrollRestoration && previousScrollRestoration) {
-        window.history.scrollRestoration = previousScrollRestoration;
-      }
-    };
-  }, []);
 
   useEffect(() => {
     viewportResolvedRef.current = false;
@@ -238,7 +188,7 @@ export default function HomeClient({
   }, []);
 
   return (
-    <>
+    <div className="relative z-10">
       <HomeProjects
         content={projectsContent}
         projectStats={resolvedProjectStats}
@@ -251,6 +201,6 @@ export default function HomeClient({
         sectionHeightVh={homeCtaSectionHeightVh}
         animationSpanVh={HOME_CTA_ANIMATION_SPAN_VH}
       />
-    </>
+    </div>
   );
 }
