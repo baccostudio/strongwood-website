@@ -16,6 +16,10 @@ import {
 import type { HomeCtaContent } from "@/types/home";
 import { HomeCtaMobile } from "./HomeCtaMobile";
 import {
+  getHomeCtaSectionHeightVh,
+  HOME_CTA_ANIMATION_SPAN_VH,
+} from "./home-cta-layout";
+import {
   CTA_GALLERY_SCALE_PROGRESS,
   CTA_SEQUENCE_STAGGER_STEP,
   CTA_SEQUENCE_TRANSIT_DURATION,
@@ -25,8 +29,6 @@ import { cn } from "@/lib/utils";
 interface HomeCtaProps {
   content: HomeCtaContent;
   isMobile: boolean;
-  sectionHeightVh?: number;
-  animationSpanVh?: number;
 }
 
 const CTA_SCROLL_SPRING = {
@@ -48,9 +50,6 @@ const CTA_REVERSE_EXIT_SPRING = {
   damping: 34,
   mass: 0.22,
 };
-
-const CTA_SECTION_HEIGHT_VH = 250;
-const CTA_ANIMATION_SPAN_VH = 250;
 
 function GalleryImage({
   src,
@@ -94,7 +93,6 @@ function GalleryImage({
   return (
     <motion.div
       style={{
-        opacity: 1,
         x: shouldReduceMotion ? 0 : x,
         y: shouldReduceMotion ? 0 : y,
       }}
@@ -118,16 +116,13 @@ function GalleryImage({
 export function HomeCta({
   content,
   isMobile,
-  sectionHeightVh = CTA_SECTION_HEIGHT_VH,
-  animationSpanVh = CTA_ANIMATION_SPAN_VH,
 }: HomeCtaProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const shouldReduceMotion = useReducedMotion();
   const reverseExitLeadTarget = useMotionValue(0);
   const reverseExitLead = useSpring(reverseExitLeadTarget, CTA_REVERSE_EXIT_SPRING);
-  const resolvedSectionHeightVh = Math.max(sectionHeightVh, 1);
-  const resolvedAnimationSpanVh = Math.min(Math.max(animationSpanVh, 1), resolvedSectionHeightVh);
-  const resolvedAnimationEndProgress = resolvedAnimationSpanVh / resolvedSectionHeightVh;
+  const resolvedSectionHeightVh = getHomeCtaSectionHeightVh(isMobile);
+  const resolvedAnimationEndProgress = HOME_CTA_ANIMATION_SPAN_VH / resolvedSectionHeightVh;
 
   const { scrollYProgress: rawScrollYProgress } = useScroll({
     target: containerRef,
@@ -177,11 +172,7 @@ export function HomeCta({
       className="relative w-full bg-black"
       style={{ height: `calc(var(--vh, 1vh) * ${resolvedSectionHeightVh})` }}
     >
-      <div
-        className="sticky top-0 w-full overflow-hidden flex items-center justify-center bg-black h-[calc(var(--vh,1vh)*100)]"
-      >
-        {/* <div className="absolute -bottom-[10vh] left-0 w-full h-[10.5vh] bg-inherit pointer-events-none" /> */}
-
+      <div className="sticky top-0 flex h-[calc(var(--vh,1vh)*100)] w-full items-center justify-center overflow-hidden bg-black">
         {isMobile ? (
           <HomeCtaMobile content={content} scrollYProgress={mobileScrollYProgress} />
         ) : (
@@ -231,12 +222,7 @@ export function HomeCta({
         )}
 
         {!isMobile && (
-          <motion.div
-            className="absolute inset-x-0 flex justify-center px-6 isolate"
-            style={{
-              opacity: 1,
-            }}
-          >
+          <motion.div className="absolute inset-x-0 isolate flex justify-center px-6">
             <Link
               href={content.href}
               aria-label={content.ariaLabel}

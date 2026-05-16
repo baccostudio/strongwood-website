@@ -7,6 +7,7 @@ export interface HomeProjectsContent {
   badgeAriaLabel: string;
   workCount: string;
   workCountAriaLabel: string;
+  workCountAriaPrefix: string;
   workCountLabelSuffix: string;
   tableImage: HomeHeroImage;
   descriptionLines: string[];

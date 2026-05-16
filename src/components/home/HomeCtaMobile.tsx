@@ -19,7 +19,6 @@ import {
 interface HomeCtaMobileProps {
   content: HomeCtaContent;
   scrollYProgress: MotionValue<number>;
-  className?: string;
 }
 
 function MobileGalleryItem({
@@ -62,7 +61,6 @@ function MobileGalleryItem({
   return (
     <motion.div
       style={{
-        opacity: 1,
         x: shouldReduceMotion ? 0 : rawX,
         y: shouldReduceMotion ? 0 : rawY,
       }}
@@ -83,30 +81,29 @@ function MobileGalleryItem({
   );
 }
 
-export function HomeCtaMobile({ content, scrollYProgress, className }: HomeCtaMobileProps) {
-  const cleanLabel = (content.label || "").replace(/[()]/g, "");
+export function HomeCtaMobile({ content, scrollYProgress }: HomeCtaMobileProps) {
+  const cleanLabel = content.label.replace(/[()]/g, "");
   const shouldReduceMotion = useReducedMotion();
-  const effectiveScrollYProgress = scrollYProgress;
 
   const galleryScale = useTransform(
-    effectiveScrollYProgress,
+    scrollYProgress,
     CTA_GALLERY_SCALE_PROGRESS,
     [1, 1.012, 1.08],
     { clamp: true },
   );
 
   return (
-    <div className={cn("relative w-full h-full flex flex-col items-center justify-center pointer-events-auto", className)}>
+    <div className="relative flex h-full w-full flex-col items-center justify-center pointer-events-auto">
       <motion.div
         style={{ scale: shouldReduceMotion ? 1 : galleryScale }}
-        className="relative w-full px-6 grid grid-cols-2 gap-2 pointer-events-none transform-gpu will-change-transform"
+        className="relative grid w-full grid-cols-2 gap-2 px-6 pointer-events-none transform-gpu will-change-transform"
       >
         {content.gallery.slice(0, 10).map((img, i) => (
           <MobileGalleryItem
             key={img.src}
             img={img}
             index={i}
-            scrollYProgress={effectiveScrollYProgress}
+            scrollYProgress={scrollYProgress}
           />
         ))}
       </motion.div>

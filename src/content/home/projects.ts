@@ -9,6 +9,7 @@ export const homeProjects = {
   badgeAriaLabel: "Marca registrada",
   workCount: "+170",
   workCountAriaLabel: "Más de 170 trabajos realizados",
+  workCountAriaPrefix: "Más de",
   workCountLabelSuffix: "trabajos realizados",
   tableImage: {
     src: "/images/icons/work_table.webp",

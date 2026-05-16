@@ -6,18 +6,37 @@ import type { HomeProjectStats } from "@/types/home";
 
 const WORK_COUNT_TIMEOUT_MS = 2500;
 
-export function buildFallbackHomeProjectStats(): HomeProjectStats {
+function getWorkCountDigits(workCount: string) {
+  return workCount.replace(/\D+/g, "");
+}
+
+function normalizeHomeProjectWorkCount(workCount: string) {
+  const digits = getWorkCountDigits(workCount);
+
+  return digits ? `+${digits}` : homeContent.projects.workCount;
+}
+
+function buildHomeProjectWorkCountAriaLabel(workCount: string) {
+  const digits = getWorkCountDigits(workCount);
+
+  if (!digits) {
+    return homeContent.projects.workCountAriaLabel;
+  }
+
+  return `${homeContent.projects.workCountAriaPrefix} ${digits} ${homeContent.projects.workCountLabelSuffix}`;
+}
+
+function buildHomeProjectStats(workCount: string): HomeProjectStats {
+  const normalizedWorkCount = normalizeHomeProjectWorkCount(workCount);
+
   return {
-    workCount: homeContent.projects.workCount,
-    workCountAriaLabel: homeContent.projects.workCountAriaLabel,
+    workCount: normalizedWorkCount,
+    workCountAriaLabel: buildHomeProjectWorkCountAriaLabel(normalizedWorkCount),
   };
 }
 
-function buildLiveHomeProjectStats(workCount: string): HomeProjectStats {
-  return {
-    workCount,
-    workCountAriaLabel: `${workCount} ${homeContent.projects.workCountLabelSuffix}`,
-  };
+export function buildFallbackHomeProjectStats(): HomeProjectStats {
+  return buildHomeProjectStats(homeContent.projects.workCount);
 }
 
 async function resolveLiveHomeProjectStats(): Promise<HomeProjectStats> {
@@ -27,7 +46,7 @@ async function resolveLiveHomeProjectStats(): Promise<HomeProjectStats> {
     return buildFallbackHomeProjectStats();
   }
 
-  return buildLiveHomeProjectStats(dynamicWorkCount);
+  return buildHomeProjectStats(dynamicWorkCount);
 }
 
 export async function resolveHomeProjectStats(): Promise<HomeProjectStats> {

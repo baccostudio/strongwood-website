@@ -100,17 +100,6 @@ export function HomeHeroStack({ content }: HomeHeroStackProps) {
           style={getHeroStackItemStyle(image)}
         >
           <ResponsiveHeroImage image={image} isPriority={index === 0} />
-          {/* {index !== content.images.length - 1 && (
-            <div
-              className={cn(
-                "pointer-events-none absolute inset-0 bg-black/20",
-                // index !== 0 && "rounded-t-[70px]"
-              )}
-            />
-          )} */}
-          {/* {index === content.images.length - 1 && (
-            <div className="pointer-events-none absolute inset-0 bg-(image:--gradient-home-hero-image-overlay)" />
-          )} */}
           <div className="absolute inset-0 bg-black/30" />
           <div className="pointer-events-none absolute inset-0 z-10 flex items-center justify-center h-svh">
             <StrongwoodLogo
@@ -123,10 +112,6 @@ export function HomeHeroStack({ content }: HomeHeroStackProps) {
           </div>
         </div>
       ))}
-      {/* <div
-        className="absolute top-full left-0 z-10 w-full rounded-b-[20px] bg-black shadow-[0_20px_40px_rgba(0,0,0,0.4)]"
-        style={{ height: HERO_STACK_TAIL_HEIGHT }}
-      /> */}
     </section>
   );
 }

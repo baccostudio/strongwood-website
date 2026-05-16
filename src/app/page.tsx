@@ -2,6 +2,11 @@ import type { Metadata } from "next";
 import { getImageProps } from "next/image";
 import { preload } from "react-dom";
 import { HomeHeroStack } from "@/components/home/HomeHeroStack";
+import { HomeProjects } from "@/components/home/HomeProjects";
+import {
+  HomeProjectsWorkCount,
+  HomeProjectsWorkCountFallback,
+} from "@/components/home/HomeProjectsWorkCount";
 import { homeContent } from "@/content/home";
 import { siteConfig } from "@/content/site";
 import {
@@ -9,6 +14,7 @@ import {
   HOME_HERO_IMAGE_SIZES,
 } from "@/lib/preloader";
 import { buildMetadata } from "@/lib/seo";
+import { Suspense } from "react";
 import HomeClient from "./page.client";
 
 export const metadata: Metadata = buildMetadata({
@@ -40,18 +46,18 @@ export default function Home() {
     });
   });
 
-  const projectStats = {
-    workCount: homeContent.projects.workCount,
-    workCountAriaLabel: homeContent.projects.workCountAriaLabel,
-  };
-
   return (
     <main className="relative">
       <HomeHeroStack content={homeContent.hero} />
-      <HomeClient
-        projectsContent={homeContent.projects}
-        projectStats={projectStats}
+      <HomeProjects
+        content={homeContent.projects}
+        workCountSlot={
+          <Suspense fallback={<HomeProjectsWorkCountFallback />}>
+            <HomeProjectsWorkCount />
+          </Suspense>
+        }
       />
+      <HomeClient />
     </main>
   );
 }

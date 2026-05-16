@@ -4,7 +4,6 @@ import { cn } from "@/lib/utils";
 interface HomeHeroOverlayProps {
   label: HomeHeroContent["label"];
   marqueeItems: HomeHeroContent["marqueeItems"];
-  className?: string;
 }
 
 function MarqueeLine({ items }: { items: HomeHeroContent["marqueeItems"] }) {
@@ -30,15 +29,9 @@ function MarqueeLine({ items }: { items: HomeHeroContent["marqueeItems"] }) {
 export function HomeHeroOverlay({
   label,
   marqueeItems,
-  className,
 }: HomeHeroOverlayProps) {
   return (
-    <div
-      className={cn(
-        "pointer-events-none flex h-full w-full flex-col justify-end overflow-hidden pb-[clamp(24px,4vw,32px)]",
-        className,
-      )}
-    >
+    <div className="pointer-events-none flex h-full w-full flex-col justify-end overflow-hidden pb-[clamp(24px,4vw,32px)]">
       <div className="relative z-10">
         <div className="relative">
           <p className="mb-4 px-6 text-[clamp(12px,2.2vw,16px)] font-medium uppercase tracking-[0.08em] text-paper md:px-16">

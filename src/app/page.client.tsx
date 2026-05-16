@@ -2,23 +2,18 @@
 
 import dynamic from "next/dynamic";
 import { useEffect, useRef, useState } from "react";
-import { HomeProjects } from "@/components/home/HomeProjects";
+import { getHomeCtaSectionHeightVh } from "@/components/home/home-cta-layout";
 import { homeContent } from "@/content/home";
 import { HOME_MOBILE_BREAKPOINT } from "@/lib/preloader";
 import { resolveViewportHeight, resolveViewportWidth } from "@/lib/viewport";
-import type { HomeProjectStats, HomeProjectsContent } from "@/types/home";
-
-const HOME_CTA_ANIMATION_SPAN_VH = 250;
-const HOME_CTA_EXTRA_SCROLL_VH = 65;
-const HOME_CTA_MOBILE_EXTRA_SCROLL_VH = 16;
-const HOME_CTA_SECTION_HEIGHT_VH = HOME_CTA_ANIMATION_SPAN_VH + HOME_CTA_EXTRA_SCROLL_VH;
 const VIEWPORT_RECOVERY_DELAY_MS = 250;
+const HOME_CTA_FALLBACK_SECTION_HEIGHT_VH = getHomeCtaSectionHeightVh(false);
 
 function HomeCtaFallback() {
   return (
     <section
       className="relative w-full bg-black"
-      style={{ height: `calc(var(--vh, 1vh) * ${HOME_CTA_SECTION_HEIGHT_VH})` }}
+      style={{ height: `calc(var(--vh, 1vh) * ${HOME_CTA_FALLBACK_SECTION_HEIGHT_VH})` }}
       aria-hidden="true"
     >
       <div className="sticky top-0 flex h-[calc(var(--vh,1vh)*100)] w-full items-center justify-center overflow-hidden bg-black">
@@ -36,23 +31,12 @@ const DynamicHomeCta = dynamic(
   },
 );
 
-interface HomeClientProps {
-  projectsContent: HomeProjectsContent;
-  projectStats: HomeProjectStats;
-}
-
-export default function HomeClient({
-  projectsContent,
-  projectStats,
-}: HomeClientProps) {
+export default function HomeClient() {
   const lastWidth = useRef(0);
   const stableViewportHeightRef = useRef(0);
   const viewportResolvedRef = useRef(false);
 
   const [isMobile, setIsMobile] = useState(false);
-  const [resolvedProjectStats, setResolvedProjectStats] = useState(projectStats);
-  const homeCtaExtraScrollVh = isMobile ? HOME_CTA_MOBILE_EXTRA_SCROLL_VH : HOME_CTA_EXTRA_SCROLL_VH;
-  const homeCtaSectionHeightVh = HOME_CTA_ANIMATION_SPAN_VH + homeCtaExtraScrollVh;
 
   useEffect(() => {
     viewportResolvedRef.current = false;
@@ -134,72 +118,11 @@ export default function HomeClient({
     };
   }, []);
 
-  useEffect(() => {
-    const abortController = new AbortController();
-
-    void fetch("/api/project-stats", {
-      cache: "no-store",
-      signal: abortController.signal,
-    })
-      .then(async (response) => {
-        if (!response.ok) {
-          return null;
-        }
-
-        const data = (await response.json()) as Partial<HomeProjectStats>;
-
-        if (
-          typeof data.workCount !== "string" ||
-          typeof data.workCountAriaLabel !== "string"
-        ) {
-          return null;
-        }
-
-        return {
-          workCount: data.workCount,
-          workCountAriaLabel: data.workCountAriaLabel,
-        } satisfies HomeProjectStats;
-      })
-      .then((nextProjectStats) => {
-        if (!nextProjectStats) {
-          return;
-        }
-
-        setResolvedProjectStats((currentProjectStats) => {
-          if (
-            currentProjectStats.workCount === nextProjectStats.workCount &&
-            currentProjectStats.workCountAriaLabel === nextProjectStats.workCountAriaLabel
-          ) {
-            return currentProjectStats;
-          }
-
-          return nextProjectStats;
-        });
-      })
-      .catch((error) => {
-        if (error instanceof DOMException && error.name === "AbortError") {
-          return;
-        }
-      });
-
-    return () => {
-      abortController.abort();
-    };
-  }, []);
-
   return (
     <div className="relative z-10">
-      <HomeProjects
-        content={projectsContent}
-        projectStats={resolvedProjectStats}
-        isMobile={isMobile}
-      />
-
       <DynamicHomeCta
         content={homeContent.cta}
         isMobile={isMobile}
-        sectionHeightVh={homeCtaSectionHeightVh}
-        animationSpanVh={HOME_CTA_ANIMATION_SPAN_VH}
       />
     </div>
   );

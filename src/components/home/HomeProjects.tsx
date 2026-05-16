@@ -1,15 +1,15 @@
 "use client";
 
+import type { ReactNode } from "react";
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { PageHeroTitle } from "@/components/shared/PageHeroTitle";
 import { cn } from "@/lib/utils";
-import type { HomeProjectStats, HomeProjectsContent } from "@/types/home";
+import type { HomeProjectsContent } from "@/types/home";
 
 interface HomeProjectsProps {
   content: HomeProjectsContent;
-  projectStats: HomeProjectStats;
-  isMobile: boolean;
+  workCountSlot: ReactNode;
 }
 
 const DESKTOP_PROJECT_TRACK_GAP = 150;
@@ -19,8 +19,7 @@ const PROJECT_VIEWPORT_UNIT = "var(--vh, 1vh)";
 
 export function HomeProjects({
   content,
-  projectStats,
-  isMobile,
+  workCountSlot,
 }: HomeProjectsProps) {
   const trackRef = useRef<HTMLDivElement>(null);
   const [trackHeight, setTrackHeight] = useState(0);
@@ -46,12 +45,12 @@ export function HomeProjects({
     return () => {
       resizeObserver?.disconnect();
     };
-  }, [isMobile]);
+  }, []);
 
-  const projectTrackGap = DESKTOP_PROJECT_TRACK_GAP;
-  const projectTrackViewportSpanVh = BASE_PROJECT_STICKY_SCROLL_VH + MOBILE_HERO_STACK_TAIL_VH;
+  const projectTrackViewportSpanVh =
+    BASE_PROJECT_STICKY_SCROLL_VH + MOBILE_HERO_STACK_TAIL_VH;
   const wrapperHeight = trackHeight
-    ? `calc(${trackHeight}px + ${projectTrackGap}px + (${PROJECT_VIEWPORT_UNIT} * ${projectTrackViewportSpanVh}))`
+    ? `calc(${trackHeight}px + ${DESKTOP_PROJECT_TRACK_GAP}px + (${PROJECT_VIEWPORT_UNIT} * ${projectTrackViewportSpanVh}))`
     : `calc(${PROJECT_VIEWPORT_UNIT} * 300)`;
 
   return (
@@ -94,12 +93,7 @@ export function HomeProjects({
                 <div className="flex flex-col gap-[clamp(14px,3vw,22px)]">
                   <div className="flex flex-row items-end justify-between">
                     <div className="relative inline-grid items-center">
-                      <span
-                        aria-label={projectStats.workCountAriaLabel}
-                        className="inline-flex shrink-0 items-center whitespace-nowrap text-[clamp(44px,10vw,124px)] font-semibold leading-none text-paper tabular-nums"
-                      >
-                        <span aria-hidden="true">{projectStats.workCount}</span>
-                      </span>
+                      {workCountSlot}
                     </div>
                     <div className="shrink-0">
                       <Image
