@@ -10,33 +10,38 @@ function getWorkCountDigits(workCount: string) {
   return workCount.replace(/\D+/g, "");
 }
 
-function normalizeHomeProjectWorkCount(workCount: string) {
-  const digits = getWorkCountDigits(workCount);
-
-  return digits ? `+${digits}` : homeContent.projects.workCount;
+function buildFallbackHomeProjectWorkCountAriaLabel() {
+  return homeContent.projects.workCountAriaLabel;
 }
 
-function buildHomeProjectWorkCountAriaLabel(workCount: string) {
+function buildLiveHomeProjectWorkCountAriaLabel(workCount: string) {
   const digits = getWorkCountDigits(workCount);
 
   if (!digits) {
-    return homeContent.projects.workCountAriaLabel;
+    return buildFallbackHomeProjectWorkCountAriaLabel();
   }
 
-  return `${homeContent.projects.workCountAriaPrefix} ${digits} ${homeContent.projects.workCountLabelSuffix}`;
+  return `${digits} ${homeContent.projects.workCountLabelSuffix}`;
 }
 
-function buildHomeProjectStats(workCount: string): HomeProjectStats {
-  const normalizedWorkCount = normalizeHomeProjectWorkCount(workCount);
-
+function buildFallbackHomeProjectStats(): HomeProjectStats {
   return {
-    workCount: normalizedWorkCount,
-    workCountAriaLabel: buildHomeProjectWorkCountAriaLabel(normalizedWorkCount),
+    workCount: homeContent.projects.workCount,
+    workCountAriaLabel: buildFallbackHomeProjectWorkCountAriaLabel(),
   };
 }
 
-export function buildFallbackHomeProjectStats(): HomeProjectStats {
-  return buildHomeProjectStats(homeContent.projects.workCount);
+function buildLiveHomeProjectStats(workCount: string): HomeProjectStats {
+  const digits = getWorkCountDigits(workCount);
+
+  if (!digits) {
+    return buildFallbackHomeProjectStats();
+  }
+
+  return {
+    workCount: digits,
+    workCountAriaLabel: buildLiveHomeProjectWorkCountAriaLabel(digits),
+  };
 }
 
 async function resolveLiveHomeProjectStats(): Promise<HomeProjectStats> {
@@ -46,7 +51,7 @@ async function resolveLiveHomeProjectStats(): Promise<HomeProjectStats> {
     return buildFallbackHomeProjectStats();
   }
 
-  return buildHomeProjectStats(dynamicWorkCount);
+  return buildLiveHomeProjectStats(dynamicWorkCount);
 }
 
 export async function resolveHomeProjectStats(): Promise<HomeProjectStats> {

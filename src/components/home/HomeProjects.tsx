@@ -1,15 +1,14 @@
 "use client";
 
-import type { ReactNode } from "react";
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { PageHeroTitle } from "@/components/shared/PageHeroTitle";
 import { cn } from "@/lib/utils";
-import type { HomeProjectsContent } from "@/types/home";
+import type { HomeProjectStats, HomeProjectsContent } from "@/types/home";
 
 interface HomeProjectsProps {
   content: HomeProjectsContent;
-  workCountSlot: ReactNode;
+  projectStats: HomeProjectStats;
 }
 
 const DESKTOP_PROJECT_TRACK_GAP = 150;
@@ -19,7 +18,7 @@ const PROJECT_VIEWPORT_UNIT = "var(--vh, 1vh)";
 
 export function HomeProjects({
   content,
-  workCountSlot,
+  projectStats,
 }: HomeProjectsProps) {
   const trackRef = useRef<HTMLDivElement>(null);
   const [trackHeight, setTrackHeight] = useState(0);
@@ -108,7 +107,12 @@ export function HomeProjects({
                 <div className="flex flex-col gap-[clamp(14px,3vw,22px)]">
                   <div className="flex flex-row items-end justify-between">
                     <div className="relative inline-grid items-center">
-                      {workCountSlot}
+                      <span
+                        aria-label={projectStats.workCountAriaLabel}
+                        className="inline-flex shrink-0 items-center whitespace-nowrap text-[clamp(44px,10vw,124px)] font-semibold leading-none text-paper tabular-nums"
+                      >
+                        <span aria-hidden="true">{projectStats.workCount}</span>
+                      </span>
                     </div>
                     <div className="shrink-0">
                       <Image
