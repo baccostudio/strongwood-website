@@ -23,23 +23,35 @@ export function HomeProjects({
 }: HomeProjectsProps) {
   const trackRef = useRef<HTMLDivElement>(null);
   const [trackHeight, setTrackHeight] = useState(0);
+  const [heroHeight, setHeroHeight] = useState(0);
 
   useEffect(() => {
-    const syncTrackHeight = () => {
+    const heroSection = document.querySelector<HTMLElement>("[data-home-hero-stack]");
+
+    const syncHeights = () => {
       const nextTrackHeight = trackRef.current?.offsetHeight ?? 0;
+      const nextHeroHeight = heroSection?.offsetHeight ?? 0;
+
       setTrackHeight((currentHeight) => (
         currentHeight === nextTrackHeight ? currentHeight : nextTrackHeight
       ));
+      setHeroHeight((currentHeight) => (
+        currentHeight === nextHeroHeight ? currentHeight : nextHeroHeight
+      ));
     };
 
-    syncTrackHeight();
+    syncHeights();
 
     const resizeObserver = typeof ResizeObserver === "undefined"
       ? null
-      : new ResizeObserver(() => syncTrackHeight());
+      : new ResizeObserver(() => syncHeights());
 
     if (trackRef.current) {
       resizeObserver?.observe(trackRef.current);
+    }
+
+    if (heroSection) {
+      resizeObserver?.observe(heroSection);
     }
 
     return () => {
@@ -52,11 +64,14 @@ export function HomeProjects({
   const wrapperHeight = trackHeight
     ? `calc(${trackHeight}px + ${DESKTOP_PROJECT_TRACK_GAP}px + (${PROJECT_VIEWPORT_UNIT} * ${projectTrackViewportSpanVh}))`
     : `calc(${PROJECT_VIEWPORT_UNIT} * 300)`;
+  const overlapMarginTop = heroHeight
+    ? `-${heroHeight}px`
+    : `calc(${PROJECT_VIEWPORT_UNIT} * -100)`;
 
   return (
     <div
-      className="relative z-10 mt-[calc(var(--vh,1vh)*-100)] bg-muted"
-      style={{ height: wrapperHeight }}
+      className="relative z-10 bg-muted"
+      style={{ height: wrapperHeight, marginTop: overlapMarginTop }}
     >
       <div
         className="sticky top-0 overflow-hidden bg-muted"

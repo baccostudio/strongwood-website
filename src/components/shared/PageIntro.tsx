@@ -89,7 +89,7 @@ export function PageIntro({
               href={cta.href}
               aria-label={cta.ariaLabel ?? cta.label}
               className={cn(
-                "inline-flex min-h-16 min-w-50 items-center justify-center bg-(--color-foreground) border boder-(--color-secondary) px-[clamp(18px,3vw,30px)] py-[clamp(14px,3vw,25px)] text-[clamp(13px,2vw,20px)] font-medium uppercase leading-[clamp(20px,3.2vw,38px)] tracking-[0.01em] text-(--color-secondary) cursor-pointer transition-colors hover:bg-(--color-secondary) hover:text-(--color-foreground)",
+                "inline-flex min-h-16 min-w-50 items-center justify-center bg-foreground border boder-(--color-secondary) px-[clamp(18px,3vw,30px)] py-[clamp(14px,3vw,25px)] text-[clamp(13px,2vw,20px)] font-medium uppercase leading-[clamp(20px,3.2vw,38px)] tracking-[0.01em] text-secondary cursor-pointer transition-colors hover:bg-foreground/90",
                 ctaClassName
               )}
             >

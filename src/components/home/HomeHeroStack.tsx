@@ -1,5 +1,4 @@
 import { getImageProps } from "next/image";
-import type { CSSProperties } from "react";
 import {
   HOME_HERO_DESKTOP_MEDIA,
   HOME_HERO_IMAGE_SIZES,
@@ -16,19 +15,6 @@ interface HomeHeroStackProps {
   content: HomeHeroContent;
 }
 
-interface HeroStackItemStyle extends CSSProperties {
-  "--hero-aspect-mobile": string;
-  "--hero-aspect-desktop": string;
-}
-
-function getHeroStackItemStyle(
-  image: HomeHeroResponsiveImage,
-): HeroStackItemStyle {
-  return {
-    "--hero-aspect-mobile": `${image.mobile.width} / ${image.mobile.height}`,
-    "--hero-aspect-desktop": `${image.desktop.width} / ${image.desktop.height}`,
-  };
-}
 
 function ResponsiveHeroImage({
   image,
@@ -57,7 +43,7 @@ function ResponsiveHeroImage({
   });
 
   return (
-    <picture className="block w-full aspect-(--hero-aspect-mobile) lg:aspect-(--hero-aspect-desktop)">
+    <picture className="block w-full">
       <source
         media={HOME_HERO_DESKTOP_MEDIA}
         srcSet={desktopSrcSet}
@@ -73,7 +59,7 @@ function ResponsiveHeroImage({
         {...mobileImageProps}
         loading={isPriority ? "eager" : "lazy"}
         fetchPriority={isPriority ? "high" : undefined}
-        className="block h-full w-full object-cover select-none"
+        className="block h-auto w-full select-none"
       />
     </picture>
   );
@@ -81,33 +67,27 @@ function ResponsiveHeroImage({
 
 export function HomeHeroStack({ content }: HomeHeroStackProps) {
   return (
-    <section className="relative z-20 w-full bg-muted">
-      <div className="pointer-events-none absolute inset-0 z-20">
-        <div className="sticky top-0 h-[calc(var(--vh,1vh)*100)] w-full">
-          <div className="relative h-full w-full overflow-hidden rounded-b-[70px]">
-            <HomeHeroOverlay
-              label={content.label}
-              marqueeItems={content.marqueeItems}
-            />
-          </div>
-        </div>
-      </div>
-
+    <section data-home-hero-stack className="relative z-20 w-full bg-muted">
       {content.images.map((image, index) => (
         <div
           key={image.desktop.src}
-          className="relative rounded-b-[70px] overflow-hidden"
-          style={getHeroStackItemStyle(image)}
+          className="relative overflow-hidden rounded-b-[70px]"
         >
           <ResponsiveHeroImage image={image} isPriority={index === 0} />
           <div className="absolute inset-0 bg-black/30" />
-          <div className="pointer-events-none absolute inset-0 z-10 flex items-center justify-center h-svh">
+          <div className="pointer-events-none absolute inset-0 z-10 flex items-center justify-center">
             <StrongwoodLogo
               width={812}
               height={155}
               color="white"
               aria-hidden="true"
-              className="w-70 lg:lg:w-100"
+              className="w-70 lg:w-100"
+            />
+          </div>
+          <div className="pointer-events-none absolute inset-0 z-20">
+            <HomeHeroOverlay
+              label={content.label}
+              marqueeItems={content.marqueeItems}
             />
           </div>
         </div>

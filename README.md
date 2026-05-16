@@ -12,3 +12,7 @@ caprpeta public
 
 project details
 og
+rompe marquee overlay 
+min height a los hero
+titulos page hero ( todos a la misma altura)
+fondo negro homhestack tiene un borde bottom black 
