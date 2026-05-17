@@ -67,11 +67,11 @@ function ResponsiveHeroImage({
 
 export function HomeHeroStack({ content }: HomeHeroStackProps) {
   return (
-    <section data-home-hero-stack className="relative z-20 w-full bg-transparent">
+    <section data-home-hero-stack className="relative z-20 w-full bg-transparent overflow-hidden rounded-b-[70px]">
       {content.images.map((image, index) => (
         <div
           key={image.desktop.src}
-          className="relative overflow-hidden rounded-b-[70px]"
+          className="relative"
         >
           <ResponsiveHeroImage image={image} isPriority={index === 0} />
           <div className="absolute inset-0 bg-black/30" />
