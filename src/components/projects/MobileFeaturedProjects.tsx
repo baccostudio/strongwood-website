@@ -28,7 +28,7 @@ export function MobileFeaturedProjects({
         className
       )}
     >
-      {items.map((item) => (
+      {items.map((item, index) => (
         <article key={item.href} className="relative block w-full">
           <Link
             href={item.href}
@@ -40,6 +40,7 @@ export function MobileFeaturedProjects({
                 src={item.image.src}
                 alt={item.image.alt}
                 fill
+                loading={index < 4 ? "eager" : undefined}
                 className="object-cover"
                 sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
               />

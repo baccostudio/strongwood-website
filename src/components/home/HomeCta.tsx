@@ -56,12 +56,14 @@ function GalleryImage({
   index,
   scrollYProgress,
   priority,
+  loading,
   className,
 }: {
   src: string;
   index: number;
   scrollYProgress: MotionValue<number>;
   priority?: boolean;
+  loading?: "eager";
   className?: string;
 }) {
   const shouldReduceMotion = useReducedMotion();
@@ -108,6 +110,7 @@ function GalleryImage({
         className="object-cover"
         sizes="(max-width: 1024px) 100vw, 33vw"
         priority={priority}
+        loading={loading}
       />
     </motion.div>
   );
@@ -188,7 +191,8 @@ export function HomeCta({
                     src={img.src}
                     index={i}
                     scrollYProgress={effectiveScrollYProgress}
-                    priority
+                    priority={i === 0}
+                    loading={i === 0 ? undefined : "eager"}
                     className="aspect-4/3 shadow-2xl"
                   />
                 ))}
@@ -201,6 +205,7 @@ export function HomeCta({
                     src={img.src}
                     index={i + 3}
                     scrollYProgress={effectiveScrollYProgress}
+                    loading="eager"
                     className="aspect-square shadow-2xl"
                   />
                 ))}
@@ -213,6 +218,7 @@ export function HomeCta({
                     src={img.src}
                     index={i + 7}
                     scrollYProgress={effectiveScrollYProgress}
+                    loading="eager"
                     className="aspect-4/3 shadow-2xl"
                   />
                 ))}

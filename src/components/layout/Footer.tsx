@@ -54,6 +54,7 @@ export function Footer({
                 alt={logoAlt}
                 width={150}
                 height={76}
+                loading="eager"
                 className="h-auto w-32.5"
               />
             </Link>
@@ -145,6 +146,7 @@ export function Footer({
         alt="Marca de agua de Strongwood"
         width={1200}
         height={200}
+        loading="eager"
         className="pointer-events-none absolute bottom-0 left-1/2 max-w-6xl w-[95%] -translate-x-1/2 select-none"
       />
     </footer>

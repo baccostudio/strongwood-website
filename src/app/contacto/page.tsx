@@ -40,15 +40,17 @@ export default function ContactPage() {
           </p>
           <div className="grid items-stretch gap-8 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)]">
             <div className="w-full">
-              <div className="relative aspect-565/449 h-full w-full overflow-hidden">
+              <div className="relative w-full overflow-hidden">
                 <Image
                   src="/images/contact/form-contacto-mueble-cocina-madera-a-medida.webp"
                   alt={pageContent.formImageAlt}
-                  fill
+                  width={565}
+                  height={449}
+                  loading="eager"
                   sizes="(min-width: 1024px) 50vw, 100vw"
-                  className="object-cover"
+                  className="block h-auto w-full"
                 />
-                <div className="absolute left-0 top-0 flex p-4 sm:p-6  w-full h-full">
+                <div className="absolute inset-0 flex h-full w-full p-4 sm:p-6">
                   <div className="bg-paper flex items-center w-fit h-fit border border-(--color-contact-dialog-close-border) px-4 py-2 shadow-sm">
                     <span className="text-[11px] font-semibold uppercase tracking-[0.24em] text-foreground">
                       {pageContent.formIncentive.label}

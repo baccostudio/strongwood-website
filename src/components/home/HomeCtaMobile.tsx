@@ -76,6 +76,7 @@ function MobileGalleryItem({
         className="object-cover"
         sizes={imageSizes}
         priority={index === 0}
+        loading={index > 0 && index < 6 ? "eager" : undefined}
       />
     </motion.div>
   );
