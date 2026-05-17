@@ -68,7 +68,7 @@ export function HomeProjects({
 
   return (
     <div
-      className="relative z-10 bg-muted -mt-[var(--home-projects-hero-overlap-mobile)] lg:-mt-[var(--home-projects-hero-overlap-desktop)]"
+      className="relative z-10 bg-muted -mt-(--home-projects-hero-overlap-mobile) lg:-mt-(--home-projects-hero-overlap-desktop)"
       style={{
         ...homeProjectsWrapperStyle,
         height: wrapperHeight,

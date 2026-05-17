@@ -46,8 +46,8 @@ export function Footer({
   return (
     <footer className={cn("relative overflow-hidden bg-white text-foreground", className)}>
       <div className="mx-auto flex w-full max-w-6xl flex-col gap-10 px-6 pt-12 lg:mb-86 md:mb-64 mb-46">
-        <div className="flex flex-col gap-10 lg:flex-row w-fit">
-          <div className="flex w-full flex-col gap-6 lg:max-w-55">
+        <div className="flex w-full flex-col gap-10 lg:flex-row lg:items-start lg:justify-between">
+          <div className="flex w-full flex-col gap-6 lg:max-w-55 lg:shrink-0">
             <Link href={logoHref} aria-label={logoAlt}>
               <Image
                 src={logoSrc}
@@ -89,7 +89,7 @@ export function Footer({
             </div>
           </div>
 
-          <div className="grid grid-cols-2 lg:grid-cols-[auto_auto_auto] lg:gap-x-10 gap-10 gap-x-2 w-fit">
+          <div className="grid w-full grid-cols-2 gap-10 gap-x-2 lg:ml-auto lg:w-fit lg:grid-cols-[auto_auto_auto] lg:gap-x-20">
             <div className="space-y-3">
               <div className="text-[18px] font-medium uppercase leading-9.5 tracking-[0.01em] text-foreground">
                 {menuTitle}
@@ -146,7 +146,6 @@ export function Footer({
         alt="Marca de agua de Strongwood"
         width={1200}
         height={200}
-        loading="eager"
         className="pointer-events-none absolute bottom-0 left-1/2 max-w-6xl w-[95%] -translate-x-1/2 select-none"
       />
     </footer>

@@ -2,13 +2,12 @@
 > 
 > [www.strongwood.com.ar](https://www.strongwood.com.ar/)
 
-terminos y condicioines, politica y privacidad
+terminos y condicioines, politica y privacidad ( mejorar y revisar contenido )
 header de colores
 
 imagenes proyect details + carrusel arreglo
 page hero bg linear 60 100 100 -  rgba(0,0,0,11) a rgba(0,0,0,100) E6EEE7 fff
 
-min height a los hero
 titulos page hero ( todos a la misma altura)
 
 caprpeta public

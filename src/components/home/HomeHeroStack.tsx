@@ -66,7 +66,7 @@ function ResponsiveHeroImage({
 
 export function HomeHeroStack({ content }: HomeHeroStackProps) {
   return (
-    <section data-home-hero-stack className="relative z-20 w-full bg-paper overflow-hidden rounded-b-[70px]">
+    <section data-home-hero-stack className="relative z-20 w-full bg-paper overflow-hidden rounded-b-4xl sm:rounded-b-[70px]">
       {content.images.map((image, index) => (
         <div
           key={image.desktop.src}

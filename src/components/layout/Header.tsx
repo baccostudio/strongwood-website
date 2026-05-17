@@ -19,6 +19,10 @@ interface ScrollLockState {
 }
 
 const MENU_CLOSE_DURATION_MS = 300;
+const LEGAL_MENU_BLACK_PATHS = new Set([
+  "/terminos-condiciones",
+  "/politica-privacidad",
+]);
 const MENU_SCROLL_KEYS = new Set([
   "ArrowUp",
   "ArrowDown",
@@ -338,6 +342,7 @@ export function Header({
   }, []);
 
   const menuViewportStyle = getMenuViewportStyle(menuViewportHeight);
+  const isLegalPage = LEGAL_MENU_BLACK_PATHS.has(pathname);
 
   return (
     <header
@@ -376,7 +381,7 @@ export function Header({
           <BurgerMenu
             width={94}
             height={63}
-            color="white"
+            color={isLegalPage ? "var(--color-black)" : "var(--color-paper)"}
             aria-hidden="true"
             className={cn(
               "w-16 shrink-0 transition-all duration-200 ease-in-out hover:opacity-70 hover:duration-150 sm:w-20 lg:w-24",
