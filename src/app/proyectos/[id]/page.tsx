@@ -81,7 +81,12 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
 
   return (
     <main className={cn("min-h-screen bg-(--project-bg)", project.themeClass)}>
-      <ProjectHero title={project.title} subtitle={project.subtitle} image={project.heroImage} />
+      <ProjectHero
+        title={project.title}
+        subtitle={project.subtitle}
+        image={project.heroImage}
+        mobileImage={project.heroMobileImage}
+      />
       <ProjectMetaBar
         locationLabel={project.locationLabel}
         locationValue={project.locationValue}
@@ -89,7 +94,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
         yearValue={project.yearValue}
         typeLabel={project.typeLabel}
         typeValue={project.typeValue}
-        className="-mt-8"
+        className={project.metabarMarginTop}
       />
       <ProjectSections sections={project.sections} className={compactSectionClass} />
       <ProjectCarousel
@@ -109,7 +114,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
           image={nextProject.heroImage}
           ariaLabel={`${projectDetailUi.nextProject.ariaLabelPrefix} ${nextProject.title}`}
           icon={projectDetailUi.nextProject.icon}
-          className={compactSectionClass}
+          className={`pt-[clamp(36px,6vw,64px)] pb-[clamp(72px,12vw,128px)]`}
         />
       ) : null}
     </main>

@@ -10,12 +10,13 @@ type ProjectCardsProps = {
 
 function ProjectInfoCard({ card }: { card: ProjectCard }) {
   return (
-    <article className="bg-(--color-paper) text-(--color-foreground)">
+    <article className="bg-paper text-foreground">
       <div className="relative aspect-5/4 w-full">
         <Image
           src={card.image.src}
           alt={card.image.alt}
           fill
+          loading="eager"
           className="object-cover"
           sizes="(min-width: 1024px) 40vw, 100vw"
         />

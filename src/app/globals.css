@@ -82,6 +82,12 @@
   --gradient-hero-shadow: linear-gradient(180deg,
       rgba(18, 26, 19, 0.1) 34.13%,
       #121a13 90.87%);
+  --color-project-hero-overlay-strong: #121a13;
+  --color-project-hero-overlay-soft: rgb(18 26 19 / 50%);
+  --gradient-project-hero-overlay: linear-gradient(180deg,
+      transparent 0%,
+      var(--color-project-hero-overlay-soft) 65%,
+      var(--color-project-hero-overlay-strong) 100%);
   --color-footer-watermark: #e9e9e9;
   --color-footer-text: #919191;
   --color-footer-icon: #686868;

@@ -5,7 +5,6 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
 import BurgerMenu from "@/components/icons/burger-menu";
-import StrongwoodLogo from "@/components/icons/strongwood-logo";
 import { cn } from "@/lib/utils";
 import { resolveViewportHeight } from "@/lib/viewport";
 import type { HeaderConfig } from "@/types/site";

@@ -42,8 +42,8 @@ const getCalendarMonthDifference = (publishedAt: Date, currentDate: Date) => {
   );
 };
 
-const getPublishedAtLabel = (publishedAtValue: string, currentDate: Date | null) => {
-  if (!currentDate || !publishedAtValue) {
+const getPublishedAtLabel = (publishedAtValue: string, currentDate: Date) => {
+  if (!publishedAtValue) {
     return "";
   }
 
@@ -138,8 +138,11 @@ function ReviewCardsGroup({
                 <p className="truncate text-[18px] font-semibold leading-[120%] tracking-[-0.03em]">
                   {review.authorName}
                 </p>
-                {review.publishedAtLabel ? (
-                  <p className="mt-1 text-sm leading-none tracking-[-0.02em] text-muted">
+                {review.publishedAt ? (
+                  <p
+                    suppressHydrationWarning
+                    className="mt-1 text-sm leading-none tracking-[-0.02em] text-muted"
+                  >
                     {review.publishedAtLabel}
                   </p>
                 ) : null}
@@ -179,19 +182,14 @@ export function ContactReviewsMarquee({
   reviews,
   className,
 }: ContactReviewsMarqueeProps) {
-  const [currentDate, setCurrentDate] = useState<Date | null>(null);
+  const [currentDate, setCurrentDate] = useState(() => new Date());
 
   useEffect(() => {
-    const updateCurrentDate = () => {
+    const intervalId = window.setInterval(() => {
       setCurrentDate(new Date());
-    };
-
-    const frameId = window.requestAnimationFrame(updateCurrentDate);
-
-    const intervalId = window.setInterval(updateCurrentDate, 60 * 60 * 1000);
+    }, 60 * 60 * 1000);
 
     return () => {
-      window.cancelAnimationFrame(frameId);
       window.clearInterval(intervalId);
     };
   }, []);

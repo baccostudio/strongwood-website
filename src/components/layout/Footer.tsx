@@ -143,9 +143,11 @@ export function Footer({
 
       <Image
         src="/images/brand/footer-watermark-strong.svg"
-        alt="Marca de agua de Strongwood"
+        alt=""
         width={1200}
         height={200}
+        aria-hidden="true"
+        loading="eager"
         className="pointer-events-none absolute bottom-0 left-1/2 max-w-6xl w-[95%] -translate-x-1/2 select-none"
       />
     </footer>

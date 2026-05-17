@@ -12,12 +12,14 @@ export type Project = {
   listCtaLabel?: string;
   locationLabel: string;
   locationValue: string;
+  metabarMarginTop: string;
   yearLabel: string;
   yearValue: string;
   typeLabel: string;
   typeValue: string;
   listingImage: ProjectImage;
   heroImage: ProjectImage;
+  heroMobileImage?: ProjectImage;
   carouselImages: ProjectImage[];
   materialsCard: ProjectCard;
   processCard: ProjectCard;

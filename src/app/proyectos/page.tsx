@@ -63,7 +63,7 @@ export default function ProyectosPage() {
         <MobileFeaturedProjects
           items={projectItems}
           ctaLabel={proyectosContent.projectList.ctaLabel}
-          className="my-12 lg:my-14"
+          className="py-12 lg:py-24"
         />
       </WorkSteps>
     </main>

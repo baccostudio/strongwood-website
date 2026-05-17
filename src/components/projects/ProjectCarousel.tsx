@@ -32,26 +32,62 @@ export function ProjectCarousel({
   const [canScrollPrev, setCanScrollPrev] = useState(false);
   const [canScrollNext, setCanScrollNext] = useState(true);
   const [isDragging, setIsDragging] = useState(false);
+  const [isButtonTransitioning, setIsButtonTransitioning] = useState(false);
   const dragState = useRef<DragState>({ startX: 0, scrollLeft: 0 });
-  const hasLandscapeImage = images.some((image) => image.width > image.height);
+  const scrollAnimationFrameRef = useRef<number | null>(null);
+  const buttonTransitionTimeoutRef = useRef<number | null>(null);
+  const buttonScrollTargetRef = useRef<number | null>(null);
   const imageFrameClassName =
-    "h-[clamp(340px,58vw,620px)] shrink-0 select-none snap-start sm:snap-none";
+    "h-[clamp(574px,58vw,835px)] shrink-0 select-none snap-start sm:snap-none";
+  const viewportPaddingClassName =
+    "pl-0 pr-0 sm:pl-[max(2.5rem,calc((100vw-72rem)/2))] sm:pr-[max(2.5rem,calc((100vw-72rem)/2))]";
+  const controlsOffsetClassName =
+    "left-6 sm:left-[max(2.5rem,calc((100vw-72rem)/2))]";
 
-  const updateScrollState = () => {
+  const updateScrollState = useCallback(() => {
     const track = trackRef.current;
     if (!track) return;
     const maxScrollLeft = track.scrollWidth - track.clientWidth;
     setCanScrollPrev(track.scrollLeft > 0);
     setCanScrollNext(track.scrollLeft < maxScrollLeft - 1);
-  };
+  }, []);
+
+  const clearButtonTransitionLock = useCallback(() => {
+    if (scrollAnimationFrameRef.current !== null) {
+      window.cancelAnimationFrame(scrollAnimationFrameRef.current);
+      scrollAnimationFrameRef.current = null;
+    }
+
+    if (buttonTransitionTimeoutRef.current !== null) {
+      window.clearTimeout(buttonTransitionTimeoutRef.current);
+      buttonTransitionTimeoutRef.current = null;
+    }
+
+    buttonScrollTargetRef.current = null;
+    setIsButtonTransitioning(false);
+  }, []);
 
   useEffect(() => {
     updateScrollState();
-  }, [images.length]);
+  }, [images.length, updateScrollState]);
+
+  useEffect(() => {
+    window.addEventListener("resize", updateScrollState);
+
+    return () => {
+      window.removeEventListener("resize", updateScrollState);
+    };
+  }, [updateScrollState]);
+
+  useEffect(() => {
+    return () => {
+      clearButtonTransitionLock();
+    };
+  }, [clearButtonTransitionLock]);
 
   const scrollByAmount = (direction: "prev" | "next") => {
     const track = trackRef.current;
-    if (!track) return;
+    if (!track || isButtonTransitioning) return;
     const amount = track.clientWidth * 0.8;
     const maxScrollLeft = track.scrollWidth - track.clientWidth;
     const target =
@@ -59,6 +95,33 @@ export function ProjectCarousel({
         ? Math.min(track.scrollLeft + amount, maxScrollLeft)
         : Math.max(track.scrollLeft - amount, 0);
 
+    if (Math.abs(target - track.scrollLeft) < 1) return;
+
+    clearButtonTransitionLock();
+    setIsButtonTransitioning(true);
+    buttonScrollTargetRef.current = target;
+    buttonTransitionTimeoutRef.current = window.setTimeout(() => {
+      clearButtonTransitionLock();
+    }, 900);
+
+    const watchScrollEnd = () => {
+      const currentTrack = trackRef.current;
+      const currentTarget = buttonScrollTargetRef.current;
+
+      if (!currentTrack || currentTarget === null) {
+        clearButtonTransitionLock();
+        return;
+      }
+
+      if (Math.abs(currentTrack.scrollLeft - currentTarget) <= 1) {
+        clearButtonTransitionLock();
+        return;
+      }
+
+      scrollAnimationFrameRef.current = window.requestAnimationFrame(watchScrollEnd);
+    };
+
+    scrollAnimationFrameRef.current = window.requestAnimationFrame(watchScrollEnd);
     track.scrollTo({ left: target, behavior: "smooth" });
   };
 
@@ -66,6 +129,7 @@ export function ProjectCarousel({
     if (event.pointerType !== "mouse") return;
     const track = trackRef.current;
     if (!track) return;
+    clearButtonTransitionLock();
     track.setPointerCapture(event.pointerId);
     setIsDragging(true);
     dragState.current = {
@@ -93,15 +157,15 @@ export function ProjectCarousel({
   };
 
   return (
-    <section className={cn("px-6 py-[clamp(56px,10vw,96px)] sm:px-10", className)}>
-      <div className="mx-auto max-w-6xl">
+    <section className={cn("overflow-hidden py-[clamp(56px,10vw,96px)]", className)}>
+      <div className="relative left-1/2 w-screen -translate-x-1/2">
         <div className="relative">
           <div
             ref={trackRef}
             className={cn(
               "no-scrollbar flex items-end gap-6 overflow-x-auto overscroll-x-contain",
-              hasLandscapeImage ? "snap-x snap-proximity" : "snap-x snap-mandatory",
-              "sm:snap-none sm:overscroll-auto sm:scroll-auto",
+              "snap-none sm:overscroll-auto sm:scroll-auto",
+              viewportPaddingClassName,
               isDragging ? "cursor-grabbing" : "cursor-grab"
             )}
             style={{ WebkitOverflowScrolling: "touch" }}
@@ -118,46 +182,52 @@ export function ProjectCarousel({
                 shouldPreload={index === 0}
                 shouldLoadEager={index < 2}
                 imageLoadingAriaLabel={imageLoadingAriaLabel}
-                className={imageFrameClassName}
+                className={cn(
+                  imageFrameClassName,
+                  index === 0 && "ml-6 sm:ml-0",
+                  index === images.length - 1 && "mr-6 sm:mr-0"
+                )}
               />
             ))}
           </div>
-          <button
-            type="button"
-            onClick={() => scrollByAmount("prev")}
-            aria-label={prevAriaLabel}
-            disabled={!canScrollPrev}
-            className={cn(
-              "absolute bottom-0 left-0 z-20 flex h-14 w-14 items-center justify-center bg-white text-black transition-opacity",
-              canScrollPrev ? "opacity-100" : "opacity-40"
-            )}
-          >
-            <Image
-              src={icon.src}
-              alt={icon.alt}
-              width={icon.width}
-              height={icon.height}
-              className="h-6 w-6 rotate-180"
-            />
-          </button>
-          <button
-            type="button"
-            onClick={() => scrollByAmount("next")}
-            aria-label={nextAriaLabel}
-            disabled={!canScrollNext}
-            className={cn(
-              "absolute bottom-0 left-15 z-20 flex h-14 w-14 items-center justify-center bg-white text-black transition-opacity",
-              canScrollNext ? "opacity-100" : "opacity-40"
-            )}
-          >
-            <Image
-              src={icon.src}
-              alt={icon.alt}
-              width={icon.width}
-              height={icon.height}
-              className="h-6 w-6"
-            />
-          </button>
+          <div className={cn("pointer-events-none absolute bottom-0 pl-3 pb-3 z-20 flex gap-2", controlsOffsetClassName)}>
+            <button
+              type="button"
+              onClick={() => scrollByAmount("prev")}
+              aria-label={prevAriaLabel}
+              disabled={!canScrollPrev || isButtonTransitioning}
+              className={cn(
+                "pointer-events-auto flex h-14 w-14 items-center justify-center bg-white text-black transition-opacity",
+                canScrollPrev && !isButtonTransitioning ? "opacity-100" : "opacity-40"
+              )}
+            >
+              <Image
+                src={icon.src}
+                alt={icon.alt}
+                width={icon.width}
+                height={icon.height}
+                className="h-6 w-6 rotate-180"
+              />
+            </button>
+            <button
+              type="button"
+              onClick={() => scrollByAmount("next")}
+              aria-label={nextAriaLabel}
+              disabled={!canScrollNext || isButtonTransitioning}
+              className={cn(
+                "pointer-events-auto flex h-14 w-14 items-center justify-center bg-white text-black transition-opacity",
+                canScrollNext && !isButtonTransitioning ? "opacity-100" : "opacity-40"
+              )}
+            >
+              <Image
+                src={icon.src}
+                alt={icon.alt}
+                width={icon.width}
+                height={icon.height}
+                className="h-6 w-6"
+              />
+            </button>
+          </div>
         </div>
       </div>
     </section>
@@ -197,7 +267,7 @@ function ProjectCarouselImage({
         <div className="pointer-events-none absolute inset-0 z-10 flex items-center justify-center">
           <LoadingSpinner
             ariaLabel={imageLoadingAriaLabel}
-            className="text-(--color-paper)"
+            className="text-paper"
             indicatorClassName="h-10 w-10"
           />
         </div>

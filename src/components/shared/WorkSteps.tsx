@@ -20,14 +20,14 @@ function renderTitleWithParens(title: string) {
   return parts.map((part, index) => {
     if (part === "(" || part === ")") {
       return (
-        <span key={`${part}-${index}`} className="text-(--color-secondary)">
+        <span key={`${part}-${index}`} className="text-secondary">
           {part}
         </span>
       );
     }
 
     return (
-      <span key={`${part}-${index}`} className="text-(--color-paper)">
+      <span key={`${part}-${index}`} className="text-paper">
         {part}
       </span>
     );
@@ -38,7 +38,7 @@ export function WorkSteps({ title, steps, className, children }: WorkStepsProps)
   return (
     <section
       className={cn(
-        "bg-(--color-foreground) text-(--color-paper) py-[clamp(56px,10vw,96px)]",
+        "bg-foreground text-paper py-[clamp(56px,10vw,96px)]",
         className
       )}
     >
