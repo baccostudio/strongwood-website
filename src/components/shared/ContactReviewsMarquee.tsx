@@ -127,7 +127,7 @@ function ReviewCardsGroup({
             className={cn(
               "flex h-full w-[clamp(280px,78vw,360px)] shrink-0 flex-col gap-2 rounded-[28px] border border-(--color-footer-divider) bg-surface p-6 text-foreground shadow-sm",
               "outline-none transition-transform duration-200",
-              !isClone && "focus-visible:-translate-y-1 focus-visible:ring-2 focus-visible:ring-primary",
+              // !isClone && "focus-visible:-translate-y-1 focus-visible:ring-2 focus-visible:ring-primary",
             )}
           >
             <div className="flex min-w-0 items-center gap-4">
@@ -241,7 +241,7 @@ export function ContactReviewsMarquee({
             aria-label={sectionAriaLabel}
             className={cn(
               "contact-reviews-marquee no-scrollbar relative overflow-hidden px-6 outline-none",
-              "focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-4",
+              // "focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-4",
             )}
           >
             <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-8 bg-linear-to-r from-surface to-transparent" />

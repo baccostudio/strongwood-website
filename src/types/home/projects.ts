@@ -1,5 +1,9 @@
 import type { HomeHeroImage } from "./media";
 
+export interface HomeProjectsImage extends HomeHeroImage {
+  loading?: "eager";
+}
+
 export interface HomeProjectsContent {
   title: string;
   subtitleLines: string[];
@@ -9,7 +13,7 @@ export interface HomeProjectsContent {
   workCountAriaLabel: string;
   workCountAriaPrefix: string;
   workCountLabelSuffix: string;
-  tableImage: HomeHeroImage;
+  tableImage: HomeProjectsImage;
   descriptionLines: string[];
 }
 

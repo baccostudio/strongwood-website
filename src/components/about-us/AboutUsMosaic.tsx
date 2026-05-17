@@ -7,6 +7,7 @@ const ABOUT_US_MOSAIC_IMAGE_HEIGHT = 1688;
 interface AboutUsMosaicImage {
   src: string;
   alt: string;
+  loading?: "eager";
 }
 
 interface AboutUsMosaicProps {
@@ -30,7 +31,7 @@ export function AboutUsMosaic({ images }: AboutUsMosaicProps) {
               alt={image.alt}
               width={ABOUT_US_MOSAIC_IMAGE_WIDTH}
               height={ABOUT_US_MOSAIC_IMAGE_HEIGHT}
-              loading={index < 2 ? "eager" : undefined}
+              loading={image.loading ?? (index < 2 ? "eager" : undefined)}
               sizes="(min-width: 640px) 50vw, 100vw"
               className="h-auto w-full"
             />

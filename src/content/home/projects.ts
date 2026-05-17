@@ -1,4 +1,6 @@
-export const homeProjects = {
+import type { HomeProjectsContent } from "@/types/home";
+
+export const homeProjects: HomeProjectsContent = {
   title: "(PROYECTOS)",
   subtitleLines: [
     "DISEÑAMOS Y EJECUTAMOS",
@@ -16,6 +18,7 @@ export const homeProjects = {
     alt: "Bajo mesada",
     width: 1259,
     height: 637,
+    loading: "eager",
   },
   descriptionLines: [
     "Cocinas, placares y muebles a medida para hogares, obras y locales comerciales en CABA y GBA.",

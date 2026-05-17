@@ -3,6 +3,10 @@ import { cn } from "@/lib/utils";
 import { PageHeroTitle } from "@/components/shared/PageHeroTitle";
 import { HeroTitleWrapper } from "@/components/shared/HeroTitleWrapper";
 
+const PAGE_HERO_MOBILE_MEDIA = "(max-width: 639px)";
+const PAGE_HERO_DESKTOP_MEDIA = "(min-width: 640px)";
+const PAGE_HERO_IMAGE_SIZES = "100vw";
+
 interface PageHeroProps {
   title: string;
   subtitleLines: string[];
@@ -45,7 +49,7 @@ export function PageHero({
     : null;
 
   const {
-    props: { srcSet: desktopSrcSet, ...desktopImageProps },
+    props: { srcSet: desktopSrcSet, alt: desktopAlt, ...desktopImageProps },
   } = getImageProps({
     src: imageSrc,
     alt: imageAlt,
@@ -54,11 +58,11 @@ export function PageHero({
     priority: true,
     loading: "eager",
     fetchPriority: "high",
-    sizes: "100vw",
+    sizes: PAGE_HERO_IMAGE_SIZES,
     className: "h-auto w-full",
   });
 
-  const mobileSource = mobileHeroImage
+  const mobileHeroProps = mobileHeroImage
     ? getImageProps({
         src: mobileHeroImage.src,
         alt: imageAlt,
@@ -67,9 +71,13 @@ export function PageHero({
         priority: true,
         loading: "eager",
         fetchPriority: "high",
-        sizes: "100vw",
-      }).props.srcSet
+        sizes: PAGE_HERO_IMAGE_SIZES,
+        className: "h-auto w-full",
+      }).props
     : null;
+
+  const fallbackImageProps = mobileHeroProps ?? { alt: desktopAlt, srcSet: desktopSrcSet, ...desktopImageProps };
+  const { srcSet: fallbackSrcSet, alt: fallbackAlt, ...fallbackImageElementProps } = fallbackImageProps;
 
   return (
     <section
@@ -78,9 +86,29 @@ export function PageHero({
         className
       )}
     >
-      <picture>
-        {mobileSource ? <source media="(max-width: 639px)" srcSet={mobileSource} /> : null}
-        <img {...desktopImageProps} srcSet={desktopSrcSet} alt={imageAlt} />
+      <picture className="block w-full">
+        <source
+          media={PAGE_HERO_DESKTOP_MEDIA}
+          srcSet={desktopSrcSet}
+          sizes={PAGE_HERO_IMAGE_SIZES}
+          width={imageWidth}
+          height={imageHeight}
+        />
+        {mobileHeroProps && mobileHeroImage ? (
+          <source
+            media={PAGE_HERO_MOBILE_MEDIA}
+            srcSet={mobileHeroProps.srcSet}
+            sizes={PAGE_HERO_IMAGE_SIZES}
+            width={mobileHeroImage.width}
+            height={mobileHeroImage.height}
+          />
+        ) : null}
+        <img
+          alt={fallbackAlt}
+          {...fallbackImageElementProps}
+          srcSet={fallbackSrcSet}
+          className="block h-auto w-full select-none"
+        />
       </picture>
       <div className="absolute inset-0 bg-black/40" />
       <HeroTitleWrapper>

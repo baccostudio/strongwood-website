@@ -122,6 +122,7 @@ export function HomeProjects({
                         alt={content.tableImage.alt}
                         width={content.tableImage.width}
                         height={content.tableImage.height}
+                        loading={content.tableImage.loading}
                         sizes="(min-width: 1024px) 240px, (min-width: 640px) 180px, 140px"
                         className="h-auto w-[clamp(100px,22vw,240px)]"
                       />
