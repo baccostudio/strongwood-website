@@ -81,16 +81,16 @@ export default function RootLayout({
   return (
     <html
       lang="es-AR"
-      className="h-full antialiased"
+      className="h-full bg-paper antialiased"
       // suppressHydrationWarning
     >
       <head>
         <TrackingHeadScripts tracking={siteConfig.tracking} />
       </head>
-      <body className="min-h-full flex flex-col">
+      <body className="min-h-full bg-paper text-foreground flex flex-col">
         <TrackingNoScript tracking={siteConfig.tracking} />
         <Header {...siteConfig.header} />
-        <div className="flex-1">{children}</div>
+        <div className="flex-1 bg-paper">{children}</div>
         <Footer {...siteConfig.footer} />
         <JsonLdScript data={organizationJsonLd} />
         <JsonLdScript data={localBusinessJsonLd} />

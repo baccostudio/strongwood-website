@@ -2,7 +2,9 @@
 
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
+import type { CSSProperties } from "react";
 import { PageHeroTitle } from "@/components/shared/PageHeroTitle";
+import { homeHero } from "@/content/home/hero";
 import { cn } from "@/lib/utils";
 import type { HomeProjectStats, HomeProjectsContent } from "@/types/home";
 
@@ -15,6 +17,17 @@ const DESKTOP_PROJECT_TRACK_GAP = 150;
 const BASE_PROJECT_STICKY_SCROLL_VH = 100;
 const MOBILE_HERO_STACK_TAIL_VH = 10;
 const PROJECT_VIEWPORT_UNIT = "var(--vh, 1vh)";
+const [heroImage] = homeHero.images;
+
+type HomeProjectsWrapperStyle = CSSProperties & {
+  "--home-projects-hero-overlap-mobile": string;
+  "--home-projects-hero-overlap-desktop": string;
+};
+
+const homeProjectsWrapperStyle: HomeProjectsWrapperStyle = {
+  "--home-projects-hero-overlap-mobile": `min(calc(100vw * ${heroImage.mobile.height / heroImage.mobile.width}), calc(${PROJECT_VIEWPORT_UNIT} * 100))`,
+  "--home-projects-hero-overlap-desktop": `min(calc(100vw * ${heroImage.desktop.height / heroImage.desktop.width}), calc(${PROJECT_VIEWPORT_UNIT} * 100))`,
+};
 
 export function HomeProjects({
   content,
@@ -22,35 +35,24 @@ export function HomeProjects({
 }: HomeProjectsProps) {
   const trackRef = useRef<HTMLDivElement>(null);
   const [trackHeight, setTrackHeight] = useState(0);
-  const [heroHeight, setHeroHeight] = useState(0);
 
   useEffect(() => {
-    const heroSection = document.querySelector<HTMLElement>("[data-home-hero-stack]");
-
-    const syncHeights = () => {
+    const syncTrackHeight = () => {
       const nextTrackHeight = trackRef.current?.offsetHeight ?? 0;
-      const nextHeroHeight = heroSection?.offsetHeight ?? 0;
 
       setTrackHeight((currentHeight) => (
         currentHeight === nextTrackHeight ? currentHeight : nextTrackHeight
       ));
-      setHeroHeight((currentHeight) => (
-        currentHeight === nextHeroHeight ? currentHeight : nextHeroHeight
-      ));
     };
 
-    syncHeights();
+    syncTrackHeight();
 
     const resizeObserver = typeof ResizeObserver === "undefined"
       ? null
-      : new ResizeObserver(() => syncHeights());
+      : new ResizeObserver(() => syncTrackHeight());
 
     if (trackRef.current) {
       resizeObserver?.observe(trackRef.current);
-    }
-
-    if (heroSection) {
-      resizeObserver?.observe(heroSection);
     }
 
     return () => {
@@ -63,14 +65,14 @@ export function HomeProjects({
   const wrapperHeight = trackHeight
     ? `calc(${trackHeight}px + ${DESKTOP_PROJECT_TRACK_GAP}px + (${PROJECT_VIEWPORT_UNIT} * ${projectTrackViewportSpanVh}))`
     : `calc(${PROJECT_VIEWPORT_UNIT} * 300)`;
-  const overlapMarginTop = heroHeight
-    ? `-${heroHeight}px`
-    : `calc(${PROJECT_VIEWPORT_UNIT} * -100)`;
 
   return (
     <div
-      className="relative z-10 bg-muted"
-      style={{ height: wrapperHeight, marginTop: overlapMarginTop }}
+      className="relative z-10 bg-muted -mt-[var(--home-projects-hero-overlap-mobile)] lg:-mt-[var(--home-projects-hero-overlap-desktop)]"
+      style={{
+        ...homeProjectsWrapperStyle,
+        height: wrapperHeight,
+      }}
     >
       <div
         className="sticky top-0 overflow-hidden bg-muted"
@@ -114,7 +116,7 @@ export function HomeProjects({
                         <span aria-hidden="true">{projectStats.workCount}</span>
                       </span>
                     </div>
-                    <div className="shrink-0">
+                    <div className="shrink-0 max-w-[clamp(100px,22vw,240px)] overflow-hidden">
                       <Image
                         src={content.tableImage.src}
                         alt={content.tableImage.alt}

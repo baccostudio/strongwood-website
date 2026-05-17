@@ -15,7 +15,6 @@ interface HomeHeroStackProps {
   content: HomeHeroContent;
 }
 
-
 function ResponsiveHeroImage({
   image,
   isPriority,
@@ -67,7 +66,7 @@ function ResponsiveHeroImage({
 
 export function HomeHeroStack({ content }: HomeHeroStackProps) {
   return (
-    <section data-home-hero-stack className="relative z-20 w-full bg-transparent overflow-hidden rounded-b-[70px]">
+    <section data-home-hero-stack className="relative z-20 w-full bg-paper overflow-hidden rounded-b-[70px]">
       {content.images.map((image, index) => (
         <div
           key={image.desktop.src}

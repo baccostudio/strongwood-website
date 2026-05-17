@@ -99,6 +99,7 @@
 html {
   position: relative;
   scrollbar-gutter: stable;
+  background: var(--color-paper);
 }
 
 html,

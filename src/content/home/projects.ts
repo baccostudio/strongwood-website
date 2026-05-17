@@ -12,10 +12,10 @@ export const homeProjects = {
   workCountAriaPrefix: "Más de",
   workCountLabelSuffix: "trabajos realizados",
   tableImage: {
-    src: "/images/icons/work_table.webp",
-    alt: "Mesa de trabajo",
-    width: 1604,
-    height: 1604,
+    src: "/images/icons/bajo_mesada.webp",
+    alt: "Bajo mesada",
+    width: 1259,
+    height: 637,
   },
   descriptionLines: [
     "Cocinas, placares y muebles a medida para hogares, obras y locales comerciales en CABA y GBA.",

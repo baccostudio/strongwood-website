@@ -13,7 +13,7 @@ export function PageHeroTitle({ title, className }: PageHeroTitleProps) {
   return (
     <h1
       className={cn(
-        "text-center font-semibold uppercase tracking-[-0.03em] text-(--color-paper)",
+        "text-center font-semibold uppercase tracking-[-0.03em] text-paper",
         "text-[clamp(34px,5.6vw,94px)] leading-[clamp(40px,5vw,70px)]",
         className
       )}
