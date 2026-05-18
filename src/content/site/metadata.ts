@@ -1,4 +1,4 @@
-import { siteThemeColors } from "./theme-colors";
+import { routeThemeColors } from "./route-theme-colors";
 
 export const siteMetadata = {
   siteName: "Strongwood®",
@@ -11,6 +11,6 @@ export const siteMetadata = {
     height: 1080,
     alt: "Strongwood® muebles a medida",
   },
-  defaultThemeColor: siteThemeColors.paper,
+  defaultThemeColor: routeThemeColors.default,
   areaServed: ["CABA", "GBA"],
 };

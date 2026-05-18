@@ -1,5 +1,5 @@
 import { siteMetadata } from "@/content/site/metadata";
-import { siteThemeColors } from "@/content/site/theme-colors";
+import { routeThemeColors } from "@/content/site/route-theme-colors";
 import type { LegalPageContent } from "@/types/legal";
 
 export const privacyContent: LegalPageContent = {
@@ -8,7 +8,7 @@ export const privacyContent: LegalPageContent = {
     "Cómo usamos y protegemos la información que compartís con Strongwood.",
   heading: "Política de privacidad",
   ogImage: siteMetadata.defaultOgImage,
-  themeColor: siteThemeColors.paper,
+  themeColor: routeThemeColors.legal,
   hero: {
     title: "(PRIVACIDAD)",
     subtitleLines: ["TU INFORMACIÓN", "NUESTRA RESPONSABILIDAD"],

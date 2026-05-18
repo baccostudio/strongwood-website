@@ -1,4 +1,4 @@
-import { siteThemeColors } from "@/content/site/theme-colors";
+import { routeThemeColors } from "@/content/site/route-theme-colors";
 
 export const homeMetadata = {
   title: "Strongwood | Muebles a medida en CABA y GBA",
@@ -10,5 +10,5 @@ export const homeMetadata = {
     height: 1080,
     alt: "Muebles a medida Strongwood",
   },
-  themeColor: siteThemeColors.paper,
+  themeColor: routeThemeColors.home,
 };

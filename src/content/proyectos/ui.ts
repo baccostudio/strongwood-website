@@ -1,5 +1,5 @@
 import type { ProjectDetailUi } from "@/types/proyectos";
-import { siteThemeColors } from "@/content/site/theme-colors";
+import { routeThemeColors } from "@/content/site/route-theme-colors";
 
 export const projectDetailUi: ProjectDetailUi = {
   carouselControls: {
@@ -24,6 +24,6 @@ export const projectDetailUi: ProjectDetailUi = {
   },
   metadata: {
     descriptionTemplate: "Proyecto en {location} ({year}).",
-    themeColor: siteThemeColors.project,
+    themeColor: routeThemeColors.projectDetail,
   },
 };
