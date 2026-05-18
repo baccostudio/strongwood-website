@@ -8,8 +8,5 @@ metahead viewport no toma el blanco
 
 header de colores
 
-titulos page hero ( todos a la misma altura)
-
 caprpeta public
-- project details
 - og ?

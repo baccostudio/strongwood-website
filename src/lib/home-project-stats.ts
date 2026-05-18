@@ -10,6 +10,16 @@ function getWorkCountDigits(workCount: string) {
   return workCount.replace(/\D+/g, "");
 }
 
+function formatDisplayWorkCount(workCount: string) {
+  const digits = getWorkCountDigits(workCount);
+
+  if (!digits) {
+    return homeContent.projects.workCount;
+  }
+
+  return `+${digits}`;
+}
+
 function buildFallbackHomeProjectWorkCountAriaLabel() {
   return homeContent.projects.workCountAriaLabel;
 }
@@ -26,7 +36,7 @@ function buildLiveHomeProjectWorkCountAriaLabel(workCount: string) {
 
 function buildFallbackHomeProjectStats(): HomeProjectStats {
   return {
-    workCount: homeContent.projects.workCount,
+    workCount: formatDisplayWorkCount(homeContent.projects.workCount),
     workCountAriaLabel: buildFallbackHomeProjectWorkCountAriaLabel(),
   };
 }
@@ -39,7 +49,7 @@ function buildLiveHomeProjectStats(workCount: string): HomeProjectStats {
   }
 
   return {
-    workCount: digits,
+    workCount: formatDisplayWorkCount(digits),
     workCountAriaLabel: buildLiveHomeProjectWorkCountAriaLabel(digits),
   };
 }

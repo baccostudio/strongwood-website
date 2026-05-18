@@ -86,7 +86,10 @@ export const sitePages: PagesConfig = {
     },
     hero: {
       title: "(CONTÁCTANOS)",
-      subtitleLines: [],
+      subtitleLines: [
+        "ASESORÍA GRATIS SI",
+        "COMPLETÁS EL FORMULARIO"
+      ],
       imageSrc: "/images/hero/hero-contactanos-desk.webp",
       imageAlt: "Cocina con muebles de madera y barra blanca",
       imageWidth: 1447,

@@ -2,6 +2,8 @@ import type { HomeProjectsContent } from "@/types/home";
 
 export const homeProjects: HomeProjectsContent = {
   title: "(PROYECTOS)",
+  titleHref: "/proyectos",
+  titleAriaLabel: "Ir a la página de proyectos",
   subtitleLines: [
     "DISEÑAMOS Y EJECUTAMOS",
     "PROYECTOS INTEGRALES DE MUEBLES",

@@ -16,6 +16,9 @@ export const homeHero: HomeHeroContent = {
       },
     },
   ],
+  subtitleLines:[
+    "MUEBLES A MEDIDA"
+  ],
   label: "(QUÉ HACEMOS)",
   marqueeItems: [
     { text: "PLACARES", weight: "light" },

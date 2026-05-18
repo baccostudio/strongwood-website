@@ -80,12 +80,14 @@ export function ProjectHero({ title, subtitle, image, mobileImage, className }: 
         />
       </picture>
       <div className="absolute inset-0 [background-image:var(--gradient-project-hero-overlay)]" />
-      <HeroTitleWrapper className="z-20 flex flex-col items-center gap-2">
-        <p className="text-center text-[clamp(34px,6vw,68px)] font-semibold uppercase leading-14 tracking-[-0.03em] text-paper">
-          {subtitle}
-        </p>
-        <PageHeroTitle title={`(${title})`} className="leading-[clamp(40px,5vw,70px)]" />
-      </HeroTitleWrapper>
+      <div className="absolute inset-x-0 top-0 z-20 h-[calc(var(--vh,1vh)*100)]">
+        <HeroTitleWrapper className="flex flex-col items-center gap-2">
+          <p className="text-center text-[clamp(34px,6vw,68px)] font-semibold uppercase leading-14 tracking-[-0.03em] text-paper">
+            {subtitle}
+          </p>
+          <PageHeroTitle title={`(${title})`} className="leading-[clamp(40px,5vw,70px)]" />
+        </HeroTitleWrapper>
+      </div>
     </section>
   );
 }

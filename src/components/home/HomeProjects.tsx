@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import type { CSSProperties } from "react";
@@ -35,6 +36,9 @@ export function HomeProjects({
 }: HomeProjectsProps) {
   const trackRef = useRef<HTMLDivElement>(null);
   const [trackHeight, setTrackHeight] = useState(0);
+  const displayWorkCount = projectStats.workCount.startsWith("+")
+    ? projectStats.workCount
+    : `+${projectStats.workCount.replace(/^\++/, "")}`;
 
   useEffect(() => {
     const syncTrackHeight = () => {
@@ -92,7 +96,16 @@ export function HomeProjects({
                   >
                     {content.badgeText}
                   </div>
-                  <PageHeroTitle title={content.title} className="text-paper" />
+                  <Link
+                    href={content.titleHref}
+                    aria-label={content.titleAriaLabel}
+                    className="group block rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-paper/70"
+                  >
+                    <PageHeroTitle
+                      title={content.title}
+                      className="text-paper transition-opacity duration-200 group-hover:opacity-80 group-focus-visible:opacity-80"
+                    />
+                  </Link>
                 </div>
                 <div
                   className={cn(
@@ -113,7 +126,7 @@ export function HomeProjects({
                         aria-label={projectStats.workCountAriaLabel}
                         className="inline-flex shrink-0 items-center whitespace-nowrap text-[clamp(44px,10vw,124px)] font-semibold leading-none text-paper tabular-nums"
                       >
-                        <span aria-hidden="true">{projectStats.workCount}</span>
+                        <span aria-hidden="true">{displayWorkCount}</span>
                       </span>
                     </div>
                     <div className="shrink-0 max-w-[clamp(100px,22vw,240px)] overflow-hidden">

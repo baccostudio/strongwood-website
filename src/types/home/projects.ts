@@ -6,6 +6,8 @@ export interface HomeProjectsImage extends HomeHeroImage {
 
 export interface HomeProjectsContent {
   title: string;
+  titleHref: string;
+  titleAriaLabel: string;
   subtitleLines: string[];
   badgeText: string;
   badgeAriaLabel: string;
