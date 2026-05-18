@@ -1,16 +1,12 @@
-﻿import type { LegalPageContent } from "@/types/legal";
+import { siteMetadata } from "@/content/site/metadata";
+import type { LegalPageContent } from "@/types/legal";
 
 export const termsContent: LegalPageContent = {
   title: "Términos & condiciones | Strongwood",
   description:
     "Condiciones de uso del sitio y alcance de los servicios de Strongwood.",
   heading: "Términos & condiciones",
-  ogImage: {
-    src: "/images/og/og-strongwood.svg",
-    width: 1200,
-    height: 630,
-    alt: "Strongwood muebles a medida",
-  },
+  ogImage: siteMetadata.defaultOgImage,
   hero: {
     title: "(TÉRMINOS)",
     subtitleLines: ["USO DEL SITIO", "INFORMACIÓN", "Y SERVICIOS"],

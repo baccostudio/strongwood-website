@@ -13,7 +13,7 @@ Use this reference when the request changes copy, metadata, OG images, navigatio
 
 - Build page metadata through `buildMetadata()` in `src/lib/seo.ts`.
 - Resolve canonical URLs from `SITE_URL`; fall back to `http://localhost:3000`.
-- Keep OG images local under `public/images/og/` and reference them from typed content whenever possible.
+- Keep OG images local under `public/images/` and reference them from typed content whenever possible, preferring reuse of existing source assets over duplicated OG-only copies.
 - Keep page metadata in Spanish (Argentina).
 
 ## Route Checklist

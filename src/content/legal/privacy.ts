@@ -1,16 +1,12 @@
-﻿import type { LegalPageContent } from "@/types/legal";
+import { siteMetadata } from "@/content/site/metadata";
+import type { LegalPageContent } from "@/types/legal";
 
 export const privacyContent: LegalPageContent = {
   title: "Política de privacidad | Strongwood",
   description:
     "Cómo usamos y protegemos la información que compartís con Strongwood.",
   heading: "Política de privacidad",
-  ogImage: {
-    src: "/images/og/og-strongwood.svg",
-    width: 1200,
-    height: 630,
-    alt: "Strongwood muebles a medida",
-  },
+  ogImage: siteMetadata.defaultOgImage,
   hero: {
     title: "(PRIVACIDAD)",
     subtitleLines: ["TU INFORMACIÓN", "NUESTRA RESPONSABILIDAD"],

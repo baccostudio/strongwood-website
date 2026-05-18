@@ -4,9 +4,9 @@ export const proyectosContent = {
     description:
       "Cocinas, placares y muebles a medida para hogares y obras en CABA y GBA. Diseño e instalación integral.",
     ogImage: {
-      src: "/images/og/og-proyectos.svg",
-      width: 1200,
-      height: 630,
+      src: "/images/hero/hero-proyectos-desk.webp",
+      width: 1447,
+      height: 1080,
       alt: "Proyectos Strongwood",
     },
   },

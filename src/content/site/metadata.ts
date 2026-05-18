@@ -4,9 +4,9 @@ export const siteMetadata = {
   defaultDescription:
     "Muebles a medida, cocinas y placares diseñados y fabricados en CABA y GBA.",
   defaultOgImage: {
-    src: "/images/og/og-strongwood.svg",
-    width: 1200,
-    height: 630,
+    src: "/images/home/hero/home-hero-deskt.webp",
+    width: 1447,
+    height: 1080,
     alt: "Strongwood® muebles a medida",
   },
   areaServed: ["CABA", "GBA"],

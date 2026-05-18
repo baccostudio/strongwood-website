@@ -6,9 +6,9 @@ export const sitePages: PagesConfig = {
     description: "Descubrí proyectos en madera hechos a medida para cada espacio en CABA y GBA.",
     heading: "Proyectos",
     ogImage: {
-      src: "/images/og/og-proyectos.svg",
-      width: 1200,
-      height: 630,
+      src: "/images/hero/hero-proyectos-desk.webp",
+      width: 1447,
+      height: 1080,
       alt: "Proyectos en madera a medida",
     },
   },
@@ -17,9 +17,9 @@ export const sitePages: PagesConfig = {
     description: "Conocé el equipo y la filosofía detrás de Strongwood.",
     heading: "Nosotros",
     ogImage: {
-      src: "/images/og/og-nosotros.svg",
-      width: 1200,
-      height: 630,
+      src: "/images/hero/nosotros-hero-desk.webp",
+      width: 1447,
+      height: 1080,
       alt: "Equipo Strongwood",
     },
     hero: {
@@ -79,16 +79,16 @@ export const sitePages: PagesConfig = {
     description: "Contanos tu idea y trabajemos juntos en tu próximo proyecto.",
     heading: "Contacto",
     ogImage: {
-      src: "/images/og/og-contacto.svg",
-      width: 1200,
-      height: 630,
+      src: "/images/hero/hero-contactanos-desk.webp",
+      width: 1447,
+      height: 1080,
       alt: "Contacto Strongwood",
     },
     hero: {
       title: "(CONTÁCTANOS)",
       subtitleLines: [
-        "ASESORÍA GRATIS SI",
-        "COMPLETÁS EL FORMULARIO"
+        "ASESORÍA GRATIS",
+        "COMPLETANDO EL FORMULARIO"
       ],
       imageSrc: "/images/hero/hero-contactanos-desk.webp",
       imageAlt: "Cocina con muebles de madera y barra blanca",
@@ -101,7 +101,7 @@ export const sitePages: PagesConfig = {
     formIntro: "Un diseño a medida empieza con una buena conversación",
     formImageAlt: "Cocina moderna con muebles a medida",
     formIncentive: {
-      label: "ASESORÍA GRATIS SI COMPLETÁS EL FORMULARIO",
+      label: "ASESORÍA GRATIS COMPLETANDO EL FORMULARIO",
     },
     formFields: [
       {
