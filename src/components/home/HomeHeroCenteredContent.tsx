@@ -1,7 +1,5 @@
 "use client";
 
-import { useLayoutEffect } from "react";
-import { resolveViewportHeight } from "@/lib/viewport";
 import { HeroTitleWrapper } from "@/components/shared/HeroTitleWrapper";
 import StrongwoodLogo from "../icons/strongwood-logo";
 
@@ -12,14 +10,8 @@ type HomeHeroCenteredContentProps = {
 export function HomeHeroCenteredContent({
   subtitleLines,
 }: HomeHeroCenteredContentProps) {
-  useLayoutEffect(() => {
-    const viewportHeight = resolveViewportHeight(window);
-
-    document.documentElement.style.setProperty("--vh", `${viewportHeight * 0.01}px`);
-  }, []);
-
   return (
-    <div className="pointer-events-none absolute inset-x-0 top-0 z-10 h-[calc(var(--vh,1vh)*100)]">
+    <div className="pointer-events-none absolute inset-x-0 top-0 z-10 h-svh">
       <HeroTitleWrapper>
         <div className="flex flex-col items-center">
           <StrongwoodLogo
