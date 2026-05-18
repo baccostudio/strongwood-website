@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { proyectosContent, projects } from "@/content/proyectos";
 import { siteConfig } from "@/content/site";
-import { buildMetadata } from "@/lib/seo";
+import { buildMetadata, buildViewport } from "@/lib/seo";
 import { PageHero } from "@/components/shared/PageHero";
 import { PageIntro } from "@/components/shared/PageIntro";
 import { WorkSteps } from "@/components/shared/WorkSteps";
@@ -15,6 +15,8 @@ export const metadata: Metadata = buildMetadata({
   siteName: siteConfig.metadata.siteName,
   ogImage: proyectosContent.metadata.ogImage,
 });
+
+export const viewport = buildViewport(proyectosContent.metadata.themeColor);
 
 export default function ProyectosPage() {
   const projectItems = projects

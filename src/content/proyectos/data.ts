@@ -127,7 +127,6 @@ export const projects: Project[] = [
         ],
       },
     ],
-    themeClass: "project-theme-lavalle",
     nextCardLabel: "Siguiente proyecto",
   },
   {
@@ -284,7 +283,6 @@ export const projects: Project[] = [
         ],
       },
     ],
-    themeClass: "project-theme-coliqueo",
     nextCardLabel: "Siguiente proyecto",
   },
   {
@@ -401,7 +399,6 @@ export const projects: Project[] = [
         ],
       },
     ],
-    themeClass: "project-theme-cangallo",
     nextCardLabel: "Siguiente proyecto",
   },
   {
@@ -524,7 +521,6 @@ export const projects: Project[] = [
         ],
       },
     ],
-    themeClass: "project-theme-olleros",
     nextCardLabel: "Siguiente proyecto",
   },
 ];

@@ -1,3 +1,5 @@
+import type { ThemeColor } from "./theme-color";
+
 export interface OgImage {
   src: string;
   width: number;
@@ -10,5 +12,6 @@ export interface SiteMetadata {
   defaultTitle: string;
   defaultDescription: string;
   defaultOgImage: OgImage;
+  defaultThemeColor: ThemeColor;
   areaServed: string[];
 }

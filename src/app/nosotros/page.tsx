@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { siteConfig } from "@/content/site";
-import { buildMetadata } from "@/lib/seo";
+import { buildMetadata, buildViewport } from "@/lib/seo";
 import { AboutUsHero } from "@/components/about-us/AboutUsHero";
 import { AboutUsIntro } from "@/components/about-us/AboutUsIntro";
 import { AboutUsMosaic } from "@/components/about-us/AboutUsMosaic";
@@ -14,6 +14,8 @@ export const metadata: Metadata = buildMetadata({
   siteName: siteConfig.metadata.siteName,
   ogImage: pageContent.ogImage,
 });
+
+export const viewport = buildViewport(pageContent.themeColor);
 
 export default function NosotrosPage() {
   return (

@@ -3,7 +3,7 @@ import Image from "next/image";
 import { contactReviewsContent } from "@/content/contact";
 import { siteConfig } from "@/content/site";
 import { ContactReviewsMarquee } from "@/components/shared/ContactReviewsMarquee";
-import { buildMetadata } from "@/lib/seo";
+import { buildMetadata, buildViewport } from "@/lib/seo";
 import { PageHero } from "@/components/shared/PageHero";
 import { ContactForm } from "@/components/shared/ContactForm";
 import { sendContactFormAction } from "./actions";
@@ -17,6 +17,8 @@ export const metadata: Metadata = buildMetadata({
   siteName: siteConfig.metadata.siteName,
   ogImage: pageContent.ogImage,
 });
+
+export const viewport = buildViewport(pageContent.themeColor);
 
 export default function ContactPage() {
   return (

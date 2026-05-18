@@ -9,7 +9,7 @@ import {
   getHomeHeroPreloadAssets,
   HOME_HERO_IMAGE_SIZES,
 } from "@/lib/preloader";
-import { buildMetadata } from "@/lib/seo";
+import { buildMetadata, buildViewport } from "@/lib/seo";
 import HomeClient from "./page.client";
 
 export const metadata: Metadata = buildMetadata({
@@ -19,6 +19,8 @@ export const metadata: Metadata = buildMetadata({
   siteName: siteConfig.metadata.siteName,
   ogImage: homeContent.metadata.ogImage,
 });
+
+export const viewport = buildViewport(homeContent.metadata.themeColor);
 
 export default function Home() {
   const heroAssets = getHomeHeroPreloadAssets(homeContent.hero);

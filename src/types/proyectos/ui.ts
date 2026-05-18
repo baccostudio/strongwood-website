@@ -1,4 +1,5 @@
 import type { ProjectImage } from "./media";
+import type { ThemeColor } from "@/types/site/theme-color";
 
 export interface ProjectCarouselControlsUi {
   prevAriaLabel: string;
@@ -17,5 +18,6 @@ export interface ProjectDetailUi {
   nextProject: ProjectNextProjectUi;
   metadata: {
     descriptionTemplate: string;
+    themeColor: ThemeColor;
   };
 }

@@ -17,7 +17,7 @@ export function AboutUsIntro({ label, location, paragraphs }: AboutUsIntroProps)
       label={label}
       location={location}
       paragraphs={paragraphs}
-      className="bg-(--color-brown) text-(--color-paper)"
+      className="bg-brown text-paper"
       textClassName="text-[var(--color-paper)]"
       highlightClassName="font-medium"
     />

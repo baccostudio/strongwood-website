@@ -1,4 +1,4 @@
-import type { ProjectCard, ProjectTheme } from "./cards";
+import type { ProjectCard } from "./cards";
 import type { ProjectImage } from "./media";
 import type { ProjectSection } from "./text";
 
@@ -24,6 +24,5 @@ export type Project = {
   materialsCard: ProjectCard;
   processCard: ProjectCard;
   sections: ProjectSection[];
-  themeClass: ProjectTheme["themeClass"];
   nextCardLabel: string;
 };

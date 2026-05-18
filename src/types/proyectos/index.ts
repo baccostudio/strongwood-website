@@ -1,4 +1,4 @@
-export type { ProjectCard, ProjectTheme } from "./cards";
+export type { ProjectCard } from "./cards";
 export type { ProjectImage } from "./media";
 export type { Project } from "./project";
 export type { ProjectSection, ProjectTextPart } from "./text";

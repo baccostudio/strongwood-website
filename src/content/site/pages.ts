@@ -1,4 +1,5 @@
 import type { PagesConfig } from "@/types/site";
+import { siteThemeColors } from "./theme-colors";
 
 export const sitePages: PagesConfig = {
   proyectos: {
@@ -11,6 +12,7 @@ export const sitePages: PagesConfig = {
       height: 1080,
       alt: "Proyectos en madera a medida",
     },
+    themeColor: siteThemeColors.secondary,
   },
   nosotros: {
     title: "Nosotros | Strongwood",
@@ -22,6 +24,7 @@ export const sitePages: PagesConfig = {
       height: 1080,
       alt: "Equipo Strongwood",
     },
+    themeColor: siteThemeColors.brown,
     hero: {
       title: "(QUIÉNES SOMOS)",
       subtitleLines: [
@@ -84,6 +87,7 @@ export const sitePages: PagesConfig = {
       height: 1080,
       alt: "Contacto Strongwood",
     },
+    themeColor: siteThemeColors.paper,
     hero: {
       title: "(CONTÁCTANOS)",
       subtitleLines: [

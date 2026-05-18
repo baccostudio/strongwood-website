@@ -1,3 +1,6 @@
+import type { OgImage } from "@/types/site/metadata";
+import type { ThemeColor } from "@/types/site/theme-color";
+
 export interface LegalSection {
   title: string;
   paragraphs: string[];
@@ -8,12 +11,8 @@ export interface LegalPageContent {
   title: string;
   description: string;
   heading: string;
-  ogImage: {
-    src: string;
-    width: number;
-    height: number;
-    alt: string;
-  };
+  ogImage: OgImage;
+  themeColor: ThemeColor;
   hero: {
     title: string;
     subtitleLines: string[];

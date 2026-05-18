@@ -1,7 +1,7 @@
 ﻿import type { Metadata } from "next";
 import { privacyContent } from "@/content/legal";
 import { siteConfig } from "@/content/site";
-import { buildMetadata } from "@/lib/seo";
+import { buildMetadata, buildViewport } from "@/lib/seo";
 
 const pageContent = privacyContent;
 
@@ -12,6 +12,8 @@ export const metadata: Metadata = buildMetadata({
   siteName: siteConfig.metadata.siteName,
   ogImage: pageContent.ogImage,
 });
+
+export const viewport = buildViewport(pageContent.themeColor);
 
 export default function PrivacyPage() {
   return (

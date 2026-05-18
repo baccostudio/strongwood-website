@@ -1,3 +1,5 @@
+import { siteThemeColors } from "@/content/site/theme-colors";
+
 export const proyectosContent = {
   metadata: {
     title: "Proyectos | Strongwood",
@@ -9,6 +11,7 @@ export const proyectosContent = {
       height: 1080,
       alt: "Proyectos Strongwood",
     },
+    themeColor: siteThemeColors.secondary,
   },
   hero: {
     title: "(PROYECTOS)",

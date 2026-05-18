@@ -1,4 +1,5 @@
 import { siteMetadata } from "@/content/site/metadata";
+import { siteThemeColors } from "@/content/site/theme-colors";
 import type { LegalPageContent } from "@/types/legal";
 
 export const termsContent: LegalPageContent = {
@@ -7,6 +8,7 @@ export const termsContent: LegalPageContent = {
     "Condiciones de uso del sitio y alcance de los servicios de Strongwood.",
   heading: "Términos & condiciones",
   ogImage: siteMetadata.defaultOgImage,
+  themeColor: siteThemeColors.paper,
   hero: {
     title: "(TÉRMINOS)",
     subtitleLines: ["USO DEL SITIO", "INFORMACIÓN", "Y SERVICIOS"],

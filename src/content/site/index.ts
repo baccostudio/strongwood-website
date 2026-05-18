@@ -13,3 +13,5 @@ export const siteConfig: SiteConfig = {
   tracking: siteTracking,
   pages: sitePages,
 };
+
+export { siteThemeColors } from "./theme-colors";

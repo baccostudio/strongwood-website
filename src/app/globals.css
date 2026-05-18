@@ -122,6 +122,15 @@ body {
   background: var(--color-paper);
 }
 
+html:has(main.project-theme-default),
+body:has(main.project-theme-default) {
+  background: var(--color-primary);
+}
+
+body:has(main.project-theme-default) .app-shell-content {
+  background: var(--color-primary);
+}
+
 @keyframes home-marquee {
   from {
     transform: translateX(0);
@@ -235,34 +244,10 @@ body {
   }
 }
 
-.project-theme-lavalle {
-  --project-bg: #526354;
-  --project-meta: #7BAE81;
-  --project-next-card: #B4C8B6;
-}
-
-.project-theme-coliqueo {
-  --project-bg: #526354;
-  --project-meta: #7BAE81;
-  --project-next-card: #B4C8B6;
-}
-
-.project-theme-cangallo {
-  --project-bg: #526354;
-  --project-meta: #7BAE81;
-  --project-next-card: #B4C8B6;
-}
-
-.project-theme-remedios {
-  --project-bg: #526354;
-  --project-meta: #7BAE81;
-  --project-next-card: #B4C8B6;
-}
-
-.project-theme-olleros {
-  --project-bg: #526354;
-  --project-meta: #7BAE81;
-  --project-next-card: #B4C8B6;
+.project-theme-default {
+  --project-bg: var(--color-primary);
+  --project-meta: var(--color-accent-green);
+  --project-next-card: var(--color-sage);
 }
 
 /* Option 1: Scrollbar never occupies space (hides visual track while keeping scroll functionality) */

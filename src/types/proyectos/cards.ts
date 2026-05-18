@@ -5,7 +5,3 @@ export type ProjectCard = {
   text: string;
   image: ProjectImage;
 };
-
-export type ProjectTheme = {
-  themeClass: string;
-};

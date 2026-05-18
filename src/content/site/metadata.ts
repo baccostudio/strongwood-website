@@ -1,3 +1,5 @@
+import { siteThemeColors } from "./theme-colors";
+
 export const siteMetadata = {
   siteName: "Strongwood®",
   defaultTitle: "Strongwood® | Muebles a medida",
@@ -9,5 +11,6 @@ export const siteMetadata = {
     height: 1080,
     alt: "Strongwood® muebles a medida",
   },
+  defaultThemeColor: siteThemeColors.paper,
   areaServed: ["CABA", "GBA"],
 };

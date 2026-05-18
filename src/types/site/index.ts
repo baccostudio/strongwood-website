@@ -3,6 +3,7 @@ import type { HeaderConfig } from "./header";
 import type { SiteMetadata } from "./metadata";
 import type { NotFoundContent } from "./not-found";
 import type { ContactReviewsContent, GoogleReviewItem } from "./contact-reviews";
+import type { SiteThemeColors, ThemeColor } from "./theme-color";
 import type {
   AboutUsHeroContent,
   AboutUsIntroContent,
@@ -65,6 +66,8 @@ export type {
   PageContent,
   PagesConfig,
   SiteMetadata,
+  SiteThemeColors,
   SiteTrackingConfig,
   SocialLink,
+  ThemeColor,
 };

@@ -2,6 +2,6 @@
 > 
 > [www.strongwood.com.ar](https://www.strongwood.com.ar/)
 
-metahead viewport no toma el blanco
+doble marquee?
 
 header de colores

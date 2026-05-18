@@ -1,10 +1,12 @@
 import type { OgImage } from "./metadata";
+import type { ThemeColor } from "./theme-color";
 
 export interface PageContent {
   title: string;
   description: string;
   heading: string;
   ogImage: OgImage;
+  themeColor: ThemeColor;
 }
 
 export interface ContactFormField {

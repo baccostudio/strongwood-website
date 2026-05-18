@@ -1,6 +1,15 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
+import type { ThemeColor } from "@/types/site";
 
 const FALLBACK_SITE_URL = "http://localhost:3000";
+const BASE_VIEWPORT: Omit<Viewport, "themeColor"> = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: true,
+  colorScheme: "light",
+  viewportFit: "cover",
+};
 
 type OgImage = {
   src: string;
@@ -65,5 +74,12 @@ export function buildMetadata({
       description,
       images: [ogUrl],
     },
+  };
+}
+
+export function buildViewport(themeColor: ThemeColor): Viewport {
+  return {
+    ...BASE_VIEWPORT,
+    themeColor,
   };
 }

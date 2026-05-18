@@ -1,4 +1,4 @@
-import type { Metadata, Viewport } from "next";
+import type { Metadata } from "next";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import "./globals.css";
@@ -6,7 +6,7 @@ import { Footer } from "@/components/layout/Footer";
 import { Header } from "@/components/layout/Header";
 import { JsonLdScript } from "@/components/layout/JsonLdScript";
 import { siteConfig } from "@/content/site";
-import { getSiteUrl } from "@/lib/seo";
+import { buildViewport, getSiteUrl } from "@/lib/seo";
 import { TrackingHeadScripts } from "@/components/layout/TrackingHeadScripts";
 import { TrackingNoScript } from "@/components/layout/TrackingNoScript";
 
@@ -39,15 +39,7 @@ export const metadata: Metadata = {
   },
 };
 
-export const viewport: Viewport = {
-  themeColor: "#ffffff",
-  width: "device-width",
-  initialScale: 1,
-  maximumScale: 1,
-  userScalable: true,
-  colorScheme: "light",
-  viewportFit: "cover",
-};
+export const viewport = buildViewport(siteConfig.metadata.defaultThemeColor);
 
 export default function RootLayout({
   children,
@@ -90,7 +82,7 @@ export default function RootLayout({
       <body className="min-h-full bg-paper text-foreground flex flex-col">
         <TrackingNoScript tracking={siteConfig.tracking} />
         <Header {...siteConfig.header} />
-        <div className="flex-1 bg-paper">{children}</div>
+        <div className="app-shell-content flex-1 bg-paper">{children}</div>
         <Footer {...siteConfig.footer} />
         <JsonLdScript data={organizationJsonLd} />
         <JsonLdScript data={localBusinessJsonLd} />

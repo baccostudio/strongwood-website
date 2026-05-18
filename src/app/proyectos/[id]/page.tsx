@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { cn } from "@/lib/utils";
-import { buildMetadata } from "@/lib/seo";
+import { buildMetadata, buildViewport } from "@/lib/seo";
 import { siteConfig } from "@/content/site";
 import { projectDetailUi, projects } from "@/content/proyectos";
 import { ProjectHero } from "@/components/projects/ProjectHero";
@@ -14,6 +13,8 @@ import { NextProjectCard } from "@/components/projects/NextProjectCard";
 type ProjectPageProps = {
   params: Promise<{ id: string }>;
 };
+
+export const viewport = buildViewport(projectDetailUi.metadata.themeColor);
 
 function getProjectById(id: string) {
   return projects.find(
@@ -80,7 +81,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
   const compactSectionClass = "py-[clamp(36px,6vw,64px)]";
 
   return (
-    <main className={cn("min-h-screen bg-(--project-bg)", project.themeClass)}>
+    <main className="min-h-screen bg-(--project-bg) project-theme-default">
       <ProjectHero
         title={project.title}
         subtitle={project.subtitle}
