@@ -47,7 +47,10 @@ export function Footer({
   return (
     <footer
       data-header-theme={headerThemeConfig.footerTheme}
-      className={cn("relative overflow-hidden bg-white text-foreground", className)}
+      className={cn(
+        "relative min-h-[calc(var(--vh,_1vh)_*_100)] overflow-hidden bg-white text-foreground sm:min-h-0",
+        className,
+      )}
     >
       <div className="mx-auto mb-46 flex w-full max-w-6xl flex-col gap-10 px-6 pt-12 md:mb-64 lg:mb-86">
         <div className="flex w-full flex-col gap-10 lg:flex-row lg:items-start lg:justify-between">
