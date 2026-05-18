@@ -16,10 +16,18 @@ export const homeHero: HomeHeroContent = {
       },
     },
   ],
-  subtitleLines:[
-    "MUEBLES A MEDIDA"
-  ],
+  subtitleLines: ["MUEBLES A MEDIDA"],
   label: "(QUÉ HACEMOS)",
+  topMarqueeItems: [
+    { text: "EQUIPAMIENTO DE OBRA", weight: "medium" },
+    { text: "PLACARES", weight: "medium" },
+    { text: "MESAS", weight: "light" },
+    { text: "COCINAS", weight: "medium" },
+    { text: "BIBLIOTECAS", weight: "light" },
+    { text: "CAMAS Y RESPALDOS", weight: "medium" },
+    { text: "RACKS DE TV", weight: "light" },
+    { text: "ESCRITORIOS", weight: "light" },
+  ],
   marqueeItems: [
     { text: "PLACARES", weight: "light" },
     { text: "RACKS DE TV", weight: "medium" },

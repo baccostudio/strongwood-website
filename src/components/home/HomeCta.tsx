@@ -161,7 +161,7 @@ export function HomeCta({
             style={{ scale: shouldReduceMotion ? 1 : galleryScale }}
             className="absolute inset-0 flex items-center justify-center px-6 transform-gpu will-change-transform"
           >
-            <div className="w-full max-w-6xl">
+            <div className="w-full max-w-6xl 2xl:max-w-[76rem]">
               <div className="grid grid-cols-3 gap-4 mb-4">
                 {content.gallery.slice(0, 3).map((img, i) => (
                   <GalleryImage

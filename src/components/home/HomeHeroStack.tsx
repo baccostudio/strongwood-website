@@ -80,6 +80,7 @@ export function HomeHeroStack({ content }: HomeHeroStackProps) {
           <div className="pointer-events-none absolute inset-0 z-20">
             <HomeHeroOverlay
               label={content.label}
+              topMarqueeItems={content.topMarqueeItems}
               marqueeItems={content.marqueeItems}
             />
           </div>

@@ -48,7 +48,7 @@ export function Footer({
     <footer
       data-header-theme={headerThemeConfig.footerTheme}
       className={cn(
-        "relative min-h-[calc(var(--vh,_1vh)_*_100)] overflow-hidden bg-white text-foreground sm:min-h-0",
+        "relative min-h-[calc((var(--vh,1vh)*100)+10rem)] overflow-hidden bg-white text-foreground sm:min-h-0",
         className,
       )}
     >

@@ -3,12 +3,22 @@ import { cn } from "@/lib/utils";
 
 interface HomeHeroOverlayProps {
   label: HomeHeroContent["label"];
+  topMarqueeItems: HomeHeroContent["topMarqueeItems"];
   marqueeItems: HomeHeroContent["marqueeItems"];
 }
 
-function MarqueeLine({ items }: { items: HomeHeroContent["marqueeItems"] }) {
+function MarqueeLine({
+  items,
+  isClone = false,
+}: {
+  items: HomeHeroContent["marqueeItems"];
+  isClone?: boolean;
+}) {
   return (
-    <div className="flex items-center whitespace-nowrap text-[clamp(28px,5.6vw,58px)] leading-none tracking-[-0.06em] text-paper">
+    <div
+      className="flex w-max shrink-0 items-center whitespace-nowrap text-[clamp(28px,5.6vw,58px)] leading-none tracking-[-0.06em] text-paper"
+      aria-hidden={isClone}
+    >
       {items.map((item, index) => (
         <span key={`${item.text}-${index}`} className="inline-flex items-center">
           <span
@@ -26,8 +36,29 @@ function MarqueeLine({ items }: { items: HomeHeroContent["marqueeItems"] }) {
   );
 }
 
+function MarqueeTrack({
+  items,
+  reverse = false,
+}: {
+  items: HomeHeroContent["marqueeItems"];
+  reverse?: boolean;
+}) {
+  return (
+    <div
+      className={cn(
+        "home-marquee-track flex w-max items-center",
+        reverse && "home-marquee-track-reverse",
+      )}
+    >
+      <MarqueeLine items={items} />
+      <MarqueeLine items={items} isClone />
+    </div>
+  );
+}
+
 export function HomeHeroOverlay({
   label,
+  topMarqueeItems,
   marqueeItems,
 }: HomeHeroOverlayProps) {
   return (
@@ -37,12 +68,12 @@ export function HomeHeroOverlay({
           <p className="mb-4 px-6 text-[clamp(12px,2.2vw,16px)] font-medium uppercase tracking-[0.08em] text-paper md:px-16">
             {label}
           </p>
-          <div className="overflow-hidden">
-            <div className="home-marquee-track flex w-max items-center">
-              <MarqueeLine items={marqueeItems} />
-              <MarqueeLine items={marqueeItems} />
-              <MarqueeLine items={marqueeItems} />
-              <MarqueeLine items={marqueeItems} />
+          <div className="space-y-[clamp(8px,1vw,12px)]">
+            <div className="overflow-hidden">
+              <MarqueeTrack items={topMarqueeItems} reverse />
+            </div>
+            <div className="overflow-hidden">
+              <MarqueeTrack items={marqueeItems} />
             </div>
           </div>
         </div>

@@ -17,5 +17,6 @@ export interface HomeHeroContent {
   images: HomeHeroResponsiveImage[];
   subtitleLines?: string[],
   label: string;
+  topMarqueeItems: HomeHeroMarqueeItem[];
   marqueeItems: HomeHeroMarqueeItem[];
 }

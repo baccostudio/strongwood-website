@@ -149,12 +149,17 @@ body:has(main.project-theme-default) .app-shell-content {
   }
 
   to {
-    transform: translateX(-25%);
+    transform: translateX(-50%);
   }
 }
 
 .home-marquee-track {
   animation: home-marquee 22s linear infinite;
+  will-change: transform;
+}
+
+.home-marquee-track-reverse {
+  animation-direction: reverse;
 }
 
 @keyframes contact-reviews-marquee {
