@@ -1,5 +1,6 @@
-﻿import Image from "next/image";
+import Image from "next/image";
 import Link from "next/link";
+import { headerThemeConfig } from "@/content/site/header-theme";
 import { cn } from "@/lib/utils";
 
 interface FooterLink {
@@ -44,8 +45,11 @@ export function Footer({
   className,
 }: FooterProps) {
   return (
-    <footer className={cn("relative overflow-hidden bg-white text-foreground", className)}>
-      <div className="mx-auto flex w-full max-w-6xl flex-col gap-10 px-6 pt-12 lg:mb-86 md:mb-64 mb-46">
+    <footer
+      data-header-theme={headerThemeConfig.footerTheme}
+      className={cn("relative overflow-hidden bg-white text-foreground", className)}
+    >
+      <div className="mx-auto mb-46 flex w-full max-w-6xl flex-col gap-10 px-6 pt-12 md:mb-64 lg:mb-86">
         <div className="flex w-full flex-col gap-10 lg:flex-row lg:items-start lg:justify-between">
           <div className="flex w-full flex-col gap-6 lg:max-w-55 lg:shrink-0">
             <Link href={logoHref} aria-label={logoAlt}>
@@ -67,7 +71,7 @@ export function Footer({
                   <Link
                     href={link.href}
                     aria-label={link.label}
-                    className="transition opacity-80 hover:opacity-100"
+                    className="opacity-80 transition hover:opacity-100"
                     target="_blank"
                   >
                     <Image
@@ -126,7 +130,7 @@ export function Footer({
               </ul>
             </div>
 
-            <div className="space-y-3 col-span-2 lg:col-span-1">
+            <div className="col-span-2 space-y-3 lg:col-span-1">
               <div className="text-[18px] font-medium uppercase leading-9.5 tracking-[0.01em] text-foreground">
                 {contactTitle}
               </div>
@@ -148,7 +152,7 @@ export function Footer({
         height={200}
         aria-hidden="true"
         loading="eager"
-        className="pointer-events-none absolute bottom-0 left-1/2 max-w-6xl w-[95%] -translate-x-1/2 select-none"
+        className="pointer-events-none absolute bottom-0 left-1/2 w-[95%] max-w-6xl -translate-x-1/2 select-none"
       />
     </footer>
   );

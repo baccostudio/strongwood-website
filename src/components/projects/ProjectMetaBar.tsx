@@ -1,4 +1,5 @@
 import { cn } from "@/lib/utils";
+import type { HeaderThemeToken } from "@/types/site";
 
 type ProjectMetaBarProps = {
   locationLabel: string;
@@ -7,6 +8,8 @@ type ProjectMetaBarProps = {
   yearValue: string;
   typeLabel: string;
   typeValue: string;
+  headerTheme?: HeaderThemeToken;
+  headerThemeMediaQuery?: string;
   className?: string;
 };
 
@@ -17,10 +20,16 @@ export function ProjectMetaBar({
   yearValue,
   typeLabel,
   typeValue,
+  headerTheme,
+  headerThemeMediaQuery,
   className,
 }: ProjectMetaBarProps) {
   return (
-    <section className={cn("relative z-30 px-6 sm:px-10", className)}>
+    <section
+      data-header-theme={headerTheme}
+      data-header-theme-media-query={headerThemeMediaQuery}
+      className={cn("relative z-30 px-6 sm:px-10", className)}
+    >
       <div className="mx-auto max-w-6xl">
         <div className="rounded-none bg-black px-6 py-6">
           <div className="grid grid-cols-2 gap-6 md:grid-cols-[minmax(0,1fr)_minmax(0,0.6fr)_minmax(0,1.6fr)]">

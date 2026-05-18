@@ -1,13 +1,15 @@
 "use client";
 
+import type { CSSProperties } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import BurgerMenu from "@/components/icons/burger-menu";
 import { cn } from "@/lib/utils";
 import { resolveViewportHeight } from "@/lib/viewport";
-import type { HeaderConfig } from "@/types/site";
+import type { HeaderConfig, HeaderThemeRenderState } from "@/types/site";
+import { useHeaderTheme } from "./useHeaderTheme";
 
 interface HeaderProps extends HeaderConfig {
   className?: string;
@@ -18,10 +20,6 @@ interface ScrollLockState {
 }
 
 const MENU_CLOSE_DURATION_MS = 300;
-const LEGAL_MENU_BLACK_PATHS = new Set([
-  "/terminos-condiciones",
-  "/politica-privacidad",
-]);
 const MENU_SCROLL_KEYS = new Set([
   "ArrowUp",
   "ArrowDown",
@@ -46,15 +44,34 @@ function getMenuViewportStyle(menuViewportHeight: number | null) {
   };
 }
 
-export function Header({
-  brandLogoAlt,
-  brandLogoHref,
-  logoButtonLabel,
-  menuText,
-  closeLabel,
-  menuLinks,
-  className,
-}: HeaderProps) {
+function getClosedBurgerThemeStyle(burgerTheme: HeaderThemeRenderState): CSSProperties {
+  if (burgerTheme.kind === "solid") {
+    return {
+      ["--header-burger-color" as string]: burgerTheme.color,
+      ["--header-burger-top-color" as string]: burgerTheme.color,
+      ["--header-burger-bottom-color" as string]: burgerTheme.color,
+      ["--header-burger-cut-ratio" as string]: "1",
+      ["--header-burger-cut-percent" as string]: "100%",
+    };
+  }
+
+  return {
+    ["--header-burger-color" as string]: burgerTheme.topColor,
+    ["--header-burger-top-color" as string]: burgerTheme.topColor,
+    ["--header-burger-bottom-color" as string]: burgerTheme.bottomColor,
+    ["--header-burger-cut-ratio" as string]: burgerTheme.cutRatio.toString(),
+    ["--header-burger-cut-percent" as string]: `${(burgerTheme.cutRatio * 100).toFixed(4)}%`,
+  };
+}
+
+export function Header(props: HeaderProps) {
+  const {
+    logoButtonLabel,
+    menuText,
+    closeLabel,
+    menuLinks,
+    className,
+  } = props;
   const [isOpen, setIsOpen] = useState(false);
   const [isMenuMounted, setIsMenuMounted] = useState(false);
   const [menuViewportHeight, setMenuViewportHeight] = useState<number | null>(null);
@@ -63,8 +80,14 @@ export function Header({
   const closeFrameRef = useRef<number | null>(null);
   const scrollLockRef = useRef<ScrollLockState | null>(null);
   const menuScrollAreaRef = useRef<HTMLDivElement | null>(null);
+  const closedBurgerFrameRef = useRef<HTMLSpanElement | null>(null);
   const touchStartYRef = useRef<number | null>(null);
   const pendingMenuNavigationRef = useRef(false);
+  const burgerTheme = useHeaderTheme({
+    pathname,
+    isMenuOpen: isOpen,
+    triggerRef: closedBurgerFrameRef,
+  });
 
   const clearCloseTimeout = useCallback(() => {
     if (closeTimeoutRef.current !== null) {
@@ -341,52 +364,68 @@ export function Header({
   }, []);
 
   const menuViewportStyle = getMenuViewportStyle(menuViewportHeight);
-  const isLegalPage = LEGAL_MENU_BLACK_PATHS.has(pathname);
+  const burgerThemeStyle = useMemo<CSSProperties>(
+    () => getClosedBurgerThemeStyle(burgerTheme),
+    [burgerTheme],
+  );
 
   return (
     <header
       className={cn(
-        "fixed top-0 z-40 w-full pointer-events-none",
+        "pointer-events-none fixed top-0 z-40 w-full",
         className,
       )}
     >
       <div className="pointer-events-none flex w-full items-start justify-end px-6 pt-6 lg:px-8">
-        {/* <Link
-          href={brandLogoHref}
-          aria-label={brandLogoAlt}
-          className="pointer-events-auto shrink-0 transition-opacity duration-200 hover:opacity-70"
-        >
-          <StrongwoodLogo
-            width={812}
-            height={155}
-            color="white"
-            aria-hidden="true"
-            className="w-41 lg:lg:w-51"
-          />
-        </Link> */}
-
         <button
           type="button"
           onClick={openMenu}
           aria-label={logoButtonLabel}
           aria-expanded={isOpen}
           aria-controls="site-menu-dialog"
+          data-header-theme-active={burgerTheme.kind === "solid" ? burgerTheme.theme : burgerTheme.bottomTheme}
+          data-header-theme-kind={burgerTheme.kind}
           className={cn(
-            "group pointer-events-auto cursor-pointer transition-opacity duration-300",
+            "group pointer-events-auto cursor-pointer transition-opacity duration-300 focus:ring-0",
             isMenuMounted && "pointer-events-none",
             isOpen ? "opacity-0" : "opacity-100",
           )}
+          style={burgerThemeStyle}
         >
-          <BurgerMenu
-            width={94}
-            height={63}
-            color={isLegalPage ? "var(--color-black)" : "var(--color-paper)"}
+          <span
+            ref={closedBurgerFrameRef}
             aria-hidden="true"
             className={cn(
-              "w-16 shrink-0 transition-all duration-200 ease-in-out hover:opacity-70 hover:duration-150 sm:w-20 lg:w-24",
-              isOpen && "rotate-90 -mr-[10.5px] hover:opacity-100 lg:-mr-4",
+              "relative block aspect-94/63 w-16 shrink-0 hover:opacity-70 sm:w-20 lg:w-24",
             )}
-          />
+          >
+            {burgerTheme.kind === "split-horizontal" ? (
+              <>
+                <BurgerMenu
+                  width={94}
+                  height={63}
+                  color="var(--header-burger-bottom-color)"
+                  aria-hidden="true"
+                  className="absolute inset-0 h-full w-full [clip-path:inset(var(--header-burger-cut-percent)_0_0_0)]"
+                />
+                <BurgerMenu
+                  width={94}
+                  height={63}
+                  color="var(--header-burger-top-color)"
+                  aria-hidden="true"
+                  className="absolute inset-0 h-full w-full [clip-path:inset(0_0_calc(100%_-_var(--header-burger-cut-percent))_0)]"
+                />
+              </>
+            ) : (
+              <BurgerMenu
+                width={94}
+                height={63}
+                color="var(--header-burger-color)"
+                aria-hidden="true"
+                className="h-full w-full"
+              />
+            )}
+          </span>
           <span className="sr-only">{menuText}</span>
         </button>
       </div>

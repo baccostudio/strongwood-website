@@ -1,14 +1,23 @@
 import { cn } from "@/lib/utils";
+import type { HeaderThemeToken } from "@/types/site";
 import type { ProjectSection } from "@/types/proyectos";
 
 type ProjectSectionsProps = {
   sections: ProjectSection[];
+  headerTheme?: HeaderThemeToken;
   className?: string;
 };
 
-export function ProjectSections({ sections, className }: ProjectSectionsProps) {
+export function ProjectSections({
+  sections,
+  headerTheme,
+  className,
+}: ProjectSectionsProps) {
   return (
-    <section className={cn("px-6 py-[clamp(56px,10vw,96px)] sm:px-10", className)}>
+    <section
+      data-header-theme={headerTheme}
+      className={cn("px-6 py-[clamp(56px,10vw,96px)] sm:px-10", className)}
+    >
       <div className="mx-auto max-w-6xl">
         <div className="grid gap-12 lg:gap-14">
           {sections.map((section) => (

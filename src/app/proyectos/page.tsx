@@ -48,12 +48,17 @@ export default function ProyectosPage() {
         label={proyectosContent.intro.label}
         location={proyectosContent.intro.location}
         paragraphs={proyectosContent.intro.paragraphs}
+        headerTheme="black"
         cta={proyectosContent.intro.cta}
         className="bg-secondary"
         highlightClassName="font-semibold"
         ctaClassName="border-[var(--color-black)] text-[var(--color-secondary)]"
       />
-      <WorkSteps title={proyectosContent.steps.title} steps={proyectosContent.steps.items}>
+      <WorkSteps
+        title={proyectosContent.steps.title}
+        steps={proyectosContent.steps.items}
+        headerTheme="secondary"
+      >
         {/* <FeaturedProjectGrid
           title={proyectosContent.featured.title}
           items={projectItems}
@@ -65,6 +70,7 @@ export default function ProyectosPage() {
         <MobileFeaturedProjects
           items={projectItems}
           ctaLabel={proyectosContent.projectList.ctaLabel}
+          headerTheme="black"
           className="py-12 lg:py-24"
         />
       </WorkSteps>

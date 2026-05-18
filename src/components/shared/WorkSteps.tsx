@@ -1,5 +1,6 @@
 import { cn } from "@/lib/utils";
 import { WorkStepsStepList } from "@/components/shared/WorkStepsStepList";
+import type { HeaderThemeToken } from "@/types/site";
 
 interface WorkStepItem {
   number: string;
@@ -10,6 +11,7 @@ interface WorkStepItem {
 interface WorkStepsProps {
   title: string;
   steps: WorkStepItem[];
+  headerTheme?: HeaderThemeToken;
   className?: string;
   children?: React.ReactNode;
 }
@@ -34,9 +36,16 @@ function renderTitleWithParens(title: string) {
   });
 }
 
-export function WorkSteps({ title, steps, className, children }: WorkStepsProps) {
+export function WorkSteps({
+  title,
+  steps,
+  headerTheme,
+  className,
+  children,
+}: WorkStepsProps) {
   return (
     <section
+      data-header-theme={headerTheme}
       className={cn(
         "bg-foreground text-paper py-[clamp(56px,10vw,96px)]",
         className

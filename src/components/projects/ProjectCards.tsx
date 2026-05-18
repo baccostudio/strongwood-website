@@ -1,10 +1,15 @@
 import Image from "next/image";
 import { cn } from "@/lib/utils";
+import type { HeaderThemeToken } from "@/types/site";
 import type { ProjectCard } from "@/types/proyectos";
 
 type ProjectCardsProps = {
   materials: ProjectCard;
   process: ProjectCard;
+  headerTheme?: HeaderThemeToken;
+  headerThemeMediaQuery?: string;
+  contentHeaderTheme?: HeaderThemeToken;
+  contentHeaderThemeMediaQuery?: string;
   className?: string;
 };
 
@@ -33,13 +38,31 @@ function ProjectInfoCard({ card }: { card: ProjectCard }) {
   );
 }
 
-export function ProjectCards({ materials, process, className }: ProjectCardsProps) {
+export function ProjectCards({
+  materials,
+  process,
+  headerTheme,
+  headerThemeMediaQuery,
+  contentHeaderTheme,
+  contentHeaderThemeMediaQuery,
+  className,
+}: ProjectCardsProps) {
   return (
-    <section className={cn("px-6 py-[clamp(56px,10vw,96px)] sm:px-10", className)}>
-      <div className="mx-auto max-w-6xl">
-        <div className="grid gap-6 lg:grid-cols-2">
-          <ProjectInfoCard card={materials} />
-          <ProjectInfoCard card={process} />
+    <section className="px-6 sm:px-10">
+      <div
+        data-header-theme={contentHeaderTheme}
+        data-header-theme-media-query={contentHeaderThemeMediaQuery}
+        className={cn("py-[clamp(56px,10vw,96px)]", className)}
+      >
+        <div className="mx-auto max-w-6xl">
+          <div
+            data-header-theme={headerTheme}
+            data-header-theme-media-query={headerThemeMediaQuery}
+            className="grid gap-6 lg:grid-cols-2"
+          >
+            <ProjectInfoCard card={materials} />
+            <ProjectInfoCard card={process} />
+          </div>
         </div>
       </div>
     </section>

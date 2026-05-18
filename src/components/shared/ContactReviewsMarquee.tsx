@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useState, type CSSProperties } from "react";
 import { cn } from "@/lib/utils";
-import type { GoogleReviewItem } from "@/types/site";
+import type { GoogleReviewItem, HeaderThemeToken } from "@/types/site";
 import Link from "next/link";
 
 interface ContactReviewsMarqueeProps {
@@ -13,6 +13,7 @@ interface ContactReviewsMarqueeProps {
   reviewsLinkLabel: string;
   reviewsLinkHref: string;
   reviews: GoogleReviewItem[];
+  headerTheme?: HeaderThemeToken;
   className?: string;
 }
 
@@ -180,6 +181,7 @@ export function ContactReviewsMarquee({
   reviewsLinkLabel,
   reviewsLinkHref,
   reviews,
+  headerTheme,
   className,
 }: ContactReviewsMarqueeProps) {
   const [currentDate, setCurrentDate] = useState(() => new Date());
@@ -213,7 +215,10 @@ export function ContactReviewsMarquee({
   } as CSSProperties;
 
   return (
-    <section className={cn("bg-surface pb-[clamp(56px,10vw,96px)]", className)}>
+    <section
+      data-header-theme={headerTheme}
+      className={cn("bg-surface pb-[clamp(56px,10vw,96px)]", className)}
+    >
       <div className="mx-auto flex w-full flex-col items-center">
         <div className="max-w-6xl w-full px-6">
           <div className="flex max-w-3xl flex-col gap-2">

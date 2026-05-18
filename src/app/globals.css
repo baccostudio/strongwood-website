@@ -54,6 +54,18 @@
 }
 
 :root {
+  --color-header-paper: #ffffff;
+  --color-header-black: #000000;
+  --color-header-brown: #452813;
+  --color-header-secondary: #e7d5ac;
+  --color-header-project: #526354;
+  --color-header-black-72: rgb(0 0 0 / 72%);
+  --color-header-paper-80: rgb(255 255 255 / 80%);
+  --header-burger-color: var(--color-header-paper);
+  --header-burger-top-color: var(--color-header-paper);
+  --header-burger-bottom-color: var(--color-header-paper);
+  --header-burger-cut-ratio: 1;
+  --header-burger-cut-percent: 100%;
   --color-step-divider: #424242;
   --color-step-subtitle: #999999;
   --color-blur-dark: #d9d9d966;

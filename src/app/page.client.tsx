@@ -7,7 +7,7 @@ import { homeContent } from "@/content/home";
 import { HOME_MOBILE_BREAKPOINT } from "@/lib/preloader";
 import { resolveViewportHeight, resolveViewportWidth } from "@/lib/viewport";
 const VIEWPORT_RECOVERY_DELAY_MS = 250;
-const HOME_CTA_FALLBACK_SECTION_HEIGHT_VH = getHomeCtaSectionHeightVh(false);
+const HOME_CTA_FALLBACK_SECTION_HEIGHT_VH = getHomeCtaSectionHeightVh();
 
 function HomeCtaFallback() {
   return (
@@ -16,9 +16,7 @@ function HomeCtaFallback() {
       style={{ height: `calc(var(--vh, 1vh) * ${HOME_CTA_FALLBACK_SECTION_HEIGHT_VH})` }}
       aria-hidden="true"
     >
-      <div className="sticky top-0 flex h-[calc(var(--vh,1vh)*100)] w-full items-center justify-center overflow-hidden bg-black">
-        <div className="absolute -bottom-[10vh] left-0 h-[10.5vh] w-full bg-inherit pointer-events-none" />
-      </div>
+      <div className="flex h-full w-full items-center justify-center overflow-hidden bg-black" />
     </section>
   );
 }

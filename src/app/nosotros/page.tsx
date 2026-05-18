@@ -37,7 +37,7 @@ export default function NosotrosPage() {
         location={pageContent.intro.location}
         paragraphs={pageContent.intro.paragraphs}
       />
-      <AboutUsMosaic images={pageContent.mosaic.images} />
+      <AboutUsMosaic images={pageContent.mosaic.images} headerTheme="black" />
     </main>
   );
 }

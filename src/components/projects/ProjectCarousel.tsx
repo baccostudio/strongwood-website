@@ -4,6 +4,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { LoadingSpinner } from "@/components/shared/LoadingSpinner";
 import { cn } from "@/lib/utils";
+import type { HeaderThemeToken } from "@/types/site";
 import type { ProjectImage } from "@/types/proyectos";
 
 type ProjectCarouselProps = {
@@ -12,6 +13,8 @@ type ProjectCarouselProps = {
   nextAriaLabel: string;
   imageLoadingAriaLabel: string;
   icon: ProjectImage;
+  headerTheme?: HeaderThemeToken;
+  contentHeaderTheme?: HeaderThemeToken;
   className?: string;
 };
 
@@ -26,6 +29,8 @@ export function ProjectCarousel({
   nextAriaLabel,
   imageLoadingAriaLabel,
   icon,
+  headerTheme,
+  contentHeaderTheme,
   className,
 }: ProjectCarouselProps) {
   const trackRef = useRef<HTMLDivElement | null>(null);
@@ -157,8 +162,14 @@ export function ProjectCarousel({
   };
 
   return (
-    <section className={cn("overflow-hidden py-[clamp(56px,10vw,96px)]", className)}>
-      <div className="relative left-1/2 w-screen -translate-x-1/2">
+    <section
+      data-header-theme={headerTheme}
+      className={cn("overflow-hidden py-[clamp(56px,10vw,96px)]", className)}
+    >
+      <div
+        data-header-theme={contentHeaderTheme}
+        className="relative left-1/2 w-screen -translate-x-1/2"
+      >
         <div className="relative">
           <div
             ref={trackRef}

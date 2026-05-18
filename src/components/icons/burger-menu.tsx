@@ -8,7 +8,7 @@ interface BurgerMenuProps extends Omit<SVGProps<SVGSVGElement>, "color"> {
 export default function BurgerMenu({
   width = 94,
   height = 63,
-  color = "black",
+  color,
   className,
   style,
   ...props
@@ -21,7 +21,7 @@ export default function BurgerMenu({
       viewBox="0 0 94 63"
       fill="none"
       className={cn("h-auto", className)}
-      style={{ color, ...style }}
+      style={color ? { ...style, color } : style}
       {...props}
     >
       <path d="M0 62.9996H30.5697V32.1074H0V62.9996ZM11.9464 35.0352H18.1078V36.2147H11.9464V35.0352Z" fill="currentColor" />

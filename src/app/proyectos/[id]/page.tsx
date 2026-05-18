@@ -4,11 +4,11 @@ import { buildMetadata, buildViewport } from "@/lib/seo";
 import { siteConfig } from "@/content/site";
 import { projectDetailUi, projects } from "@/content/proyectos";
 import { ProjectHero } from "@/components/projects/ProjectHero";
-import { ProjectMetaBar } from "@/components/projects/ProjectMetaBar";
 import { ProjectSections } from "@/components/projects/ProjectSections";
 import { ProjectCarousel } from "@/components/projects/ProjectCarousel";
 import { ProjectCards } from "@/components/projects/ProjectCards";
 import { NextProjectCard } from "@/components/projects/NextProjectCard";
+import { ProjectMetaBar } from "@/components/projects/ProjectMetaBar";
 
 type ProjectPageProps = {
   params: Promise<{ id: string }>;
@@ -95,18 +95,33 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
         yearValue={project.yearValue}
         typeLabel={project.typeLabel}
         typeValue={project.typeValue}
+        headerTheme="paper"
+        headerThemeMediaQuery="(max-width: 1330px)"
         className={project.metabarMarginTop}
       />
-      <ProjectSections sections={project.sections} className={compactSectionClass} />
+      <ProjectSections
+        sections={project.sections}
+        headerTheme="paper"
+        className={compactSectionClass}
+      />
       <ProjectCarousel
         images={project.carouselImages}
         prevAriaLabel={projectDetailUi.carouselControls.prevAriaLabel}
         nextAriaLabel={projectDetailUi.carouselControls.nextAriaLabel}
         imageLoadingAriaLabel={projectDetailUi.carouselControls.imageLoadingAriaLabel}
         icon={projectDetailUi.carouselControls.icon}
+        headerTheme="paper"
+        contentHeaderTheme="black"
         className={compactSectionClass}
       />
-      <ProjectCards materials={project.materialsCard} process={project.processCard} className={compactSectionClass} />
+      <ProjectCards
+        materials={project.materialsCard}
+        process={project.processCard}
+        headerTheme="black"
+        headerThemeMediaQuery="(max-width: 1290px)"
+        contentHeaderTheme="paper"
+        className={compactSectionClass}
+      />
       {nextProject ? (
         <NextProjectCard
           label={project.nextCardLabel}
@@ -115,6 +130,9 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
           image={nextProject.heroImage}
           ariaLabel={`${projectDetailUi.nextProject.ariaLabelPrefix} ${nextProject.title}`}
           icon={projectDetailUi.nextProject.icon}
+          headerTheme="paper"
+          headerThemeOverride="black"
+          headerThemeOverrideMediaQuery="(max-width: 1290px)"
           className={`pt-[clamp(36px,6vw,64px)] pb-[clamp(72px,12vw,128px)]`}
         />
       ) : null}

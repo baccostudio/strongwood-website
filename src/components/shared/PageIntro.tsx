@@ -1,4 +1,5 @@
-﻿import Link from "next/link";
+import Link from "next/link";
+import type { HeaderThemeToken } from "@/types/site";
 import { cn } from "@/lib/utils";
 
 interface IntroParagraph {
@@ -17,6 +18,7 @@ interface PageIntroProps {
   label: string;
   location: string;
   paragraphs: IntroParagraph[];
+  headerTheme?: HeaderThemeToken;
   uppercaseLine?: string;
   cta?: IntroCta;
   className?: string;
@@ -31,6 +33,7 @@ export function PageIntro({
   label,
   location,
   paragraphs,
+  headerTheme,
   uppercaseLine,
   cta,
   className,
@@ -41,12 +44,15 @@ export function PageIntro({
   ctaClassName,
 }: PageIntroProps) {
   return (
-    <section className={cn("py-[clamp(56px,10vw,96px)]", className)}>
-      <div className="mx-auto flex w-full max-w-auto flex-col justify-between gap-10 px-6 py-0 lg:max-w-5xl lg:flex-row md:gap-20">
+    <section
+      data-header-theme={headerTheme}
+      className={cn("py-[clamp(56px,10vw,96px)]", className)}
+    >
+      <div className="mx-auto flex w-full max-w-auto flex-col justify-between gap-10 px-6 py-0 md:gap-20 lg:max-w-5xl lg:flex-row">
         <div
           className={cn(
             "space-y-1 font-medium uppercase tracking-widest",
-            labelClassName
+            labelClassName,
           )}
         >
           <p className="text-[clamp(16px,2vw,20px)]">{label}</p>
@@ -56,13 +62,12 @@ export function PageIntro({
           <div
             className={cn(
               "text-[clamp(20px,3.2vw,31px)] font-light leading-[clamp(28px,4.5vw,43px)] tracking-[-0.03em]",
-              textClassName
+              textClassName,
             )}
           >
             {paragraphs.map((paragraph) => (
               <p
-                key={`${paragraph.text}${paragraph.highlightText ?? ""}${paragraph.textAfter ?? ""
-                  }`}
+                key={`${paragraph.text}${paragraph.highlightText ?? ""}${paragraph.textAfter ?? ""}`}
               >
                 {paragraph.text}
                 {paragraph.highlightText ? (
@@ -78,7 +83,7 @@ export function PageIntro({
             <p
               className={cn(
                 "text-[clamp(16px,2.4vw,23px)] font-medium uppercase leading-[clamp(20px,3vw,28px)]",
-                uppercaseClassName
+                uppercaseClassName,
               )}
             >
               {uppercaseLine}
@@ -89,8 +94,8 @@ export function PageIntro({
               href={cta.href}
               aria-label={cta.ariaLabel ?? cta.label}
               className={cn(
-                "inline-flex min-h-16 min-w-50 items-center justify-center bg-foreground border boder-(--color-secondary) px-[clamp(18px,3vw,30px)] py-[clamp(14px,3vw,25px)] text-[clamp(13px,2vw,20px)] font-medium uppercase leading-[clamp(20px,3.2vw,38px)] tracking-[0.01em] text-secondary cursor-pointer transition-colors hover:bg-foreground/90",
-                ctaClassName
+                "inline-flex min-h-16 min-w-50 cursor-pointer items-center justify-center border bg-foreground px-[clamp(18px,3vw,30px)] py-[clamp(14px,3vw,25px)] text-[clamp(13px,2vw,20px)] font-medium uppercase leading-[clamp(20px,3.2vw,38px)] tracking-[0.01em] text-secondary transition-colors hover:bg-foreground/90 boder-(--color-secondary)",
+                ctaClassName,
               )}
             >
               {cta.label}
@@ -101,5 +106,3 @@ export function PageIntro({
     </section>
   );
 }
-
-

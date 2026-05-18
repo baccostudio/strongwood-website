@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import {
@@ -15,12 +15,12 @@ import {
 } from "framer-motion";
 import type { HomeCtaContent } from "@/types/home";
 import { HomeCtaMobile } from "./HomeCtaMobile";
+import { getHomeCtaSectionHeightVh } from "./home-cta-layout";
 import {
-  getHomeCtaSectionHeightVh,
-  HOME_CTA_ANIMATION_SPAN_VH,
-} from "./home-cta-layout";
-import {
+  CTA_COMPLETION_THRESHOLD,
   CTA_GALLERY_SCALE_PROGRESS,
+  CTA_MOBILE_SCROLL_SPRING,
+  CTA_SCROLL_SPRING,
   CTA_SEQUENCE_STAGGER_STEP,
   CTA_SEQUENCE_TRANSIT_DURATION,
 } from "./home-cta-motion";
@@ -30,26 +30,6 @@ interface HomeCtaProps {
   content: HomeCtaContent;
   isMobile: boolean;
 }
-
-const CTA_SCROLL_SPRING = {
-  stiffness: 110,
-  damping: 28,
-  mass: 0.35,
-};
-
-const CTA_MOBILE_SCROLL_SPRING = {
-  stiffness: 150,
-  damping: 28,
-  mass: 0.24,
-};
-
-const CTA_REVERSE_EXIT_LEAD = 0.1;
-
-const CTA_REVERSE_EXIT_SPRING = {
-  stiffness: 340,
-  damping: 34,
-  mass: 0.22,
-};
 
 function GalleryImage({
   src,
@@ -120,50 +100,48 @@ export function HomeCta({
   content,
   isMobile,
 }: HomeCtaProps) {
-  const containerRef = useRef<HTMLDivElement>(null);
+  const sectionRef = useRef<HTMLElement>(null);
   const shouldReduceMotion = useReducedMotion();
-  const reverseExitLeadTarget = useMotionValue(0);
-  const reverseExitLead = useSpring(reverseExitLeadTarget, CTA_REVERSE_EXIT_SPRING);
-  const resolvedSectionHeightVh = getHomeCtaSectionHeightVh(isMobile);
-  const resolvedAnimationEndProgress = HOME_CTA_ANIMATION_SPAN_VH / resolvedSectionHeightVh;
+  const resolvedSectionHeightVh = getHomeCtaSectionHeightVh();
+  const lockedScrollYProgress = useMotionValue(0);
 
   const { scrollYProgress: rawScrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start end", "end end"],
+    target: sectionRef,
+    offset: ["start end", "start start"],
   });
-  const previousProgress = useRef(rawScrollYProgress.get());
-  const activeScrollYProgress = useTransform(
+  const activeScrollYProgress = useSpring(
     rawScrollYProgress,
-    [0, resolvedAnimationEndProgress],
-    [0, 1],
-    { clamp: true },
+    isMobile ? CTA_MOBILE_SCROLL_SPRING : CTA_SCROLL_SPRING,
   );
-  const scrollYProgress = useSpring(activeScrollYProgress, CTA_SCROLL_SPRING);
-  const mobileScrollYProgress = useSpring(activeScrollYProgress, CTA_MOBILE_SCROLL_SPRING);
 
-  useMotionValueEvent(rawScrollYProgress, "change", (latest) => {
-    const previous = previousProgress.current;
+  useEffect(() => {
+    const initialProgress = Math.max(0, Math.min(1, activeScrollYProgress.get()));
 
-    if (latest < previous - 0.0005) {
-      reverseExitLeadTarget.set(CTA_REVERSE_EXIT_LEAD);
-    } else if (latest > previous + 0.0005) {
-      reverseExitLeadTarget.set(0);
+    lockedScrollYProgress.set(Math.max(lockedScrollYProgress.get(), initialProgress));
+
+    if (initialProgress >= CTA_COMPLETION_THRESHOLD) {
+      lockedScrollYProgress.set(1);
+    }
+  }, [activeScrollYProgress, lockedScrollYProgress]);
+
+  useMotionValueEvent(activeScrollYProgress, "change", (latest) => {
+    const clampedProgress = Math.max(0, Math.min(1, latest));
+    const nextProgress = Math.max(lockedScrollYProgress.get(), clampedProgress);
+
+    if (lockedScrollYProgress.get() >= 1) {
+      return;
     }
 
-    previousProgress.current = latest;
-  });
-
-  const effectiveScrollYProgress = useTransform(() => {
-    if (shouldReduceMotion) {
-      return scrollYProgress.get();
+    if (clampedProgress >= CTA_COMPLETION_THRESHOLD) {
+      lockedScrollYProgress.set(1);
+      return;
     }
 
-    const adjusted = scrollYProgress.get() - reverseExitLead.get();
-    return Math.max(0, Math.min(1, adjusted));
+    lockedScrollYProgress.set(nextProgress);
   });
 
   const galleryScale = useTransform(
-    effectiveScrollYProgress,
+    lockedScrollYProgress,
     CTA_GALLERY_SCALE_PROGRESS,
     [1, 1.03, 1.24],
     { clamp: true },
@@ -171,13 +149,13 @@ export function HomeCta({
 
   return (
     <section
-      ref={containerRef}
-      className="relative w-full bg-black"
+      ref={sectionRef}
+      className="relative w-full overflow-hidden bg-black"
       style={{ height: `calc(var(--vh, 1vh) * ${resolvedSectionHeightVh})` }}
     >
-      <div className="sticky top-0 flex h-[calc(var(--vh,1vh)*100)] w-full items-center justify-center overflow-hidden bg-black">
+      <div className="flex h-full w-full items-center justify-center overflow-hidden bg-black">
         {isMobile ? (
-          <HomeCtaMobile content={content} scrollYProgress={mobileScrollYProgress} />
+          <HomeCtaMobile content={content} scrollYProgress={lockedScrollYProgress} />
         ) : (
           <motion.div
             style={{ scale: shouldReduceMotion ? 1 : galleryScale }}
@@ -190,7 +168,7 @@ export function HomeCta({
                     key={img.src}
                     src={img.src}
                     index={i}
-                    scrollYProgress={effectiveScrollYProgress}
+                    scrollYProgress={lockedScrollYProgress}
                     priority={i === 0}
                     loading={i === 0 ? undefined : "eager"}
                     className="aspect-4/3 shadow-2xl"
@@ -204,7 +182,7 @@ export function HomeCta({
                     key={img.src}
                     src={img.src}
                     index={i + 3}
-                    scrollYProgress={effectiveScrollYProgress}
+                    scrollYProgress={lockedScrollYProgress}
                     loading="eager"
                     className="aspect-square shadow-2xl"
                   />
@@ -217,7 +195,7 @@ export function HomeCta({
                     key={img.src}
                     src={img.src}
                     index={i + 7}
-                    scrollYProgress={effectiveScrollYProgress}
+                    scrollYProgress={lockedScrollYProgress}
                     loading="eager"
                     className="aspect-4/3 shadow-2xl"
                   />

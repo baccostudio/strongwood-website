@@ -1,5 +1,16 @@
 import type { FooterConfig, FooterLink, SocialLink } from "./footer";
 import type { HeaderConfig } from "./header";
+import type {
+  HeaderThemeConfig,
+  HeaderThemeMatchMode,
+  HeaderThemeRenderKind,
+  HeaderThemeRenderState,
+  HeaderThemeRouteDefault,
+  HeaderThemeSolidState,
+  HeaderThemeSplitHorizontalState,
+  HeaderThemeToken,
+  HeaderThemeViewportMode,
+} from "./header-theme";
 import type { SiteMetadata } from "./metadata";
 import type { NotFoundContent } from "./not-found";
 import type { ContactReviewsContent, GoogleReviewItem } from "./contact-reviews";
@@ -33,6 +44,7 @@ import type {
 export interface SiteConfig {
   metadata: SiteMetadata;
   header: HeaderConfig;
+  headerTheme: HeaderThemeConfig;
   footer: FooterConfig;
   tracking: SiteTrackingConfig;
   pages: PagesConfig;
@@ -60,6 +72,15 @@ export type {
   FooterLink,
   GoogleReviewItem,
   HeaderConfig,
+  HeaderThemeConfig,
+  HeaderThemeMatchMode,
+  HeaderThemeRenderKind,
+  HeaderThemeRenderState,
+  HeaderThemeRouteDefault,
+  HeaderThemeSolidState,
+  HeaderThemeSplitHorizontalState,
+  HeaderThemeToken,
+  HeaderThemeViewportMode,
   FacebookPixelConfig,
   GoogleTagManagerConfig,
   NotFoundContent,

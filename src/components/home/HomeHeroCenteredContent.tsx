@@ -31,7 +31,7 @@ export function HomeHeroCenteredContent({
                   return (
                     <div
                       key={line}
-                      className="flex w-full max-w-90 items-center justify-center gap-[clamp(6px,2vw,28px)] whitespace-nowrap sm:w-[clamp(260px,50vw,420px)] sm:max-w-none sm:justify-between"
+                      className="flex w-full max-w-90 items-center gap-[clamp(6px,2vw,28px)] whitespace-nowrap sm:w-[clamp(260px,50vw,420px)] sm:max-w-none justify-center"
                     >
                       <span>{words[0]}</span>
                       <span>{words[1]}</span>

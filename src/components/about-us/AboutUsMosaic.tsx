@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { cn } from "@/lib/utils";
+import type { HeaderThemeToken } from "@/types/site";
 
 const ABOUT_US_MOSAIC_IMAGE_WIDTH = 1350;
 const ABOUT_US_MOSAIC_IMAGE_HEIGHT = 1688;
@@ -12,11 +13,12 @@ interface AboutUsMosaicImage {
 
 interface AboutUsMosaicProps {
   images: AboutUsMosaicImage[];
+  headerTheme?: HeaderThemeToken;
 }
 
-export function AboutUsMosaic({ images }: AboutUsMosaicProps) {
+export function AboutUsMosaic({ images, headerTheme }: AboutUsMosaicProps) {
   return (
-    <section className={cn("bg-surface")}>
+    <section data-header-theme={headerTheme} className={cn("bg-surface")}>
       <div className="mx-0 grid w-full grid-cols-2 gap-0 py-0 lg:mx-auto">
         {images.map((image, index) => (
           <div
