@@ -1,3 +1,4 @@
+import { siteMetadata } from "@/content/site/metadata";
 import { siteThemeColors } from "@/content/site/theme-colors";
 
 export const proyectosContent = {
@@ -5,12 +6,7 @@ export const proyectosContent = {
     title: "Proyectos | Strongwood",
     description:
       "Cocinas, placares y muebles a medida para hogares y obras en CABA y GBA. Diseño e instalación integral.",
-    ogImage: {
-      src: "/images/hero/hero-proyectos-desk.webp",
-      width: 1447,
-      height: 1080,
-      alt: "Proyectos Strongwood",
-    },
+    ogImage: siteMetadata.defaultOgImage,
     themeColor: siteThemeColors.secondary,
   },
   hero: {

@@ -1,4 +1,5 @@
 import type { PagesConfig } from "@/types/site";
+import { siteMetadata } from "./metadata";
 import { routeThemeColors } from "./route-theme-colors";
 
 export const sitePages: PagesConfig = {
@@ -6,24 +7,14 @@ export const sitePages: PagesConfig = {
     title: "Proyectos | Strongwood",
     description: "Descubrí proyectos en madera hechos a medida para cada espacio en CABA y GBA.",
     heading: "Proyectos",
-    ogImage: {
-      src: "/images/hero/hero-proyectos-desk.webp",
-      width: 1447,
-      height: 1080,
-      alt: "Proyectos en madera a medida",
-    },
+    ogImage: siteMetadata.defaultOgImage,
     themeColor: routeThemeColors.proyectos,
   },
   nosotros: {
     title: "Nosotros | Strongwood",
     description: "Conocé el equipo y la filosofía detrás de Strongwood.",
     heading: "Nosotros",
-    ogImage: {
-      src: "/images/hero/nosotros-hero-desk.webp",
-      width: 1447,
-      height: 1080,
-      alt: "Equipo Strongwood",
-    },
+    ogImage: siteMetadata.defaultOgImage,
     themeColor: routeThemeColors.nosotros,
     hero: {
       title: "(QUIÉNES SOMOS)",
@@ -81,18 +72,13 @@ export const sitePages: PagesConfig = {
     title: "Contacto | Strongwood",
     description: "Contanos tu idea y trabajemos juntos en tu próximo proyecto.",
     heading: "Contacto",
-    ogImage: {
-      src: "/images/hero/hero-contactanos-desk.webp",
-      width: 1447,
-      height: 1080,
-      alt: "Contacto Strongwood",
-    },
+    ogImage: siteMetadata.defaultOgImage,
     themeColor: routeThemeColors.contacto,
     hero: {
       title: "(CONTÁCTANOS)",
       subtitleLines: [
         "ASESORÍA GRATIS",
-        "COMPLETANDO EL FORMULARIO"
+        "COMPLETANDO EL FORMULARIO",
       ],
       imageSrc: "/images/hero/hero-contactanos-desk.webp",
       imageAlt: "Cocina con muebles de madera y barra blanca",
