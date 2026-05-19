@@ -8,7 +8,7 @@ export const siteMetadata = {
   defaultOgImage: {
     src: "/images/og/og-default.webp",
     width: 7501,
-    height: 7501,
+    height: 6787,
     alt: "Strongwood muebles a medida",
   },
   defaultThemeColor: routeThemeColors.default,
