@@ -48,12 +48,12 @@ export function Footer({
     <footer
       data-header-theme={headerThemeConfig.footerTheme}
       className={cn(
-        "relative min-h-[calc((var(--vh,1vh)*100)+10rem)] overflow-hidden bg-white text-foreground sm:min-h-0",
+        "relative min-h-[calc((var(--vh,1vh)*100)+5rem)] overflow-hidden bg-white text-foreground sm:min-h-0",
         className,
       )}
     >
-      <div className="mx-auto mb-46 flex w-full max-w-6xl flex-col gap-10 px-6 pt-12 md:mb-64 lg:mb-86">
-        <div className="flex w-full flex-col gap-10 lg:flex-row lg:items-start lg:justify-between">
+      <div className="mx-auto mb-0 flex w-full max-w-6xl flex-col gap-10 px-6 pt-26 sm:pt-20 md:mb-64 lg:mb-86">
+        <div className="flex w-full flex-col gap-20 sm:gap-10 lg:flex-row lg:items-start lg:justify-between">
           <div className="flex w-full flex-col gap-6 lg:max-w-55 lg:shrink-0">
             <Link href={logoHref} aria-label={logoAlt}>
               <Image
@@ -96,7 +96,7 @@ export function Footer({
             </div>
           </div>
 
-          <div className="grid w-full grid-cols-2 gap-10 gap-x-2 lg:ml-auto lg:w-fit lg:grid-cols-[auto_auto_auto] lg:gap-x-20">
+          <div className="grid w-full grid-cols-2 gap-20 sm:gap-10 gap-x-2 lg:ml-auto lg:w-fit lg:grid-cols-[auto_auto_auto] lg:gap-x-20">
             <div className="space-y-3">
               <div className="text-[18px] font-medium uppercase leading-9.5 tracking-[0.01em] text-foreground">
                 {menuTitle}
