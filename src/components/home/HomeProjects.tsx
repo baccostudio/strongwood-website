@@ -88,10 +88,10 @@ export function HomeProjects({
       >
         <div ref={trackRef} className="relative">
           <section
-            className="flex items-center bg-muted py-[clamp(56px,10vw,96px)] text-paper"
+            className="flex items-center bg-muted py-[clamp(96px,10vw,96px)] text-paper"
             style={{ minHeight: `calc(${PROJECT_VIEWPORT_UNIT} * 100)` }}
           >
-            <div className="mx-auto flex w-full flex-col py-0 gap-12 lg:gap-24">
+            <div className="mx-auto flex w-full flex-col py-0 gap-24">
               <div className="mx-auto flex w-full max-w-6xl flex-col gap-[clamp(28px,6vw,52px)] px-6 py-0 pb-[clamp(56px,10vw,96px)]">
                 <div className="flex flex-col items-center gap-[clamp(16px,3vw,24px)] text-center">
                   <div className="inline-grid justify-items-center">

@@ -257,7 +257,7 @@ export function ContactReviewsMarquee({
     <section
       data-header-theme={headerTheme}
       className={cn(
-        isHomeCompact ? "bg-transparent py-[clamp(24px,4vw,40px)]" : "bg-surface py-[clamp(56px,10vw,96px)]",
+        isHomeCompact ? "bg-transparent py-[clamp(24px,4vw,40px)]" : "bg-surface py-[clamp(96px,10vw,96px)]",
         className
       )}
     >
