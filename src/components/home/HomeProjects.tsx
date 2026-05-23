@@ -108,7 +108,7 @@ export function HomeProjects({
                     >
                       <PageHeroTitle
                         title={content.title}
-                        className="text-paper transition-opacity duration-200 group-hover:opacity-80 group-focus-visible:opacity-80"
+                        className="text-paper transition-opacity duration-200 group-hover:text-secondary group-focus-visible:opacity-80"
                       />
                     </Link>
                   </div>
