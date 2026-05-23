@@ -154,7 +154,7 @@ body:has(main.project-theme-default) .app-shell-content {
 }
 
 .home-marquee-track {
-  animation: home-marquee 22s linear infinite;
+  animation: home-marquee 32s linear infinite;
   will-change: transform;
 }
 

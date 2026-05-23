@@ -18,7 +18,7 @@ export const proyectosContent = {
     imageSrc: "/images/hero/hero-proyectos-desk.webp",
     imageAlt: "Placard con puertas de vidrio y ropa ordenada",
     imageWidth: 1447,
-    imageHeight: 1080,
+    imageHeight: 600,
     mobileImageSrc: "/images/hero/hero-proyectos-mob.webp",
     mobileImageWidth: 440,
     mobileImageHeight: 820,
@@ -61,7 +61,7 @@ export const proyectosContent = {
         ariaLabel: "Ver proyecto Lavalle",
       },
       {
-        id: "cangallo-2636-st-93",
+        id: "cangallo-st-93",
         ariaLabel: "Ver proyecto Cangallo",
       },
       {

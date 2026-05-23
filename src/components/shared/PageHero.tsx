@@ -111,7 +111,7 @@ export function PageHero({
         />
       </picture>
       <div className="absolute inset-0 bg-black/50" />
-      <div className="absolute inset-x-0 top-0 z-10 h-[calc(var(--vh,1vh)*100)]">
+      <div className="absolute inset-x-0 top-0 z-10 h-[calc(var(--vh,1vh)*100)] sm:bottom-0 sm:h-auto">
         <HeroTitleWrapper>
           <div className="flex flex-col items-center">
             <div className="inline-grid justify-items-center">
@@ -132,20 +132,29 @@ export function PageHero({
             {subtitleLines.length > 0 ? (
               <div
                 className={cn(
-                  "flex flex-col items-center gap-1 py-[clamp(10px,2.5vw,16px)] text-[clamp(18px,3.1vw,31px)] font-light uppercase leading-[clamp(26.7px,4.5vw,43px)] tracking-[0.01em] text-paper",
+                  "mt-[clamp(14px,3vh,28px)] flex flex-col items-center gap-1 py-[clamp(10px,2.5vw,16px)] text-[clamp(18px,3.1vw,31px)] font-light uppercase leading-[clamp(26.7px,4.5vw,43px)] tracking-[-0.03em] text-paper",
                   subtitleClassName
                 )}
               >
-                {subtitleLines.map((line) => {
-                  const isTwoWordLine = line.trim().split(/\s+/).length === 2;
+                {subtitleLines.map((line, index) => {
+                  const words = line.trim().split(/\s+/);
+                  const isTwoWordLine = words.length === 2;
+                  const isMiddleLine = index > 0 && index < subtitleLines.length - 1;
+                  const shouldSplitLine = isTwoWordLine && isMiddleLine;
 
                   return (
-                    <p
-                      key={line}
-                      className={cn(isTwoWordLine && "whitespace-nowrap")}
-                    >
-                      {line}
-                    </p>
+                    shouldSplitLine ? (
+                      <div
+                        key={line}
+                        className="flex w-full max-w-[22.5rem] items-center justify-center gap-[clamp(6px,2vw,28px)] whitespace-nowrap sm:w-[clamp(260px,50vw,420px)] sm:max-w-none sm:justify-between"
+                      >
+                        {words.map((word) => (
+                          <span key={`${line}-${word}`}>{word}</span>
+                        ))}
+                      </div>
+                    ) : (
+                      <p key={line}>{line}</p>
+                    )
                   );
                 })}
               </div>

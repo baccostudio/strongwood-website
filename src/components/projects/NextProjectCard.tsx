@@ -30,7 +30,7 @@ export function NextProjectCard({
   className,
 }: NextProjectCardProps) {
   return (
-    <section className="px-6 sm:px-10">
+    <section className="px-6 sm:px-10 pb-12 lg:pb-24">
       <div
         data-header-theme={headerTheme}
         className={cn("py-[clamp(56px,10vw,96px)]", className)}

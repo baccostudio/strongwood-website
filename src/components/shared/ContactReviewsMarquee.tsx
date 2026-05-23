@@ -14,12 +14,14 @@ interface ContactReviewsMarqueeProps {
   reviewsLinkHref: string;
   reviews: GoogleReviewItem[];
   headerTheme?: HeaderThemeToken;
+  variant?: "default" | "homeCompact";
   className?: string;
 }
 
 interface ReviewCardsGroupProps {
   reviews: ReviewCardsGroupItem[];
   ratingAriaLabelSuffix: string;
+  variant: "default" | "homeCompact";
   isClone?: boolean;
 }
 
@@ -28,6 +30,8 @@ interface ReviewCardsGroupItem extends GoogleReviewItem {
 }
 
 const MINIMUM_LOOP_ITEMS = 6;
+const REVIEW_CARD_SIZE_CLASSES = "w-[clamp(240px,72vw,300px)] rounded-[24px] p-5";
+const REVIEW_CARD_GROUP_SPACING_CLASSES = "gap-4 pr-4";
 
 const clampRating = (rating: number) => Math.min(5, Math.max(1, Math.round(rating)));
 
@@ -96,14 +100,26 @@ const getInitials = (authorName: string) =>
     .join("")
     .toUpperCase();
 
-function ReviewStarIcon({ isFilled }: { isFilled: boolean }) {
+function ReviewStarIcon({
+  isFilled,
+  variant,
+}: {
+  isFilled: boolean;
+  variant: "default" | "homeCompact";
+}) {
+  const isHomeCompact = variant === "homeCompact";
+
   return (
     <svg
       aria-hidden="true"
       viewBox="0 0 20 20"
       className={cn(
         "size-4",
-        isFilled ? "fill-(--color-review-star)" : "fill-(--color-footer-divider)",
+        isFilled
+          ? "fill-(--color-review-star)"
+          : isHomeCompact
+            ? "fill-paper/25"
+            : "fill-(--color-footer-divider)",
       )}
     >
       <path d="M10 1.5l2.51 5.09 5.62.82-4.06 3.96.96 5.6L10 14.33l-5.03 2.64.96-5.6L1.87 7.41l5.62-.82L10 1.5z" />
@@ -114,10 +130,16 @@ function ReviewStarIcon({ isFilled }: { isFilled: boolean }) {
 function ReviewCardsGroup({
   reviews,
   ratingAriaLabelSuffix,
+  variant,
   isClone = false,
 }: ReviewCardsGroupProps) {
+  const isHomeCompact = variant === "homeCompact";
+
   return (
-    <div className="flex shrink-0 gap-5 pr-5 my-8" aria-hidden={isClone}>
+    <div
+      className={cn("my-8 flex shrink-0", REVIEW_CARD_GROUP_SPACING_CLASSES)}
+      aria-hidden={isClone}
+    >
       {reviews.map((review, index) => {
         const safeRating = clampRating(review.rating);
 
@@ -126,13 +148,21 @@ function ReviewCardsGroup({
             key={`${review.id}-${isClone ? "clone" : "primary"}-${index}`}
             tabIndex={isClone ? -1 : 0}
             className={cn(
-              "flex h-full w-[clamp(280px,78vw,360px)] shrink-0 flex-col gap-2 rounded-[28px] border border-(--color-footer-divider) bg-surface p-6 text-foreground shadow-sm",
+              "flex h-full shrink-0 flex-col gap-2 outline-none transition-transform duration-200",
+              isHomeCompact
+                ? `${REVIEW_CARD_SIZE_CLASSES} border border-paper/15 bg-paper/10 text-paper backdrop-blur-sm`
+                : `${REVIEW_CARD_SIZE_CLASSES} border border-(--color-footer-divider) bg-surface text-foreground shadow-sm`,
               "outline-none transition-transform duration-200",
               // !isClone && "focus-visible:-translate-y-1 focus-visible:ring-2 focus-visible:ring-primary",
             )}
           >
             <div className="flex min-w-0 items-center gap-4">
-              <div className="flex size-12 shrink-0 items-center justify-center rounded-full bg-primary text-sm font-semibold uppercase tracking-[0.08em] text-paper">
+              <div
+                className={cn(
+                  "flex size-12 shrink-0 items-center justify-center rounded-full text-sm font-semibold uppercase tracking-[0.08em]",
+                  isHomeCompact ? "bg-paper text-primary" : "bg-primary text-paper"
+                )}
+              >
                 {getInitials(review.authorName)}
               </div>
               <div className="min-w-0">
@@ -142,7 +172,10 @@ function ReviewCardsGroup({
                 {review.publishedAt ? (
                   <p
                     suppressHydrationWarning
-                    className="mt-1 text-sm leading-none tracking-[-0.02em] text-muted"
+                    className={cn(
+                      "mt-1 text-sm leading-none tracking-[-0.02em]",
+                      isHomeCompact ? "text-paper/70" : "text-muted"
+                    )}
                   >
                     {review.publishedAtLabel}
                   </p>
@@ -156,12 +189,16 @@ function ReviewCardsGroup({
                   <ReviewStarIcon
                     key={`${review.id}-star-${starIndex}`}
                     isFilled={starIndex < safeRating}
+                    variant={variant}
                   />
                 ))}
               </div>
               <p
                 title={review.text}
-                className="overflow-hidden text-[14px] lg:text-[16px] leading-[160%] tracking-[-0.02em] text-foreground [display:-webkit-box] [-webkit-box-orient:vertical] [-webkit-line-clamp:3]"
+                className={cn(
+                  "overflow-hidden text-[14px] leading-[160%] tracking-[-0.02em] [display:-webkit-box] [-webkit-box-orient:vertical] [-webkit-line-clamp:3]",
+                  isHomeCompact ? "text-paper/90 lg:text-[15px]" : "text-foreground lg:text-[16px]"
+                )}
               >
                 {review.text}
               </p>
@@ -182,9 +219,11 @@ export function ContactReviewsMarquee({
   reviewsLinkHref,
   reviews,
   headerTheme,
+  variant = "default",
   className,
 }: ContactReviewsMarqueeProps) {
   const [currentDate, setCurrentDate] = useState(() => new Date());
+  const isHomeCompact = variant === "homeCompact";
 
   useEffect(() => {
     const intervalId = window.setInterval(() => {
@@ -217,28 +256,44 @@ export function ContactReviewsMarquee({
   return (
     <section
       data-header-theme={headerTheme}
-      className={cn("bg-surface pb-[clamp(56px,10vw,96px)]", className)}
+      className={cn(
+        isHomeCompact ? "bg-transparent py-[clamp(24px,4vw,40px)]" : "bg-surface py-[clamp(56px,10vw,96px)]",
+        className
+      )}
     >
       <div className="mx-auto flex w-full flex-col items-center">
         <div className="max-w-6xl w-full px-6">
-          <div className="flex max-w-3xl flex-col gap-2">
-            <h2 className="max-w-3xl uppercasetext-foreground uppercase sm:text-[34px] lg:text-[35px] text-[clamp(22px,3vw,30px)] font-semibold leading-none tracking-[-0.04em]">
+          <div className={cn("flex max-w-3xl flex-col gap-2", isHomeCompact && "max-w-3xl")}>
+            <h2
+              className={cn(
+                "max-w-3xl uppercase text-[clamp(22px,3vw,30px)] font-semibold leading-none tracking-[-0.04em] sm:text-[34px] lg:text-[35px]",
+                isHomeCompact ? "text-paper" : "text-foreground"
+              )}
+            >
               {title}
             </h2>
-            <p className="text-(--color-step-subtitle) text-[clamp(18px,2.4vw,22px)] font-normal leading-5 tracking-[-0.03em]">
+            <p
+              className={cn(
+                "text-[clamp(18px,2.4vw,22px)] font-normal leading-5 tracking-[-0.03em]",
+                isHomeCompact ? "text-paper/72" : "text-(--color-step-subtitle)"
+              )}
+            >
               {description}
               <Link
                 href={reviewsLinkHref}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="underline underline-offset-4 transition-colors text-primary hover:text-foreground inline-flex font-medium"
+                className={cn(
+                  "inline-flex font-medium underline underline-offset-4 transition-colors",
+                  isHomeCompact ? "text-paper hover:text-secondary" : "text-primary hover:text-foreground"
+                )}
               >
                 {reviewsLinkLabel}
               </Link>
             </p>
           </div>
         </div>
-        <div className="max-w-500 w-full lg:px-6">
+        <div className="max-w-500 w-full">
           <div
             tabIndex={0}
             aria-label={sectionAriaLabel}
@@ -247,17 +302,29 @@ export function ContactReviewsMarquee({
               // "focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-4",
             )}
           >
-            <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-8 bg-linear-to-r from-surface to-transparent" />
-            <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-8 bg-linear-to-l from-surface to-transparent" />
+            <div
+              className={cn(
+                "pointer-events-none absolute inset-y-0 left-0 z-10 w-8 bg-linear-to-r to-transparent",
+                isHomeCompact ? "from-muted" : "from-surface"
+              )}
+            />
+            <div
+              className={cn(
+                "pointer-events-none absolute inset-y-0 right-0 z-10 w-8 bg-linear-to-l to-transparent",
+                isHomeCompact ? "from-muted" : "from-surface"
+              )}
+            />
 
             <div className="contact-reviews-track flex w-max" style={trackStyle}>
               <ReviewCardsGroup
                 reviews={reviewsWithLabels}
                 ratingAriaLabelSuffix={ratingAriaLabelSuffix}
+                variant={variant}
               />
               <ReviewCardsGroup
                 reviews={reviewsWithLabels}
                 ratingAriaLabelSuffix={ratingAriaLabelSuffix}
+                variant={variant}
                 isClone
               />
             </div>

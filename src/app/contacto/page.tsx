@@ -35,11 +35,22 @@ export default function ContactPage() {
         mobileImageHeight={pageContent.hero.mobileImageHeight}
       />
 
+      <ContactReviewsMarquee
+        title={contactReviewsContent.title}
+        description={contactReviewsContent.description}
+        sectionAriaLabel={contactReviewsContent.sectionAriaLabel}
+        ratingAriaLabelSuffix={contactReviewsContent.ratingAriaLabelSuffix}
+        reviewsLinkLabel={contactReviewsContent.reviewsLinkLabel}
+        reviewsLinkHref={contactReviewsContent.reviewsLinkHref}
+        reviews={contactReviewsContent.reviews}
+        headerTheme="black"
+      />
+
       <section
         data-header-theme="black"
-        className="bg-surface py-[clamp(56px,10vw,96px)]"
+        className="bg-surface pb-[clamp(56px,10vw,96px)]"
       >
-        <div className="mx-auto flex w-full max-w-6xl flex-col gap-8 px-6">
+        <div className="mx-auto flex w-full max-w-6xl flex-col gap-8 px-6 pb-12 lg:pb-24">
           <p className="max-w-3xl uppercase text-foreground sm:text-[34px] lg:text-[35px] text-[clamp(22px,3vw,30px)] font-semibold leading-none tracking-[-0.04em]">
             {pageContent.formIntro}
           </p>
@@ -82,17 +93,6 @@ export default function ContactPage() {
           </div>
         </div>
       </section>
-
-      <ContactReviewsMarquee
-        title={contactReviewsContent.title}
-        description={contactReviewsContent.description}
-        sectionAriaLabel={contactReviewsContent.sectionAriaLabel}
-        ratingAriaLabelSuffix={contactReviewsContent.ratingAriaLabelSuffix}
-        reviewsLinkLabel={contactReviewsContent.reviewsLinkLabel}
-        reviewsLinkHref={contactReviewsContent.reviewsLinkHref}
-        reviews={contactReviewsContent.reviews}
-        headerTheme="black"
-      />
     </main>
   );
 }

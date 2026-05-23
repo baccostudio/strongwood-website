@@ -80,7 +80,7 @@ export function ProjectHero({ title, subtitle, image, mobileImage, className }: 
         />
       </picture>
       <div className="absolute inset-0 [background-image:var(--gradient-project-hero-overlay)]" />
-      <div className="absolute inset-x-0 top-0 z-20 h-[calc(var(--vh,1vh)*100)]">
+      <div className="absolute inset-x-0 top-0 z-20 h-[calc(var(--vh,1vh)*100)] sm:bottom-0 sm:h-auto">
         <HeroTitleWrapper className="flex flex-col items-center gap-2">
           <p className="text-center text-[clamp(34px,6vw,68px)] font-semibold uppercase leading-14 tracking-[-0.03em] text-paper">
             {subtitle}

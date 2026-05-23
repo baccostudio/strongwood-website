@@ -1,3 +1,4 @@
+import { contactReviewsContent } from "@/content/contact";
 import { resolveHomeProjectStats } from "@/lib/home-project-stats";
 import type { HomeProjectsContent } from "@/types/home";
 import { HomeProjects } from "./HomeProjects";
@@ -11,5 +12,11 @@ export async function HomeProjectsSection({
 }: HomeProjectsSectionProps) {
   const projectStats = await resolveHomeProjectStats();
 
-  return <HomeProjects content={content} projectStats={projectStats} />;
+  return (
+    <HomeProjects
+      content={content}
+      projectStats={projectStats}
+      reviewsContent={contactReviewsContent}
+    />
+  );
 }

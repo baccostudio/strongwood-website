@@ -5,13 +5,16 @@ import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import type { CSSProperties } from "react";
 import { PageHeroTitle } from "@/components/shared/PageHeroTitle";
+import { ContactReviewsMarquee } from "@/components/shared/ContactReviewsMarquee";
 import { homeHero } from "@/content/home/hero";
 import { cn } from "@/lib/utils";
 import type { HomeProjectStats, HomeProjectsContent } from "@/types/home";
+import type { ContactReviewsContent } from "@/types/site";
 
 interface HomeProjectsProps {
   content: HomeProjectsContent;
   projectStats: HomeProjectStats;
+  reviewsContent: ContactReviewsContent;
 }
 
 const DESKTOP_PROJECT_TRACK_GAP = 150;
@@ -33,6 +36,7 @@ const homeProjectsWrapperStyle: HomeProjectsWrapperStyle = {
 export function HomeProjects({
   content,
   projectStats,
+  reviewsContent,
 }: HomeProjectsProps) {
   const trackRef = useRef<HTMLDivElement>(null);
   const [trackHeight, setTrackHeight] = useState(0);
@@ -87,73 +91,86 @@ export function HomeProjects({
             className="flex items-center bg-muted py-[clamp(56px,10vw,96px)] text-paper"
             style={{ minHeight: `calc(${PROJECT_VIEWPORT_UNIT} * 100)` }}
           >
-            <div className="mx-auto flex w-full max-w-6xl flex-col gap-[clamp(28px,6vw,52px)] px-6 py-0">
-              <div className="flex flex-col items-center gap-[clamp(16px,3vw,24px)] text-center">
-                <div className="inline-grid justify-items-center">
-                  <div
-                    className="translate-x-[4%] justify-self-end text-[clamp(44px,8vw,124px)] font-semibold leading-none text-paper"
-                    aria-label={content.badgeAriaLabel}
-                  >
-                    {content.badgeText}
-                  </div>
-                  <Link
-                    href={content.titleHref}
-                    aria-label={content.titleAriaLabel}
-                    className="group block rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-paper/70"
-                  >
-                    <PageHeroTitle
-                      title={content.title}
-                      className="text-paper transition-opacity duration-200 group-hover:opacity-80 group-focus-visible:opacity-80"
-                    />
-                  </Link>
-                </div>
-                <div
-                  className={cn(
-                    "flex flex-col items-center gap-1 text-[clamp(18px,3.2vw,28px)] font-light uppercase leading-[clamp(24px,4.2vw,38px)] tracking-[-0.03em]",
-                  )}
-                >
-                  {content.subtitleLines.map((line) => (
-                    <p key={line}>{line}</p>
-                  ))}
-                </div>
-              </div>
-
-              <div className="flex flex-col gap-[clamp(12px,2.5vw,20px)]">
-                <div className="flex flex-col gap-[clamp(14px,3vw,22px)]">
-                  <div className="flex flex-row items-end justify-between">
-                    <div className="relative inline-grid items-center">
-                      <span
-                        aria-label={projectStats.workCountAriaLabel}
-                        className="inline-flex shrink-0 items-center whitespace-nowrap text-[clamp(44px,10vw,124px)] font-semibold leading-none text-paper tabular-nums"
-                      >
-                        <span aria-hidden="true">{displayWorkCount}</span>
-                      </span>
+            <div className="mx-auto flex w-full flex-col py-0 gap-12 lg:gap-24">
+              <div className="mx-auto flex w-full max-w-6xl flex-col gap-[clamp(28px,6vw,52px)] px-6 py-0 pb-[clamp(56px,10vw,96px)]">
+                <div className="flex flex-col items-center gap-[clamp(16px,3vw,24px)] text-center">
+                  <div className="inline-grid justify-items-center">
+                    <div
+                      className="translate-x-[4%] justify-self-end text-[clamp(44px,8vw,124px)] font-semibold leading-none text-paper"
+                      aria-label={content.badgeAriaLabel}
+                    >
+                      {content.badgeText}
                     </div>
-                    <div className="shrink-0 max-w-[clamp(100px,22vw,240px)] overflow-hidden">
-                      <Image
-                        src={content.tableImage.src}
-                        alt={content.tableImage.alt}
-                        width={content.tableImage.width}
-                        height={content.tableImage.height}
-                        loading={content.tableImage.loading}
-                        sizes="(min-width: 1024px) 240px, (min-width: 640px) 180px, 140px"
-                        className="h-auto w-[clamp(100px,22vw,240px)]"
+                    <Link
+                      href={content.titleHref}
+                      aria-label={content.titleAriaLabel}
+                      className="group block rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-paper/70"
+                    >
+                      <PageHeroTitle
+                        title={content.title}
+                        className="text-paper transition-opacity duration-200 group-hover:opacity-80 group-focus-visible:opacity-80"
                       />
-                    </div>
+                    </Link>
                   </div>
-                  <div className="h-px w-full bg-paper/60" />
+                  <div
+                    className={cn(
+                      "flex flex-col items-center gap-1 text-[clamp(18px,3.2vw,28px)] font-light uppercase leading-[clamp(24px,4.2vw,38px)] tracking-[-0.03em]",
+                    )}
+                  >
+                    {content.subtitleLines.map((line) => (
+                      <p key={line}>{line}</p>
+                    ))}
+                  </div>
                 </div>
 
-                <div className="ml-auto mt-10 max-w-lg">
-                  <p className="space-y-3 text-[clamp(18px,4.8vw,33px)] font-normal leading-none tracking-[-0.03em] text-paper text-justify">
-                    {content.descriptionLines.map((line) => (
-                      <span key={line} className="block">
-                        {line}
-                      </span>
-                    ))}
-                  </p>
+                <div className="flex flex-col gap-[clamp(12px,2.5vw,20px)]">
+                  <div className="flex flex-col gap-[clamp(14px,3vw,22px)]">
+                    <div className="flex flex-row items-end justify-between">
+                      <div className="relative inline-grid items-center">
+                        <span
+                          aria-label={projectStats.workCountAriaLabel}
+                          className="inline-flex shrink-0 items-center whitespace-nowrap text-[clamp(44px,10vw,124px)] font-semibold leading-none text-paper tabular-nums"
+                        >
+                          <span aria-hidden="true">{displayWorkCount}</span>
+                        </span>
+                      </div>
+                      <div className="shrink-0 max-w-[clamp(100px,22vw,240px)] overflow-hidden">
+                        <Image
+                          src={content.tableImage.src}
+                          alt={content.tableImage.alt}
+                          width={content.tableImage.width}
+                          height={content.tableImage.height}
+                          loading={content.tableImage.loading}
+                          sizes="(min-width: 1024px) 240px, (min-width: 640px) 180px, 140px"
+                          className="h-auto w-[clamp(100px,22vw,240px)]"
+                        />
+                      </div>
+                    </div>
+                    <div className="h-px w-full bg-paper/60" />
+                  </div>
+
+                  <div className="ml-auto mt-10 max-w-lg">
+                    <p className="space-y-3 text-[clamp(18px,4.8vw,33px)] font-normal leading-none tracking-[-0.03em] text-paper text-justify">
+                      {content.descriptionLines.map((line) => (
+                        <span key={line} className="block">
+                          {line}
+                        </span>
+                      ))}
+                    </p>
+                  </div>
                 </div>
               </div>
+              <ContactReviewsMarquee
+                title={reviewsContent.title}
+                description={reviewsContent.description}
+                sectionAriaLabel={reviewsContent.sectionAriaLabel}
+                ratingAriaLabelSuffix={reviewsContent.ratingAriaLabelSuffix}
+                reviewsLinkLabel={reviewsContent.reviewsLinkLabel}
+                reviewsLinkHref={reviewsContent.reviewsLinkHref}
+                reviews={reviewsContent.reviews}
+                variant="homeCompact"
+                className="w-full py-0"
+              />
             </div>
           </section>
         </div>
