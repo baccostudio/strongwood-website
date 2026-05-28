@@ -20,8 +20,9 @@ Use this reference when changing contact content, validation, SMTP behavior, or 
 ## SMTP Rules
 
 - Required envs: `SMTP_HOST`, `SMTP_PORT`, `SMTP_SECURE`, `SMTP_USER`, `SMTP_PASS`.
-- Optional env: `SMTP_FROM`.
+- Optional envs: `SMTP_FROM`, `SMTP_TO`.
 - `SMTP_SECURE` accepts truthy values `1`, `true`, `yes` and falsy values `0`, `false`, `no`.
+- `SMTP_TO` defaults to `SMTP_USER` when omitted.
 - Keep mail subject, labels, and fallback phone text sourced from typed content instead of hardcoding them in the mailer.
 
 ## UI Guardrails

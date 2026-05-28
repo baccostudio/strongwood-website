@@ -18,6 +18,7 @@ interface SmtpConfig {
   user: string;
   pass: string;
   from: string;
+  to: string;
 }
 
 const DEFAULT_CONTACT_FROM_NAME = "STRONG WEBSITE";
@@ -70,6 +71,7 @@ const getSmtpConfig = (): SmtpConfig | null => {
   }
 
   const from = formatFromAddress(getEnvValue("SMTP_FROM"), user);
+  const to = getEnvValue("SMTP_TO") ?? user;
 
   const port = Number(portValue);
   const secure = parseSecureValue(secureValue);
@@ -85,6 +87,7 @@ const getSmtpConfig = (): SmtpConfig | null => {
     user,
     pass,
     from,
+    to,
   };
 };
 
@@ -185,7 +188,7 @@ export async function sendContactFormEmail(
 
     await mailer.sendMail({
       from: smtpConfig.from,
-      to: smtpConfig.user,
+      to: smtpConfig.to,
       replyTo: payload.email,
       subject: buildSubject(payload.fullName),
       text: buildMailText(payload),
@@ -193,7 +196,7 @@ export async function sendContactFormEmail(
     });
 
     if (process.env.NODE_ENV !== "production") {
-      console.log("Email enviado a:", smtpConfig.user);
+      console.log("Email enviado a:", smtpConfig.to);
     }
 
     return true;
