@@ -40,6 +40,7 @@ export default function Home() {
       imageSizes: HOME_HERO_IMAGE_SIZES,
       media,
       type: "image/webp",
+      fetchPriority: "high",
     });
   });
 

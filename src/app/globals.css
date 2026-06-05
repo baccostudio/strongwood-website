@@ -118,6 +118,9 @@
   --hero-title-top: 62%;
   --hero-subtitle-offset: clamp(70px, 12vh, 140px);
   --color-card-body: #85795d;
+  --color-home-review-card-bg: rgb(0 0 0 / 18%);
+  --color-home-review-muted: rgb(255 255 255 / 88%);
+  --color-home-review-copy: var(--color-paper);
 }
 
 html {

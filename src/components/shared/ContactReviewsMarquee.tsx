@@ -150,7 +150,7 @@ function ReviewCardsGroup({
             className={cn(
               "flex h-full shrink-0 flex-col gap-2 outline-none transition-transform duration-200",
               isHomeCompact
-                ? `${REVIEW_CARD_SIZE_CLASSES} border border-paper/15 bg-paper/10 text-paper backdrop-blur-sm`
+                ? `${REVIEW_CARD_SIZE_CLASSES} border border-paper/15 bg-(--color-home-review-card-bg) text-paper backdrop-blur-sm`
                 : `${REVIEW_CARD_SIZE_CLASSES} border border-(--color-footer-divider) bg-surface text-foreground shadow-sm`,
               "outline-none transition-transform duration-200",
               // !isClone && "focus-visible:-translate-y-1 focus-visible:ring-2 focus-visible:ring-primary",
@@ -174,7 +174,7 @@ function ReviewCardsGroup({
                     suppressHydrationWarning
                     className={cn(
                       "mt-1 text-sm leading-none tracking-[-0.02em]",
-                      isHomeCompact ? "text-paper/70" : "text-muted"
+                      isHomeCompact ? "text-(--color-home-review-muted)" : "text-muted"
                     )}
                   >
                     {review.publishedAtLabel}
@@ -197,7 +197,7 @@ function ReviewCardsGroup({
                 title={review.text}
                 className={cn(
                   "overflow-hidden text-[14px] leading-[160%] tracking-[-0.02em] [display:-webkit-box] [-webkit-box-orient:vertical] [-webkit-line-clamp:3]",
-                  isHomeCompact ? "text-paper/90 lg:text-[15px]" : "text-foreground lg:text-[16px]"
+                  isHomeCompact ? "text-(--color-home-review-copy) lg:text-[15px]" : "text-foreground lg:text-[16px]"
                 )}
               >
                 {review.text}
@@ -275,7 +275,7 @@ export function ContactReviewsMarquee({
             <p
               className={cn(
                 "text-[clamp(18px,2.4vw,22px)] font-normal leading-5 tracking-[-0.03em]",
-                isHomeCompact ? "text-paper/72" : "text-(--color-step-subtitle)"
+                isHomeCompact ? "text-(--color-paper)" : "text-(--color-step-subtitle)"
               )}
             >
               {description}
