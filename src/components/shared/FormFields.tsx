@@ -266,7 +266,7 @@ export function WideArrowButton({
   return (
     <button
       type="submit"
-      aria-label={iconAlt}
+      aria-label={label || iconAlt}
       aria-busy={isLoading || undefined}
       disabled={disabled}
       className={cn(
@@ -282,7 +282,8 @@ export function WideArrowButton({
       <span className="relative h-4.5 w-4.5 overflow-visible">
         <Image
           src={iconSrc}
-          alt={iconAlt}
+          alt=""
+          aria-hidden="true"
           width={18}
           height={18}
           className={cn(
@@ -297,7 +298,7 @@ export function WideArrowButton({
         {hoverIconSrc ? (
           <Image
             src={hoverIconSrc}
-            alt="img"
+            alt=""
             aria-hidden="true"
             width={18}
             height={18}

@@ -437,6 +437,7 @@ export function Header(props: HeaderProps) {
         )}
         style={menuViewportStyle}
         aria-hidden={!isMenuMounted}
+        inert={!isMenuMounted}
       >
         <div className="absolute inset-0 bg-(--color-overlay) backdrop-blur-lg" aria-hidden="true" />
 
