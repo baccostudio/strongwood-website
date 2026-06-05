@@ -11,8 +11,8 @@ export const homeHero: HomeHeroContent = {
       },
       mobile: {
         src: "/images/home/hero/home-hero-mob.webp",
-        width: 440,
-        height: 820,
+        width: 960,
+        height: 1790,
       },
     },
   ],
