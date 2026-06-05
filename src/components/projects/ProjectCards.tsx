@@ -30,7 +30,7 @@ function ProjectInfoCard({ card }: { card: ProjectCard }) {
         <h3 className="text-[clamp(18px,2.2vw,22px)] font-bold uppercase leading-[110%] tracking-[-0.03em]">
           {card.title}
         </h3>
-        <p className="mt-3 text-[clamp(16px,2.1vw,22px)] font-normal leading-[150%] tracking-[-0.03em] text-(--color-card-body)">
+        <p className="mt-3 text-[clamp(16px,2.1vw,22px)] font-normal leading-[150%] tracking-[-0.03em]">
           {card.text}
         </p>
       </div>

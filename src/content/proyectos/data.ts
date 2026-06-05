@@ -28,8 +28,8 @@ export const projects: Project[] = [
     heroMobileImage: {
       src: "/images/project-details/lavalle-st-39/hero-lavalle-mob.webp",
       alt: "Patio con puertas y ventanas de madera y ventanal",
-      width: 440,
-      height: 820,
+      width: 960,
+      height: 1790,
     },
     carouselImages: [
       {
@@ -157,8 +157,8 @@ export const projects: Project[] = [
     heroMobileImage: {
       src: "/images/project-details/coliqueo-st-53/hero-coliqueo-mob.webp",
       alt: "Dormitorio con paredes revestidas en láminas de madera",
-      width: 440,
-      height: 820,
+      width: 960,
+      height: 1790,
     },
     carouselImages: [
       {
@@ -312,8 +312,8 @@ export const projects: Project[] = [
     heroMobileImage: {
       src: "/images/project-details/cangallo-st-93/hero-cangallo-mob.webp",
       alt: "Estantería de madera clara con iluminación integrada",
-      width: 440,
-      height: 820,
+      width: 960,
+      height: 1790,
     },
     carouselImages: [
       {
@@ -428,8 +428,8 @@ export const projects: Project[] = [
     heroMobileImage: {
       src: "/images/project-details/olleros-st-92/hero-olleros-mob.webp",
       alt: "Cocina con iluminación cálida y muebles de melamina",
-      width: 440,
-      height: 820,
+      width: 960,
+      height: 1790,
     },
     carouselImages: [
       {
