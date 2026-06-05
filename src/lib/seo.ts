@@ -5,7 +5,6 @@ const FALLBACK_SITE_URL = "http://localhost:3000";
 const BASE_VIEWPORT: Omit<Viewport, "themeColor"> = {
   width: "device-width",
   initialScale: 1,
-  maximumScale: 1,
   userScalable: true,
   colorScheme: "light",
   viewportFit: "cover",

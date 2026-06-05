@@ -6,6 +6,7 @@ import { Footer } from "@/components/layout/Footer";
 import { Header } from "@/components/layout/Header";
 import { JsonLdScript } from "@/components/layout/JsonLdScript";
 import { ThemeColorSync } from "@/components/layout/ThemeColorSync";
+import { ViewportHeightScript } from "@/components/layout/ViewportHeightScript";
 import { WhatsappFloatingButton } from "@/components/layout/WhatsappFloatingButton";
 import { siteConfig } from "@/content/site";
 import { buildViewport, getSiteUrl } from "@/lib/seo";
@@ -17,6 +18,7 @@ const defaultOgUrl = new URL(
   siteConfig.metadata.defaultOgImage.src.replace(/^\//, ""),
   siteUrl
 );
+const enableVercelInsights = Boolean(process.env.VERCEL);
 
 export const metadata: Metadata = {
   metadataBase: siteUrl,
@@ -79,6 +81,7 @@ export default function RootLayout({
       // suppressHydrationWarning
     >
       <head>
+        <ViewportHeightScript />
         <TrackingHeadScripts tracking={siteConfig.tracking} />
       </head>
       <body className="min-h-full bg-paper text-foreground flex flex-col">
@@ -90,8 +93,12 @@ export default function RootLayout({
         <WhatsappFloatingButton {...siteConfig.whatsappFloatingButton} />
         <JsonLdScript data={organizationJsonLd} />
         <JsonLdScript data={localBusinessJsonLd} />
-        <Analytics />
-        <SpeedInsights />
+        {enableVercelInsights ? (
+          <>
+            <Analytics />
+            <SpeedInsights />
+          </>
+        ) : null}
       </body>
     </html>
   );

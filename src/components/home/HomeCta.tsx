@@ -37,6 +37,7 @@ function GalleryImage({
   scrollYProgress,
   priority,
   loading,
+  sizes,
   className,
 }: {
   src: string;
@@ -44,6 +45,7 @@ function GalleryImage({
   scrollYProgress: MotionValue<number>;
   priority?: boolean;
   loading?: "eager";
+  sizes: string;
   className?: string;
 }) {
   const shouldReduceMotion = useReducedMotion();
@@ -88,7 +90,7 @@ function GalleryImage({
         alt="Proyecto de Strongwood"
         fill
         className="object-cover"
-        sizes="(max-width: 1024px) 100vw, 33vw"
+        sizes={sizes}
         priority={priority}
         loading={loading}
       />
@@ -146,6 +148,10 @@ export function HomeCta({
     [1, 1.03, 1.24],
     { clamp: true },
   );
+  const threeColumnImageSizes =
+    "(min-width: 1536px) 395px, (min-width: 1280px) 373px, (min-width: 1024px) calc((100vw - 80px) / 3), 100vw";
+  const fourColumnImageSizes =
+    "(min-width: 1536px) 292px, (min-width: 1280px) 276px, (min-width: 1024px) calc((100vw - 96px) / 4), 100vw";
 
   return (
     <section
@@ -171,6 +177,7 @@ export function HomeCta({
                     scrollYProgress={lockedScrollYProgress}
                     priority={i === 0}
                     loading={i === 0 ? undefined : "eager"}
+                    sizes={threeColumnImageSizes}
                     className="aspect-4/3 shadow-2xl"
                   />
                 ))}
@@ -184,6 +191,7 @@ export function HomeCta({
                     index={i + 3}
                     scrollYProgress={lockedScrollYProgress}
                     loading="eager"
+                    sizes={fourColumnImageSizes}
                     className="aspect-square shadow-2xl"
                   />
                 ))}
@@ -197,6 +205,7 @@ export function HomeCta({
                     index={i + 7}
                     scrollYProgress={lockedScrollYProgress}
                     loading="eager"
+                    sizes={threeColumnImageSizes}
                     className="aspect-4/3 shadow-2xl"
                   />
                 ))}

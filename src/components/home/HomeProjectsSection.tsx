@@ -1,5 +1,5 @@
 import { contactReviewsContent } from "@/content/contact";
-import { resolveHomeProjectStats } from "@/lib/home-project-stats";
+import { buildFallbackHomeProjectStats } from "@/lib/home-project-stats-format";
 import type { HomeProjectsContent } from "@/types/home";
 import { HomeProjects } from "./HomeProjects";
 
@@ -7,10 +7,10 @@ interface HomeProjectsSectionProps {
   content: HomeProjectsContent;
 }
 
-export async function HomeProjectsSection({
+export function HomeProjectsSection({
   content,
 }: HomeProjectsSectionProps) {
-  const projectStats = await resolveHomeProjectStats();
+  const projectStats = buildFallbackHomeProjectStats();
 
   return (
     <HomeProjects

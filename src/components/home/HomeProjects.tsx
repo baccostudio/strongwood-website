@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import Image from "next/image";
 import type { CSSProperties } from "react";
 import { PageHeroTitle } from "@/components/shared/PageHeroTitle";
@@ -21,6 +21,7 @@ const DESKTOP_PROJECT_TRACK_GAP = 150;
 const BASE_PROJECT_STICKY_SCROLL_VH = 100;
 const MOBILE_HERO_STACK_TAIL_VH = 10;
 const PROJECT_VIEWPORT_UNIT = "var(--vh, 1vh)";
+const PROJECT_STATS_ENDPOINT = "/api/project-stats";
 const [heroImage] = homeHero.images;
 
 type HomeProjectsWrapperStyle = CSSProperties & {
@@ -33,31 +34,54 @@ const homeProjectsWrapperStyle: HomeProjectsWrapperStyle = {
   "--home-projects-hero-overlap-desktop": `min(calc(100vw * ${heroImage.desktop.height / heroImage.desktop.width}), calc(${PROJECT_VIEWPORT_UNIT} * 100))`,
 };
 
+function isHomeProjectStats(value: unknown): value is HomeProjectStats {
+  if (!value || typeof value !== "object") {
+    return false;
+  }
+
+  const maybeStats = value as Partial<HomeProjectStats>;
+
+  return (
+    typeof maybeStats.workCount === "string" &&
+    typeof maybeStats.workCountAriaLabel === "string"
+  );
+}
+
 export function HomeProjects({
   content,
   projectStats,
   reviewsContent,
 }: HomeProjectsProps) {
+  const wrapperRef = useRef<HTMLDivElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
-  const [trackHeight, setTrackHeight] = useState(0);
-  const displayWorkCount = projectStats.workCount.startsWith("+")
-    ? projectStats.workCount
-    : `+${projectStats.workCount.replace(/^\++/, "")}`;
+  const [resolvedProjectStats, setResolvedProjectStats] = useState(projectStats);
 
-  useEffect(() => {
+  const projectTrackViewportSpanVh =
+    BASE_PROJECT_STICKY_SCROLL_VH + MOBILE_HERO_STACK_TAIL_VH;
+  const wrapperFallbackHeight = `calc(${PROJECT_VIEWPORT_UNIT} * 300)`;
+
+  useLayoutEffect(() => {
     const syncTrackHeight = () => {
-      const nextTrackHeight = trackRef.current?.offsetHeight ?? 0;
+      const nextTrackHeight =
+        trackRef.current?.getBoundingClientRect().height ??
+        trackRef.current?.offsetHeight ??
+        0;
 
-      setTrackHeight((currentHeight) => (
-        currentHeight === nextTrackHeight ? currentHeight : nextTrackHeight
-      ));
+      if (!wrapperRef.current || nextTrackHeight <= 0) {
+        return;
+      }
+
+      wrapperRef.current.style.height =
+        `calc(${nextTrackHeight}px + ${DESKTOP_PROJECT_TRACK_GAP}px + (${PROJECT_VIEWPORT_UNIT} * ${projectTrackViewportSpanVh}))`;
     };
 
     syncTrackHeight();
 
     const resizeObserver = typeof ResizeObserver === "undefined"
       ? null
-      : new ResizeObserver(() => syncTrackHeight());
+      : new ResizeObserver(() => {
+        window.requestAnimationFrame(syncTrackHeight);
+      });
 
     if (trackRef.current) {
       resizeObserver?.observe(trackRef.current);
@@ -66,20 +90,60 @@ export function HomeProjects({
     return () => {
       resizeObserver?.disconnect();
     };
+  }, [projectTrackViewportSpanVh]);
+
+  useEffect(() => {
+    let isActive = true;
+    const controller = new AbortController();
+
+    const syncProjectStats = async () => {
+      try {
+        const response = await fetch(PROJECT_STATS_ENDPOINT, {
+          cache: "no-store",
+          signal: controller.signal,
+        });
+
+        if (!response.ok) {
+          return;
+        }
+
+        const nextProjectStats: unknown = await response.json();
+
+        if (!isActive || !isHomeProjectStats(nextProjectStats)) {
+          return;
+        }
+
+        setResolvedProjectStats((currentProjectStats) =>
+          currentProjectStats.workCount === nextProjectStats.workCount &&
+          currentProjectStats.workCountAriaLabel === nextProjectStats.workCountAriaLabel
+            ? currentProjectStats
+            : nextProjectStats
+        );
+      } catch {
+        if (controller.signal.aborted) {
+          return;
+        }
+      }
+    };
+
+    syncProjectStats();
+
+    return () => {
+      isActive = false;
+      controller.abort();
+    };
   }, []);
 
-  const projectTrackViewportSpanVh =
-    BASE_PROJECT_STICKY_SCROLL_VH + MOBILE_HERO_STACK_TAIL_VH;
-  const wrapperHeight = trackHeight
-    ? `calc(${trackHeight}px + ${DESKTOP_PROJECT_TRACK_GAP}px + (${PROJECT_VIEWPORT_UNIT} * ${projectTrackViewportSpanVh}))`
-    : `calc(${PROJECT_VIEWPORT_UNIT} * 300)`;
-
+  const displayWorkCount = resolvedProjectStats.workCount.startsWith("+")
+    ? resolvedProjectStats.workCount
+    : `+${resolvedProjectStats.workCount.replace(/^\++/, "")}`;
   return (
     <div
+      ref={wrapperRef}
       className="relative z-10 bg-muted -mt-(--home-projects-hero-overlap-mobile) lg:-mt-(--home-projects-hero-overlap-desktop)"
       style={{
         ...homeProjectsWrapperStyle,
-        height: wrapperHeight,
+        height: wrapperFallbackHeight,
       }}
     >
       <div
@@ -128,10 +192,15 @@ export function HomeProjects({
                     <div className="flex flex-row items-end justify-between">
                       <div className="relative inline-grid items-center">
                         <span
-                          aria-label={projectStats.workCountAriaLabel}
+                          className="sr-only"
+                        >
+                          {resolvedProjectStats.workCountAriaLabel}
+                        </span>
+                        <span
+                          aria-hidden="true"
                           className="inline-flex shrink-0 items-center whitespace-nowrap text-[clamp(44px,10vw,124px)] font-semibold leading-none text-paper tabular-nums"
                         >
-                          <span aria-hidden="true">{displayWorkCount}</span>
+                          {displayWorkCount}
                         </span>
                       </div>
                       <div className="shrink-0 max-w-[clamp(100px,22vw,240px)] overflow-hidden">
@@ -141,6 +210,7 @@ export function HomeProjects({
                           width={content.tableImage.width}
                           height={content.tableImage.height}
                           loading={content.tableImage.loading}
+                          fetchPriority="high"
                           sizes="(min-width: 1024px) 240px, (min-width: 640px) 180px, 140px"
                           className="h-auto w-[clamp(100px,22vw,240px)]"
                         />
