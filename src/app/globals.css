@@ -90,6 +90,12 @@
   --color-contact-dialog-border: #d6d0c5;
   --color-contact-dialog-close-border: #d8d2c7;
   --color-review-star: #eab308;
+  --color-whatsapp-floating-bg: #25d366;
+  --color-whatsapp-floating-bg-hover: #1ebe5d;
+  --color-whatsapp-floating-ring: rgb(37 211 102 / 35%);
+  --color-whatsapp-floating-focus: #128c7e;
+  --shadow-whatsapp-floating: 0 20px 25px -5px rgb(0 0 0 / 10%), 0 8px 10px -6px rgb(0 0 0 / 10%), 0 0 0 1px var(--color-whatsapp-floating-ring);
+  --shadow-whatsapp-floating-focus: 0 0 0 2px var(--color-paper), 0 0 0 4px var(--color-whatsapp-floating-focus), var(--shadow-whatsapp-floating);
   --color-home-hero: #d9d9d9;
   --gradient-hero-shadow: linear-gradient(180deg,
       rgba(18, 26, 19, 0.1) 34.13%,
@@ -304,6 +310,19 @@ body:has(main.project-theme-default) .app-shell-content {
 .footer-contact-link:hover {
   color: var(--color-foreground);
   text-decoration-color: var(--color-foreground);
+}
+
+.whatsapp-floating-button {
+  background-color: var(--color-whatsapp-floating-bg);
+  box-shadow: var(--shadow-whatsapp-floating);
+}
+
+.whatsapp-floating-button:hover {
+  background-color: var(--color-whatsapp-floating-bg-hover);
+}
+
+.whatsapp-floating-button:focus-visible {
+  box-shadow: var(--shadow-whatsapp-floating-focus);
 }
 
 /* Expansion Animation Safety */

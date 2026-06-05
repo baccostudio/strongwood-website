@@ -40,6 +40,7 @@ import type {
   GoogleTagManagerConfig,
   SiteTrackingConfig,
 } from "./tracking";
+import type { WhatsappFloatingButtonConfig } from "./whatsapp";
 
 export interface SiteConfig {
   metadata: SiteMetadata;
@@ -48,6 +49,7 @@ export interface SiteConfig {
   footer: FooterConfig;
   tracking: SiteTrackingConfig;
   pages: PagesConfig;
+  whatsappFloatingButton: WhatsappFloatingButtonConfig;
 }
 
 export type {
@@ -91,4 +93,5 @@ export type {
   SiteTrackingConfig,
   SocialLink,
   ThemeColor,
+  WhatsappFloatingButtonConfig,
 };

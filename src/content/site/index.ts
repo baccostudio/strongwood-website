@@ -6,6 +6,7 @@ import { headerThemeConfig } from "./header-theme";
 import { siteMetadata } from "./metadata";
 import { sitePages } from "./pages";
 import { siteTracking } from "./tracking";
+import { whatsappFloatingButton } from "./whatsapp";
 
 export const siteConfig: SiteConfig = {
   metadata: siteMetadata,
@@ -14,6 +15,7 @@ export const siteConfig: SiteConfig = {
   footer: siteFooter,
   tracking: siteTracking,
   pages: sitePages,
+  whatsappFloatingButton,
 };
 
 export { siteThemeColors } from "./theme-colors";
