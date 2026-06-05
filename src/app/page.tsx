@@ -8,6 +8,7 @@ import { siteConfig } from "@/content/site";
 import {
   getHomeHeroPreloadAssets,
   HOME_HERO_IMAGE_SIZES,
+  HOME_HERO_MOBILE_MEDIA,
 } from "@/lib/preloader";
 import { buildMetadata, buildViewport } from "@/lib/seo";
 import HomeClient from "./page.client";
@@ -40,7 +41,7 @@ export default function Home() {
       imageSizes: HOME_HERO_IMAGE_SIZES,
       media,
       type: "image/webp",
-      fetchPriority: "high",
+      fetchPriority: media === HOME_HERO_MOBILE_MEDIA ? "high" : undefined,
     });
   });
 
