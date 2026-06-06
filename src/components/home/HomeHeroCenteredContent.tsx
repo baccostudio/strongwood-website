@@ -11,7 +11,7 @@ export function HomeHeroCenteredContent({
   subtitleLines,
 }: HomeHeroCenteredContentProps) {
   return (
-    <div className="pointer-events-none absolute inset-x-0 top-0 z-10 h-svh">
+    <div className="pointer-events-none absolute inset-x-0 top-0 z-10 h-screen">
       <HeroTitleWrapper>
         <div className="flex flex-col items-center">
           <StrongwoodLogo
