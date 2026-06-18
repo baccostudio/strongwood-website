@@ -1,5 +1,5 @@
 import { siteMetadata } from "@/content/site/metadata";
-import { siteThemeColors } from "@/content/site/theme-colors";
+import { routeThemeColors } from "@/content/site/route-theme-colors";
 
 export const proyectosContent = {
   metadata: {
@@ -7,7 +7,7 @@ export const proyectosContent = {
     description:
       "Cocinas, placares y muebles a medida para hogares y obras en CABA y GBA. Diseño e instalación integral.",
     ogImage: siteMetadata.defaultOgImage,
-    themeColor: siteThemeColors.secondary,
+    themeColor: routeThemeColors.proyectos,
   },
   hero: {
     title: "(PROYECTOS)",

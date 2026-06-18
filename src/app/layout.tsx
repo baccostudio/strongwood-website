@@ -5,7 +5,6 @@ import "./globals.css";
 import { Footer } from "@/components/layout/Footer";
 import { Header } from "@/components/layout/Header";
 import { JsonLdScript } from "@/components/layout/JsonLdScript";
-import { ThemeColorSync } from "@/components/layout/ThemeColorSync";
 import { ViewportHeightScript } from "@/components/layout/ViewportHeightScript";
 import { WhatsappFloatingButton } from "@/components/layout/WhatsappFloatingButton";
 import { homeMetadata } from "@/content/home/metadata";
@@ -71,7 +70,6 @@ export default function RootLayout({
         <TrackingHeadScripts tracking={siteConfig.tracking} />
       </head>
       <body className="min-h-full bg-paper text-foreground flex flex-col">
-        <ThemeColorSync />
         <TrackingNoScript tracking={siteConfig.tracking} />
         <Header {...siteConfig.header} />
         <div className="app-shell-content flex-1 bg-paper">{children}</div>
