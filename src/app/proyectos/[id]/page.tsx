@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { buildMetadata, buildViewport } from "@/lib/seo";
+import { homeMetadata } from "@/content/home/metadata";
 import { siteConfig } from "@/content/site";
 import { projectDetailUi, projects } from "@/content/proyectos";
 import { ProjectHero } from "@/components/projects/ProjectHero";
@@ -48,11 +49,11 @@ export async function generateMetadata({ params }: ProjectPageProps): Promise<Me
 
   if (!project) {
     return buildMetadata({
-      title: siteConfig.metadata.defaultTitle,
-      description: siteConfig.metadata.defaultDescription,
-      canonicalPath: "/proyectos",
+      title: homeMetadata.title,
+      description: homeMetadata.description,
+      canonicalPath: "/",
       siteName: siteConfig.metadata.siteName,
-      ogImage: siteConfig.metadata.defaultOgImage,
+      ogImage: homeMetadata.ogImage,
     });
   }
 

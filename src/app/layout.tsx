@@ -8,40 +8,26 @@ import { JsonLdScript } from "@/components/layout/JsonLdScript";
 import { ThemeColorSync } from "@/components/layout/ThemeColorSync";
 import { ViewportHeightScript } from "@/components/layout/ViewportHeightScript";
 import { WhatsappFloatingButton } from "@/components/layout/WhatsappFloatingButton";
+import { homeMetadata } from "@/content/home/metadata";
 import { siteConfig } from "@/content/site";
-import { buildViewport, getSiteUrl } from "@/lib/seo";
+import { buildMetadata, buildViewport, getSiteUrl } from "@/lib/seo";
 import { TrackingHeadScripts } from "@/components/layout/TrackingHeadScripts";
 import { TrackingNoScript } from "@/components/layout/TrackingNoScript";
 
 const siteUrl = getSiteUrl();
 const defaultOgUrl = new URL(
-  siteConfig.metadata.defaultOgImage.src.replace(/^\//, ""),
+  homeMetadata.ogImage.src.replace(/^\//, ""),
   siteUrl
 );
 const enableVercelInsights = Boolean(process.env.VERCEL);
 
-export const metadata: Metadata = {
-  metadataBase: siteUrl,
-  title: siteConfig.metadata.defaultTitle,
-  description: siteConfig.metadata.defaultDescription,
-  openGraph: {
-    siteName: siteConfig.metadata.siteName,
-    locale: "es_AR",
-    type: "website",
-    images: [
-      {
-        url: defaultOgUrl,
-        width: siteConfig.metadata.defaultOgImage.width,
-        height: siteConfig.metadata.defaultOgImage.height,
-        alt: siteConfig.metadata.defaultOgImage.alt,
-      },
-    ],
-  },
-  twitter: {
-    card: "summary_large_image",
-    images: [defaultOgUrl],
-  },
-};
+export const metadata: Metadata = buildMetadata({
+  title: homeMetadata.title,
+  description: homeMetadata.description,
+  canonicalPath: "/",
+  siteName: siteConfig.metadata.siteName,
+  ogImage: homeMetadata.ogImage,
+});
 
 export const viewport = buildViewport(siteConfig.metadata.defaultThemeColor);
 
